@@ -1,0 +1,20 @@
+---- DeviceNumberID Matches (22 in 4 files) ----
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):    memcpy(Original_info+Original_info_Wr,DeviceNumberID+5,7);     // 这个就是终端ID 的后7 位    
+SMS.c (bsp\stm32f407vgt6_recdrv\app_712\gsm):				if(cmdLen<=sizeof(DeviceNumberID))
+SMS.c (bsp\stm32f407vgt6_recdrv\app_712\gsm):					memset(DeviceNumberID,0,sizeof(DeviceNumberID));
+SMS.c (bsp\stm32f407vgt6_recdrv\app_712\gsm):					memcpy(DeviceNumberID,pstrTempStart,cmdLen);
+SMS.c (bsp\stm32f407vgt6_recdrv\app_712\gsm):					DF_WriteFlashSector(DF_DeviceID_offset,0,DeviceNumberID,13); 
+SMS.c (bsp\stm32f407vgt6_recdrv\app_712\gsm):				}    //DeviceNumberID			
+SMS.c (bsp\stm32f407vgt6_recdrv\app_712\gsm):				}    //DeviceNumberID		
+Sys_config.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):u8      DeviceNumberID[13];//="800130100001";    // 车辆DeviceID    ---- 河北天地通用
+Sys_config.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):		   memset(DeviceNumberID,0,sizeof(DeviceNumberID));
+Sys_config.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):		   DF_ReadFlash(DF_DeviceID_offset,0,(u8*)DeviceNumberID,12);  
+Sys_config.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):		if(DeviceNumberID[0]==0xFF)
+Sys_config.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):				rt_kprintf("%c",DeviceNumberID[i]);
+Sys_config.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):		  	rt_kprintf("%c",DeviceNumberID[i]); 
+Sys_config.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):		  memset(DeviceNumberID,0,sizeof(DeviceNumberID));
+Sys_config.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):		  memcpy(DeviceNumberID,reg_str,12);								 
+Sys_config.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):		  DF_WriteFlashSector(DF_DeviceID_offset,0,DeviceNumberID,13); 
+Sys_config.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):		  DF_ReadFlash(DF_DeviceID_offset,0,DeviceNumberID,13);    
+Sys_config.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):		  	rt_kprintf("%c",DeviceNumberID[i]);
+Sys_config.h (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):extern u8		DeviceNumberID[13];//="800130100001";	 // 车辆DeviceID	---- 河北天地通用
