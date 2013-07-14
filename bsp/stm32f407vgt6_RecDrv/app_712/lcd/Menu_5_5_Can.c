@@ -53,12 +53,12 @@ if(par==1)
 	}
 else
 	{
-	CAN_baud[7]= BD_EXT.BD_Baud/100000+'0';
-	CAN_baud[8]= BD_EXT.BD_Baud%100000/10+'0';
-	CAN_baud[9]= BD_EXT.BD_Baud%10000/10+'0';
-	CAN_baud[10]=BD_EXT.BD_Baud%1000/10+'0';
-	CAN_baud[11]=BD_EXT.BD_Baud%100/10+'0';
-	CAN_baud[12]=BD_EXT.BD_Baud%10+'0';
+	CAN_baud[7]= BD_EXT.GNSS_Baud/100000+'0';
+	CAN_baud[8]= BD_EXT.GNSS_Baud%100000/10+'0';
+	CAN_baud[9]= BD_EXT.GNSS_Baud%10000/10+'0';
+	CAN_baud[10]=BD_EXT.GNSS_Baud%1000/10+'0';
+	CAN_baud[11]=BD_EXT.GNSS_Baud%100/10+'0';
+	CAN_baud[12]=BD_EXT.GNSS_Baud%10+'0';
 	lcd_text12(0,10,(char *)CAN_baud,13,LCD_MODE_SET);
 	}
 lcd_update_all();

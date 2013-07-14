@@ -26,7 +26,9 @@
  _MultiTake     MultiTake;	  //  多路拍照状态位 
  u8  SingleCamera_TakeRetry=0; // 单路摄像头拍照时，重拍次数计数
  Camera_state CameraState; 
-  u8  SingleCamra_TakeResualt_BD=0;   // 单路拍照结果
+ u8  SingleCamra_TakeResualt_BD=0;   // 单路拍照结果
+ u8  Camera_Take_not_trans=0;	 //  拍照不上传
+  
  u8    TX_485const_Enable=0;   // 使能发送标志位  
  u8 	  last_package=0; // 拍照最后一包标识
 
@@ -204,7 +206,7 @@ void  Camra_Take_Exception(void)
 
 		       if(CameraState.timeoutCounter==5)
 	               {
-				  Power_485CH1_ON;  // 第一路485的电		   开	电工作      
+				        Power_485CH1_ON;  // 第一路485的电		   开	电工作      
 	               }
 
 			 if(CameraState.timeoutCounter==7)

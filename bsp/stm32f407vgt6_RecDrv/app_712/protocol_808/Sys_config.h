@@ -311,6 +311,8 @@ extern void  RailPolygen_Init(void);
 extern void  RailPolygen_Read(void);
 extern void  RouteLine_Init(void);
 extern void  RouteLine_Read(void);  
+extern void  ProductAttribute_init(void);
+
 
 
 

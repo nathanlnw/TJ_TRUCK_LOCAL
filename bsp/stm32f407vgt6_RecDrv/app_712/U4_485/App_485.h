@@ -91,10 +91,11 @@ extern  VOICE_DEV Dev_Voice;
  extern  _MultiTake     MultiTake;	  //  多路拍照状态位 
  extern u8  SingleCamera_TakeRetry; // 单路摄像头拍照时，重拍次数计数
  extern Camera_state CameraState; 
- extern   u8  SingleCamra_TakeResualt_BD;   // 单路拍照结果
+ extern   u8  SingleCamra_TakeResualt_BD;   // 单路拍照结果 
+ extern  u8  Camera_Take_not_trans;   //  拍照不上传
  extern u8    TX_485const_Enable;   // 使能发送标志位  
  extern u8 	  last_package; // 拍照最后一包标识
-extern  Camera_state CameraState;  
+ extern  Camera_state CameraState;  
 
 
 

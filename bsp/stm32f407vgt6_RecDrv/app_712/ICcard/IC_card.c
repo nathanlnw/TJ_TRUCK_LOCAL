@@ -151,6 +151,10 @@ if(write_flag==1)
 		{
 		  rt_kprintf("\r\n管理员卡");
 		  administrator_card=1;
+
+		   pMenuItem=&Menu_0_loggingin;  // 管理员卡进入界面
+		   pMenuItem->show();
+		   BuzzerFlag=1;//响一声提示 
 		}
 	else
 		{

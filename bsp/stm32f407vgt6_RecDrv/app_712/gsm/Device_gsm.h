@@ -194,7 +194,7 @@ extern void  DataLink_IspSocket_set(u8 *IP, u16  PORT,u8 DebugOUT);
 extern void  DataLink_APN_Set(u8* apn_str,u8 DebugOUT);
 extern void  DataLink_DNSR_Set(u8* Dns_str,u8 DebugOUT); 
 extern void  DataLink_DNSR2_Set(u8* Dns_str,u8 DebugOUT);
-extern void  DataLink2_Socket_set(u8 *IP, u16  PORT,u8 DebugOUT); 
+extern void  DataLink_IC_Socket_set(u8 *IP, u16  PORT,u8 DebugOUT); 
 
 extern  void  Gsm_RegisterInit(void);
 extern  void  GSM_RxHandler(u8 data);     

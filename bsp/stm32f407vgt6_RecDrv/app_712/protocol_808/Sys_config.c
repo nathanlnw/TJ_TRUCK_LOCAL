@@ -12,7 +12,7 @@
 #include "Device_808.h"
 
 
-#define   SYSID            0x2987  
+#define   SYSID            0x2988  
                                 /*        
                                                         0x0000   -----   0x00FF  生产和研发用
                                                         0x0100   -----   0x0FFF  产品出货用
@@ -113,6 +113,37 @@ u8   SYSTEM_Reset_FLAG=0;        // 系统复位标志位
 u32  Device_type=0x00000001; //硬件类型   STM32103  新A1 
 u32  Firmware_ver=0x0000001; // 软件版本
 u8   ISP_resetFlag=0;        //远程升级复位标志位
+
+
+
+//     终端属性相关     1  个版本说明
+void ProductAttribute_init(void)
+{
+     ProductAttribute._1_DevType=0x07; //  客、货、危
+     memcpy(ProductAttribute._2_ProducterID,"7_1_2",5);
+     memset(ProductAttribute._3_Dev_TYPENUM,0,sizeof(ProductAttribute._3_Dev_TYPENUM));
+     memcpy(ProductAttribute._3_Dev_TYPENUM,"TW703_BD",8);
+
+   //终端ID 和SIM卡 ICCID 在初始化时读取
+
+     
+     ProductAttribute._6_HardwareVer_Len=14;
+     memset(ProductAttribute._7_HardwareVer,0,sizeof(ProductAttribute._7_HardwareVer));
+     memcpy(ProductAttribute._7_HardwareVer,"TW703_BD-HW1.0",14);
+
+    ProductAttribute._8_SoftwareVer_len=14;
+     memset(ProductAttribute._9_SoftwareVer,0,sizeof(ProductAttribute._9_SoftwareVer));
+     memcpy(ProductAttribute._9_SoftwareVer,"TW703_BD-SW1.0",14);
+
+    ProductAttribute._10_FirmWareVer_len=16;
+     memset(ProductAttribute._11_FirmWare,0,sizeof(ProductAttribute._11_FirmWare));
+     memcpy(ProductAttribute._11_FirmWare,"TW703_BD-Firm1.0",16);
+
+    ProductAttribute._12_GNSSAttribute=0x03;  //   支持GPS 定位 北斗定位  
+
+    ProductAttribute._13_ComModuleAttribute=0x01; // 支持GPRS 通信
+		 
+};
 
 
 
@@ -236,6 +267,12 @@ u8  SysConfig_init(void)
 		   SysConf_struct.Link2_Port=Remote_Link2_Port;  					
 
 
+           
+				//	 IC 卡中心IP   TCP 端口 UDP  端口
+				 memcpy(SysConf_struct.BD_IC_main_IP,(u8*)RemoteIP_aux,4);
+		   SysConf_struct.BD_IC_TCP_port=RemotePort_aux;	  
+		   SysConf_struct.BD_IC_UDP_port=29;
+
 
 	       //  传感器触发上报状态
 	       SysConf_struct.TriggerSDsatus=TriggerSDsatus;
@@ -324,6 +361,9 @@ void JT808_SendMode_Init(void)
   JT808Conf_struct.SD_MODE.Dist_EmgenceMode=0;
   JT808Conf_struct.SD_MODE.Dist_NoLoginMode=0;
   JT808Conf_struct.SD_MODE.Dist_SleepMode=0;
+
+  
+  JT808Conf_struct.SD_MODE.Send_strategy=0; 
 }
 
 //------------------------------------------------------------------
@@ -359,7 +399,8 @@ u8     JT808_Conf_init( void )
                          //  JT808Conf_struct.
                  JT808_SendDistances_Init();
 		   JT808_SendMode_Init();
-		   JT808Conf_struct.LOAD_STATE=1; //  负载状态
+		   JT808Conf_struct.LOAD_STATE=0; //  负载状态		   
+		   JT808Conf_struct.PositionSd_Stratage=0; // 根据ACC 状态
 		   
 		   memset((u8*)JT808Conf_struct.ConfirmCode,0,sizeof(JT808Conf_struct.ConfirmCode));
 		   memcpy((u8*)JT808Conf_struct.ConfirmCode,"012345\x00",7); //  鉴权码
@@ -368,6 +409,11 @@ u8     JT808_Conf_init( void )
 
 		   memset((u8*)JT808Conf_struct.LISTEN_Num,0,sizeof(JT808Conf_struct.LISTEN_Num));
 		   memcpy((u8*)JT808Conf_struct.LISTEN_Num,"10086",5); //  监听号码
+
+		   
+		   	
+		   memset((u8*)JT808Conf_struct.SMS_RXNum,0,sizeof(JT808Conf_struct.SMS_RXNum));
+		   memcpy((u8*)JT808Conf_struct.SMS_RXNum,"106220801",9); //  监听号码
 
                  JT808Conf_struct.Vech_Character_Value=6240; // 特征系数  速度脉冲系数 
 
@@ -446,6 +492,12 @@ void  TIRED_Drive_Init(void)
         TiredConf_struct.Tired_drive.Tgvoice_play=0;
 	 TiredConf_struct.Tired_drive.voicePly_counter=0;
 	 TiredConf_struct.Tired_drive.voicePly_timer=0;
+	 
+	 TiredConf_struct.Tired_drive.PreWarn_Dur=1200;  //疲劳驾驶预报警
+	 TiredConf_struct.Tired_drive.CurrentDay_DriveTimer_0=0;         //  上报策略为  0 时 
+     TiredConf_struct.Tired_drive.CurrentDay_DriveTimer_Driver_1=0;  // 上报策略为1 时
+     TiredConf_struct.Tired_drive.CurrentDay_DriveTimer_Driver_2; //  上报策略为1 时
+
 
          //--- below again ---
 	   TiredConf_struct.Tired_drive.ACC_ONstate_counter=0;
@@ -1061,11 +1113,11 @@ void TEXTMSG_Write_Init(void)
 void  BD_EXT_initial(void)
 {
       //    北斗设置
-    BD_EXT.BD_Mode=0x02;     //   双模
-    BD_EXT.BD_Baud=0x01;     //   9600
+    BD_EXT.GNSS_Mode=0x02;     //   双模
+    BD_EXT.GNSS_Baud=0x01;     //   9600
     BD_EXT.BD_OutputFreq=0x01;  // 1000ms
     BD_EXT.BD_SampleFrea=1; // 
-    BD_EXT.BD_Baud=0x01;  //  9600
+    BD_EXT.GNSS_Baud=0x01;  //  9600
     //-----  车台相关 ----------------------
     BD_EXT.Termi_Type=0x0001;   //  终端类型
     BD_EXT.Software_Ver=0x0100; //  Ver  1.00
@@ -1078,11 +1130,11 @@ void  BD_EXT_initial(void)
           /*  bit31  开启  bit 30 -29   模式   bit 15-0   波特率0x14   <=> 20k*/
      BD_EXT.CAN_1_ID=0x01;
      BD_EXT.CAN_1_Type=0;// 扩展帧
-     BD_EXT.CAN_1_Duration=1;  // 0   表示停止
+//     BD_EXT.CAN_1_Duration=1;  // 0   表示停止
      BD_EXT.CAN_2_Mode=0xC0000014;   //   CAN  模式 
      BD_EXT.CAN_2_ID=0x02;
      BD_EXT.CAN_2_Type=0;// 扩展帧	 
-     BD_EXT.CAN_2_Duration=1;  // 0   表示停止
+    // BD_EXT.CAN_2_Duration=1;  // 0   表示停止
      BD_EXT.Collision_Check=0x0101;     //     关闭震动  0.1g    4ms
 
   //   位置附加信息
@@ -1333,6 +1385,7 @@ void SetConfig(void)
 			//---- 设备ID  --------	 
 		   memset(DeviceNumberID,0,sizeof(DeviceNumberID));
 		   DF_ReadFlash(DF_DeviceID_offset,0,(u8*)DeviceNumberID,12);  
+		   
 		   //  ------ SIM ID  入网ID --------
 		   memset(SimID_12D,0,sizeof(SimID_12D));
 		   DF_ReadFlash(DF_SIMID_12D,0,(u8*)SimID_12D,12);  
@@ -1378,9 +1431,9 @@ void DefaultConfig(void)
 	  Car_Status[2]&=~0x08;    // 需要控制继电器
 	  rt_kprintf("\r\n继电器闭合");
 	  }
-  
+        
         // APN 设置
-	  rt_kprintf("\r\n		   APN 设置 :%s	 \r\n",APN_String); 
+	     rt_kprintf("\r\n		   APN 设置 :%s	 \r\n",APN_String); 
          DataLink_APN_Set(APN_String,1); 
             //     域名
           memset(reg_str,0,sizeof(reg_str));
@@ -1395,7 +1448,12 @@ void DefaultConfig(void)
          rt_kprintf("\r\n		  主IP: %d.%d.%d.%d : %d \r\n",RemoteIP_main[0],RemoteIP_main[1],RemoteIP_main[2],RemoteIP_main[3],RemotePort_main);   
 	  DataLink_MainSocket_set(RemoteIP_main, RemotePort_main,0);
 	  rt_kprintf("\r\n		   备用IP: %d.%d.%d.%d : %d \r\n",RemoteIP_aux[0],RemoteIP_aux[1],RemoteIP_aux[2],RemoteIP_aux[3],RemotePort_aux);   
-         DataLink_AuxSocket_set(RemoteIP_aux, RemotePort_main,0);	 
+         DataLink_AuxSocket_set(RemoteIP_aux, RemotePort_main,0);
+
+	  rt_kprintf("\r\n		   IC 卡IP: %d.%d.%d.%d  TCP: %d  UDP:%d\r\n",SysConf_struct.BD_IC_main_IP[0],SysConf_struct.BD_IC_main_IP[1],SysConf_struct.BD_IC_main_IP[2],SysConf_struct.BD_IC_main_IP[3],SysConf_struct.BD_IC_TCP_port,SysConf_struct.BD_IC_UDP_port);   
+	  rt_kprintf("\r\n		   IC 卡备用IP: %d.%d.%d.%d \r\n",SysConf_struct.BD_IC_Aux_IP[0],SysConf_struct.BD_IC_Aux_IP[1],SysConf_struct.BD_IC_Aux_IP[2],SysConf_struct.BD_IC_Aux_IP[3]);   
+	  DataLink_IC_Socket_set(SysConf_struct.BD_IC_main_IP,SysConf_struct.BD_IC_TCP_port,0); 
+	  	 
 	  //  ACC On 上报间隔(2Bytes)  ACC Off 上报间隔(2Bytes)
 	  rt_kprintf("\r\n		   ACC on 发送间隔为: %d S\r\n		   ACC Off 发送间隔为: %d S\r\n",ACC_on_sd_Duration,ACC_off_sd_Duration);
 					  
@@ -1494,7 +1552,8 @@ void DefaultConfig(void)
 		}
          rt_kprintf("\r\n\r\n  起始流水号: %d \r\n", JT808Conf_struct.Msg_Float_ID); 
 	     rt_kprintf("\r\n\r\n             cyc_read:   %d ,     cyc_write :%d\r\n  \r\n",cycle_read,cycle_write);     		
-
+         
+		 rt_kprintf("\r\n DeviceID=%s \r\n	Tired prewarn %d   jt808:%d  位置汇报策略:%d  ",reg_str, TiredConf_struct.Tired_drive.PreWarn_Dur,JT808Conf_struct.BD_TiredDrv_preWarnValue,JT808Conf_struct.PositionSd_Stratage);	 
          //=====================================================================
          //API_List_Directories();
          //-----------  北斗模块相关  ---------
@@ -1529,7 +1588,9 @@ void DefaultConfig(void)
 				rt_kprintf("%c",SimID_12D[i]);
 			rt_kprintf("\r\n");
 			} 
-	  	 
+	  	// 短息中心号码
+	  	 rt_kprintf("\r\n		   短息中心号码 :%s	 \r\n",JT808Conf_struct.SMS_RXNum);
+	  	
  
 }
 FINSH_FUNCTION_EXPORT(DefaultConfig, DefaultConfig);     

@@ -230,6 +230,26 @@ void UART4_IRQHandler(void)
 #endif
 }
 
+void CAN1_RX0_IRQHandler(void)
+{
+		 
+   if(SET == CAN_GetITStatus(CAN1,CAN_IT_FF0))
+   {
+        CAN_ClearITPendingBit(CAN1,CAN_IT_FF0);
+   }
+   else if(SET == CAN_GetITStatus(CAN1,CAN_IT_FOV0))
+   {
+        CAN_ClearITPendingBit(CAN1,CAN_IT_FOV0);
+   }
+   else
+   {
+        CAN_Receive(CAN1, CAN_FIFO0, &RxMessageData); 
+        CAN1_Rx_Process(); 
+   }     
+
+}
+
+
 /**
   * @}
   */

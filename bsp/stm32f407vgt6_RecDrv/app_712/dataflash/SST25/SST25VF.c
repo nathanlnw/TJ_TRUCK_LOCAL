@@ -492,7 +492,7 @@ u8  SST25V_OneSector_Write(u8 *p,  u32  addr,  u32 len)
 		DF_delay_ms(50);    
       
 	     //  rt_thread_delay(2);	  
-		   OutPrint_HEX("\r\n 读取后",OneSectorReg,4096);     
+		//   OutPrint_HEX("\r\n 读取后",OneSectorReg,4096);     
 		   for(i=0;i<4096;i++)
 		   {
 		       if(OneSectorReg[i]!=reg_4096[i])
@@ -507,7 +507,7 @@ u8  SST25V_OneSector_Write(u8 *p,  u32  addr,  u32 len)
 	      delay_ms(5);
       DF_LOCK=0; 
 	  //--------------------------------
-      rt_mutex_release(DF_lock_mutex);
+      rt_mutex_release(DF_lock_mutex);    
 	  return  true;
   	}	
 	else

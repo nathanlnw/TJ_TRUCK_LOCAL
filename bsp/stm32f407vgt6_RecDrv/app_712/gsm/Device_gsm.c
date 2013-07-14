@@ -54,6 +54,8 @@ flash char  CommAT_Str13[]="AT+CPMS=\"SM\",\"SM\",\"SM\"\r\n";
 flash char  CommAT_Str14[]="AT+CNMI=1,2\r\n"; 		///直接将短信输出
 flash char  CommAT_Str15[]="AT+CMGD=1,4\r\n"; 
 flash char  CommAT_Str16[]="AT+CSCA?\r\n"; 
+flash char  CommAT_Str17[]="AT+CCID\r\n"; 
+
 
 
 
@@ -76,7 +78,8 @@ static u8	Send_ISP[18]="AT%IPSENDX=2,\"";
 static u8	DialStr_Link1[90]="AT%IPOPENX=1,\"TCP\",\"";//"ATD*99***1#\r\n"; AT%IPOPENX=1,"UDP","117.11.126.248",7106
 static u8   DialStr_LinkAux[50]="AT%IPOPENX=1,\"TCP\",\"";//"ATD*99***1#\r\n"; AT%IPOPENX=1,"UDP","117.11.126.248",7106
 static u8	Dialinit_APN[40]="AT+CGDCONT=1,\"IP\",\"";		//CMNET\"\r\n"; 	 // oranges Access Point Name
-static u8   DialStr_Link2[50]="AT%IPOPENX=2,\"TCP\",\""; //  Link2             
+static u8   DialStr_IC_card[50]="AT%IPOPENX=2,\"TCP\",\""; //  Link2    
+
 
 
 
@@ -567,24 +570,22 @@ void  DataLink_AuxSocket_set(u8 *IP, u16  PORT,u8 DebugOUT)
 	   rt_kprintf((char*)DialStr_LinkAux);          
 	 } 
 }
-
-void  DataLink2_Socket_set(u8 *IP, u16  PORT,u8 DebugOUT) 
+void  DataLink_IC_Socket_set(u8 *IP, u16  PORT,u8 DebugOUT) 
 {
-  
 
-	  memset((char *)DialStr_Link2+20,0,sizeof(DialStr_Link2)-20);
-	  IP_Str((char *)DialStr_Link2+20, *( u32 * ) IP);   	  
+   	  memset((char *)DialStr_IC_card+20,0,sizeof(DialStr_IC_card)-20);
+	  IP_Str((char *)DialStr_IC_card+20, *( u32 * ) IP);   	  
 	   
-	  strcat((char *) DialStr_Link2,"\"," );
-	  sprintf((char*)DialStr_Link2+strlen((char const*)DialStr_Link2), "%u\r\n", PORT); 
+	  strcat((char *) DialStr_IC_card,"\"," );
+	  sprintf((char*)DialStr_IC_card+strlen((char const*)DialStr_IC_card), "%u\r\n", PORT); 
 
-     if(DebugOUT)
+         if(DebugOUT)
 	 {
-	    rt_kprintf("\r\n  Link2  DialString : ");   
-	    rt_kprintf((char*)DialStr_Link2);                      
-	 } 
-	 
-}
+	     rt_kprintf("\r\n IC  DialString : "); 
+	     rt_kprintf((char*)DialStr_IC_card);         
+	 } 	 
+		 
+} 
 
 void  DataLink_IspSocket_set(u8 *IP, u16  PORT,u8 DebugOUT) 
 {
@@ -664,7 +665,6 @@ void  DataLink_DNSR2_Set(u8* Dns_str,u8 DebugOUT)
   DataLink_DNSR_Set(DomainNameStr,0);    // DNSR  MG323  没有 
   DataLink_DNSR2_Set(DomainNameStr_aux,0);  
   DataLink_MainSocket_set(RemoteIP_main, RemotePort_main,1); 
-  DataLink2_Socket_set(Remote_Link2_IP,Remote_Link2_Port,1);   //   链接2     
   
 //  DataLink_AuxSocket_set(RemoteIP_aux, RemotePort_aux,1);
 
@@ -1298,12 +1298,17 @@ void GSM_Module_TotalInitial(void)
 					 rt_hw_gsm_output(CommAT_Str16); 
 					 rt_kprintf(CommAT_Str16);   
 					 CommAT.Initial_step++;
-					 break; 			 
-			 case 16://  信号强度 /		
-			                rt_hw_gsm_output(Signal_Intensity_str); 
+					 break; 
+			 case 16://  CCID /		
+			         rt_hw_gsm_output(CommAT_Str17); 
+					 rt_kprintf(CommAT_Str17);
+					 CommAT.Initial_step++;
+					 break;		 
+			 case 17://  信号强度 /		
+			         rt_hw_gsm_output(Signal_Intensity_str); 
 					 rt_kprintf(Signal_Intensity_str);    
-					 break;
-	               case 17:/*开始能拨号*/ 
+					 break;					 
+	         case 18:/*开始能拨号*/ 
 					 rt_kprintf("AT_Start\r\n");   
 					 CommAT.Initial_step=0; 
 					 CommAT.Total_initial=0;   
@@ -1516,7 +1521,7 @@ void DataLink_Process(void)
 					        rt_kprintf("%c",DialStr_Link1[i]);    
 					   }		
 					break; 
-		      case Dial_AuxLnk:   // rt_hw_gsm_output(DialStr_Link2); 
+		      case Dial_AuxLnk:   // rt_hw_gsm_output(DialStr_IC_card); 
                                    DataDial.Dial_step_RetryTimer=3000;
 					DataDial.Dial_step_Retry++;
 					 len=strlen((const char*)DialStr_LinkAux); 
@@ -1532,15 +1537,15 @@ void DataLink_Process(void)
  		     case   Dial_ISP:
  				    DataDial.Dial_step_RetryTimer=Dial_max_Timeout;
 					DataDial.Dial_step_Retry++;
-					 len=strlen((const char*)DialStr_Link2); 
+					 len=strlen((const char*)DialStr_IC_card); 
 					 for(i=0;i<len;i++)										
 					   {
-					        rt_hw_gsm_putc (DialStr_Link2[i]);     
+					        rt_hw_gsm_putc (DialStr_IC_card[i]);     
 					   }	
-				      rt_kprintf("\r\n   ----- Link  Isp----\r\n");       
+					 rt_kprintf("\r\n	----- Link	IC ----\r\n");		 
 					for(i=0;i<len;i++)										
 					   {
-					        rt_kprintf("%c",DialStr_Link2[i]);     
+					        rt_kprintf("%c",DialStr_IC_card[i]);     
 					   }	
 					break;				
 		      default:
@@ -1973,6 +1978,16 @@ static void GSM_Process(u8 *instr, u16 len)
 	  GSM_PWR.GSM_power_over=2;     //  get imsi
 	  IMSIGet.Get_state=0;
 	  CommAT.Total_initial=1;	// 进行参数配置  	  	 
+	}
+	if (strncmp((char*)GSM_rx, "+CCID: \"",8) == 0) 
+       {  //+CCID: "89860109520220884603"    AT+CCID
+           //  获取终端属性  ，ICCID 字段
+           ok=0;// 借用做下标
+           for(i=0;i<10;i++)
+           {
+              ProductAttribute._5_Sim_ICCID[ok]=((GSM_rx[8+2*i]-0x30)<<4)+(GSM_rx[9+2*i]-0x30);
+              ok++;
+           }		  
 	}
 	else
 	if(strncmp((char*)GSM_rx,"RING",4)==0)  //电话  

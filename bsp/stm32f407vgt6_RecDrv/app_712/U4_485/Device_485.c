@@ -806,8 +806,11 @@ void  Pic_Data_Process(void)
 							    }     
 			                   else
 			                   	{
-							rt_kprintf("\r\n Single Camera !\r\n"); 
-						       Photo_send_start(Camera_Number);  //在不是多路拍照的情况下拍完就可以上传了
+									rt_kprintf("\r\n Single Camera !\r\n"); 
+									if(Camera_Take_not_trans==0)  
+											Photo_send_start(Camera_Number);  //在不是多路拍照的情况下拍完就可以上传了
+									 else
+									   Camera_Take_not_trans=0;					   
 			                   	}
 				   	}	
 				    //  拍照结束  
@@ -952,7 +955,10 @@ static void timeout_485(void *  parameter)
        {
             One_second_Counter_485=0;       
 	      OpenDoor_TakePhoto();	 
-	        Camra_Take_Exception();	      	   
+	        Camra_Take_Exception();	   
+
+			  //------ add later  -----------	 
+	         CAN_send_timer();  	
        }	   
        DwinLCD_Timer();
 	   DwinLCD_DispTrigger();	 

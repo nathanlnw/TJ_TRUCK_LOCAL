@@ -803,14 +803,19 @@ void VDR_product_11H_Start(void)
 						memcpy( VdrData.H_11+30+4,VdrData.Lati,4); //纬度
 						VdrData.H_11[30+8]=(GPS_Hight>>8);
 						VdrData.H_11[30+9]=GPS_Hight;	
+
                    	}
 }
 
 void VDR_product_11H_End(void)
 {
+         if(TiredConf_struct.TiredDoor.Door_DrvKeepingSec<0) 
+		 	 return;
             //         11 H     相关
         if(VDR_TrigStatus.Run_baseon_spd_10s_couter>TiredConf_struct.TiredDoor.Door_DrvKeepingSec)
         	{
+                   
+			
                     //   2.   结束时间
 						time_now=Get_RTC();     //  RTC  相关 
 			            Time2BCD(VdrData.H_11+25); 

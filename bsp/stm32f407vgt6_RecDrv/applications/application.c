@@ -74,13 +74,14 @@ static void rt_thread_entry_led(void* parameter)
   {
               //-------  CAN query ---------------     
                                          
-                              
+       /*                       
 	    if(CAN_initOver==1)
 	    {
 				   TestRx=(TestStatus)CANRXStr();    
 				  if (TestRx == PASSED) 
 				   	   rt_kprintf("\r\n CAN1-RxData\r\n");	 
 	     }
+	     */
 		 //---------------------------------------------
           				//----------------------
 				//------------- 电源电压AD显示 ----------------------- 

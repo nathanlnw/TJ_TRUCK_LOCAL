@@ -204,6 +204,9 @@ DevRegst   DEV_regist;  // 注册
 DevLOGIN   DEV_Login;   //  鉴权  
 
 
+//   -------  CAN BD new  --------------
+CAN_TRAN     CAN_trans;
+
 
 
  
@@ -268,6 +271,22 @@ u8		Warn_Status[4]		=
 {
 		0x00, 0x00,0x00,0x00
 }; //  报警标志位状态信息
+u8  Warn_MaskWord[4]		=
+{
+		0x00, 0x00,0x00,0x00
+};   //  报警屏蔽字    
+u8  Text_MaskWord[4]=
+	{
+			0x00, 0x00,0x00,0x00
+	};	 //  文本屏蔽字    
+u8  Key_MaskWord[4]=
+	{
+			0x00, 0x00,0x00,0x00
+	};	 //   关键字屏蔽字    
+	
+
+
+
 u8		Car_Status[4]		=
 {
 		0x00, 0x0c,0x00,0x00 
@@ -292,6 +311,16 @@ DOORCamera   DoorOpen;    //  开关车门拍照
 
 //------- 北斗扩展协议  ------------
 BD_EXTEND     BD_EXT;     //  北斗扩展协议  
+DETACH_PKG   Detach_PKG; // 分包重传相关
+SET_QRY         Setting_Qry; //  终端参数查询
+u32     CMD_U32ID=0; 
+PRODUCT_ATTRIBUTE   ProductAttribute;// 终端属性
+HUMAN_CONFIRM_WARN   HumanConfirmWarn;// 人工确认报警
+
+//-----  ISP    远程下载相关 -------
+ISP_BD  BD_ISP; //  BD   升级包    
+
+
 
 // ---- 拐点 -----
 u16  Inflexion_Current=0;
@@ -325,6 +354,8 @@ TCP_ACKFlag  SD_ACKflag;     // 无线GPRS协议返回状态标志
 u32  SubCMD_8103H=0;            //  02 H命令 设置记录仪安装参数回复 子命令
 u32  SubCMD_FF01H=0;            //  FF02 北斗信息扩展
 u32  SubCMD_FF03H=0;     //  FF03  设置扩展终端参数设置1
+u8   Fail_Flag=0;
+
 
 u8  SubCMD_10H=0;            //  10H   设置记录仪定位告警参数
 u8  OutGPS_Flag=0;     //  0  默认  1  接外部有源天线
@@ -437,12 +468,12 @@ void delay_ms(u16 j )
 					  }
 			 	}
             //------------------------ MultiMedia Send--------------------------
-            if(MediaObj.Media_transmittingFlag==2)
+		    if((MediaObj.Media_transmittingFlag==2)&&(DEV_Login.Operate_enable==2))	
             {
 			    if(1==MediaObj.SD_Data_Flag) 
 			 	{
-                  Stuff_MultiMedia_Data_0801H();     
-				  MediaObj.SD_Data_Flag=0; 
+	                  Stuff_MultiMedia_Data_0801H();     
+					  MediaObj.SD_Data_Flag=0; 
                   return true;
 			 	}
 			   return true; // 按照808 协议要求 ，传输多媒体过程中不允许发送别的信息包
@@ -498,13 +529,13 @@ void delay_ms(u16 j )
 	                  ASK_Centre.ASK_SdFlag=0; 
 	                  return true;  
 	             	}             	
-             	// 9.  中心拍照命令应答
-	if( 1 == SD_ACKflag.f_BD_CentreTakeAck_0805H )                                                                           // 中心拍照命令应答
-	{
-		Stuff_CentreTakeACK_BD_0805H( );
-		SD_ACKflag.f_BD_CentreTakeAck_0805H = 0;
-		return true;
-	} 	
+			             	// 9.  中心拍照命令应答
+				if( 1 == SD_ACKflag.f_BD_CentreTakeAck_0805H )                                                                           // 中心拍照命令应答
+				{
+					Stuff_CentreTakeACK_BD_0805H( );
+					SD_ACKflag.f_BD_CentreTakeAck_0805H = 0;
+					return true;
+				} 	
              if(1==Vech_Control.ACK_SD_Flag)   //  车辆应答控制
              	{
                   Stuff_ControlACK_0500H(); 
@@ -518,7 +549,7 @@ void delay_ms(u16 j )
                    SD_ACKflag.f_MsgBroadCast_0303H=0;
                    return true;
 			 	}
-			 if(1==MediaObj.SD_media_Flag)
+			 	 if((1==MediaObj.SD_media_Flag)&&(DEV_Login.Operate_enable==2))
 			 	{
 				   Stuff_MultiMedia_InfoSD_0800H();
 				   MediaObj.SD_media_Flag=2;  // original clear  0 ,,HBTDT =2  ,timeout ACK 
@@ -542,12 +573,40 @@ void delay_ms(u16 j )
                    SD_ACKflag.f_DriverInfoSD_0702H=0;
                    return true;
 			 	}
+			 	//  18.数据透传 做远程下载	 
+             if(CAN_trans.canid_0705_sdFlag)
+             	{ 
+                  Stuff_CANDataTrans_BD_0705H();
+		          CAN_trans.canid_0705_sdFlag=0; // clear 		   
+               //   DataTrans_Init();     //clear 
+                  return true;
+             	} 	
 			  if(SD_ACKflag.f_Worklist_SD_0701H)
 			 	{
 			 	   Stuff_Worklist_0701H();  //   电子运单 
                    SD_ACKflag.f_Worklist_SD_0701H=0;
                    return true;
 			 	}
+			  		//  23.   查询终端参数	
+	         if(SD_ACKflag.f_SettingPram_0104H)
+	        	{
+	        	  if(SD_ACKflag.f_SettingPram_0104H==1)
+	        	      Stuff_SettingPram_0104H(); 
+				  else
+				  if(SD_ACKflag.f_SettingPram_0104H==2)
+				  	  Sub_stuff_AppointedPram_0106();     
+				  
+                   SD_ACKflag.f_SettingPram_0104H=0;    
+				   return true;
+	        	}	
+			    //  24 .  终端升级结果上报
+              if(1==SD_ACKflag.f_BD_ISPResualt_0108H)
+              	{
+                                
+				Stuff_ISP_Resualt_BD_0108H();
+                           SD_ACKflag.f_BD_ISPResualt_0108H=0;
+				return true;		   
+              	}
 	        if(SD_ACKflag.f_CentreCMDack_0001H)
 	         {
                                Stuff_DevCommmonACK_0001H();        
@@ -571,12 +630,6 @@ void delay_ms(u16 j )
 				   
                    return true;    
 				}  	 
-	        if(SD_ACKflag.f_SettingPram_0104H)
-	        	{
-	        	  Stuff_SettingPram_0104H();
-                  SD_ACKflag.f_SettingPram_0104H=0;
-				   return true;
-	        	}	
          
 		 //  15.  行车记录仪数据上传
 			  //------------ Error	state --------------
@@ -724,6 +777,7 @@ void delay_ms(u16 j )
 					   //---------------------------------------------------------------------------------
 					   if(DispContent)	
 						    rt_kprintf("\r\n 发送 GPS -current !\r\n");     
+					   return true;
 				    }   
 			 }
 			 else 
@@ -1408,7 +1462,7 @@ void  GPS_Delta_DurPro(void)    //告GPS 触发上报处理函数
          //         11 H     相关
          VDR_product_11H_End();
 	 
-		 VDR_TrigStatus.Run_baseon_spd_10s_couter=0;		 
+		 VDR_TrigStatus.Run_baseon_spd_10s_couter=0;	 	 
 		 VDR_TrigStatus.Running_state_enable=0;  //  处于停止状态    
 	 }
 
@@ -2394,11 +2448,1044 @@ Protocol_End(Packet_Normal ,0);
 
 }
 
+u8 Paramater_0106_stuff(u32 cmdid, u8 *deststr)
+{
+    u8  reg_str[30];
+	 u32  reg_u32=0;
+	
+   switch (cmdid)
+   	{
+		   //	参数列表
+		case  MSG_0x0001:   
+			  //  A.1 心跳包间隔   
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				 Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x01;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			Original_info[Original_info_Wr++]=(JT808Conf_struct.DURATION.Heart_Dur>>24);   // 参数值 
+			Original_info[Original_info_Wr++]=(JT808Conf_struct.DURATION.Heart_Dur>>16);
+			Original_info[Original_info_Wr++]=(JT808Conf_struct.DURATION.Heart_Dur>>8);
+			Original_info[Original_info_Wr++]=(JT808Conf_struct.DURATION.Heart_Dur);	 
+			break;
+	    case  MSG_0x0002:
+			 //  A.2 TCP  消息应答间隔	 
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				 Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x02;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			Original_info[Original_info_Wr++]=(JT808Conf_struct.DURATION.TCP_ACK_Dur>>24);	 // 参数值 
+			Original_info[Original_info_Wr++]=(JT808Conf_struct.DURATION.TCP_ACK_Dur>>16);
+			Original_info[Original_info_Wr++]=(JT808Conf_struct.DURATION.TCP_ACK_Dur>>8);
+			Original_info[Original_info_Wr++]=(JT808Conf_struct.DURATION.TCP_ACK_Dur);	   
+			  break;
+	   case  MSG_0x0003:
+			   //  A.3 TCP	消息重传次数   
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				 Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x03;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			Original_info[Original_info_Wr++]=(JT808Conf_struct.DURATION.TCP_ReSD_Num>>24);   // 参数值 
+			Original_info[Original_info_Wr++]=(JT808Conf_struct.DURATION.TCP_ReSD_Num>>16);
+			Original_info[Original_info_Wr++]=(JT808Conf_struct.DURATION.TCP_ReSD_Num>>8);
+			Original_info[Original_info_Wr++]=(JT808Conf_struct.DURATION.TCP_ReSD_Num); 		
+	         break;
+	   case  0x0004:
+				  //  A.4	UDP 应答超时
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				  Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x04;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			Original_info[Original_info_Wr++]=(5>>24);	 // 参数值 
+			Original_info[Original_info_Wr++]=(5>>16);
+			Original_info[Original_info_Wr++]=(5>>8);
+			Original_info[Original_info_Wr++]=(5);		
+	         break;
+	   case  0x0005:		   
+				  //  A.5	UDP 重传次数
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				  Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x05;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			Original_info[Original_info_Wr++]=(JT808Conf_struct.DURATION.UDP_ReSD_Num>>24);   // 参数值 
+			Original_info[Original_info_Wr++]=(JT808Conf_struct.DURATION.UDP_ReSD_Num>>16);
+			Original_info[Original_info_Wr++]=(JT808Conf_struct.DURATION.UDP_ReSD_Num>>8);
+			Original_info[Original_info_Wr++]=(JT808Conf_struct.DURATION.UDP_ReSD_Num); 		
+	        break;
+	   case 0x0006:			   
+				  //  A.6	SMS消息应答超时时间
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				  Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x06;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			Original_info[Original_info_Wr++]=0;   // 参数值 
+			Original_info[Original_info_Wr++]=0;
+			Original_info[Original_info_Wr++]=0;
+			Original_info[Original_info_Wr++]=5;		
+	         break;
+	   case  0x0007:    
+	
+				  //  A.7	SMS 消息重传次数
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				  Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x07;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			Original_info[Original_info_Wr++]=0;   // 参数值 
+			Original_info[Original_info_Wr++]=0;
+			Original_info[Original_info_Wr++]=0;
+			Original_info[Original_info_Wr++]=3;	
+			break;
+	   case  0x0010:
+				 //   A.8  APN 字符串
+				 Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+				 Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x10;
+			Original_info[Original_info_Wr++]=strlen((const char*)APN_String); // 参数长度
+			memcpy( ( char * ) Original_info+ Original_info_Wr, ( char * )APN_String,strlen((const char*)APN_String)); // 参数值
+			Original_info_Wr+=strlen((const char*)APN_String);
+	        break;
+	   case 0x0011:		
+				   //	A.9  APN 用户名
+				 Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+				 Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x11;
+			Original_info[Original_info_Wr++]=4; // 参数长度
+			memcpy( ( char * ) Original_info+ Original_info_Wr, "user",4); // 参数值
+			Original_info_Wr+=4;
+	        break;
+	   case 0x0012:		
+				   //	A.10  APN 密码
+				 Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+				 Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x12;
+			Original_info[Original_info_Wr++]=4; // 参数长度
+			memcpy( ( char * ) Original_info+ Original_info_Wr, "user",4); // 参数值
+			Original_info_Wr+=4;
+	        break;
+       case 0x0013:			
+				 //   A.11	 主服务器IP    
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				  Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x13;    
+													 // 参数长度		
+	
+		   memset(reg_str,0,sizeof(reg_str));	  //  填写域名
+		   memcpy(reg_str,"jt1.gghypt.net",strlen((char const*)"jt1.gghypt.net"));
+		 // memcpy(reg_str,"fde.0132456.net",strlen((char const*)"jt1.gghypt.net"));
+		   Original_info[Original_info_Wr++]=strlen((const char*)reg_str);
+			  memcpy( ( char * ) Original_info+ Original_info_Wr, ( char * )reg_str,strlen((const char*)reg_str));	// 参数值	 
+		   Original_info_Wr+=strlen((const char*)reg_str);
+	       break;
+	   case 0x0014:	   
+					 //   A.12	 BAK  APN 字符串
+				 Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+				 Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x14;
+			Original_info[Original_info_Wr++]=strlen((const char*)"UNINET"); // 参数长度
+			memcpy( ( char * ) Original_info+ Original_info_Wr,"UNINET",6); // 参数值
+			Original_info_Wr+=6;
+			break;
+			
+	  case 0x0015:
+				   //	A.13 BAK APN 用户名
+				 Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+				 Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x15;
+			Original_info[Original_info_Wr++]=4; // 参数长度
+			memcpy( ( char * ) Original_info+ Original_info_Wr, "user",4); // 参数值
+			Original_info_Wr+=4;
+			break;
+	  case 0x0016:
+				   //	A.14  BAK  APN 密码
+				 Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+				 Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x16;
+			Original_info[Original_info_Wr++]=4; // 参数长度
+			memcpy( ( char * ) Original_info+ Original_info_Wr, "user",4); // 参数值
+			Original_info_Wr+=4;
+	        break;
+     case 0x0017:			
+						//	A.15   备用IP		 
+				 Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+				  Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x17;    
+													 // 参数长度				
+		  memset(reg_str,0,sizeof(reg_str));	 //  填写域名
+		  memcpy(reg_str,DomainNameStr_aux,strlen((char const*)DomainNameStr_aux));
+		 // memcpy(reg_str,"fde.0132456.net",strlen((char const*)"jt1.gghypt.net"));
+		   Original_info[Original_info_Wr++]=strlen((const char*)reg_str);
+			  memcpy( ( char * ) Original_info+ Original_info_Wr, ( char * )reg_str,strlen((const char*)reg_str));	// 参数值	 
+		   Original_info_Wr+=strlen((const char*)reg_str);
+	      break;
+			
+     case 0x0018:			  
+	
+				 //  A.16  主服务TCP端口
+				 Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+				 Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x18;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			Original_info[Original_info_Wr++]=0x00;   // 参数值
+			Original_info[Original_info_Wr++]=0x00; 
+			Original_info[Original_info_Wr++]=(7008>>8); 
+			Original_info[Original_info_Wr++]=7008; 
+			break;
+     case 0x0019:			
+															
+				//	A.17  备用服务TCP端口
+				 Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+				 Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x19;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			Original_info[Original_info_Wr++]=0x00;   // 参数值
+			Original_info[Original_info_Wr++]=0x00; 
+			Original_info[Original_info_Wr++]=(7008>>8); 
+			Original_info[Original_info_Wr++]=7008; 
+			break;
+
+	case 0x001a:		
+	
+				 //  A.18  IC卡认证 主服务器地址
+				 Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+				 Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x1A;
+			Original_info[Original_info_Wr++]=0  ; // 参数长度
+	
+			//memcpy(( char * ) Original_info+ Original_info_Wr,"202.96.42.113",13);
+			//Original_info_Wr+=13;
+			 break;
+	case 0x001b:
+							//	A.19  IC卡认证 主服务器TCP
+				 Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+				 Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x1B;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			Original_info[Original_info_Wr++]=0x00;   // 参数值
+			Original_info[Original_info_Wr++]=0x00; 
+			Original_info[Original_info_Wr++]=0x00; 
+			Original_info[Original_info_Wr++]=0x00;  
+			break;
+	case 0x001c:
+								//	A.20  IC卡认证 主服务器UDP
+				 Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+				 Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x1C;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			Original_info[Original_info_Wr++]=0x00;   // 参数值
+			Original_info[Original_info_Wr++]=0x00; 
+			Original_info[Original_info_Wr++]=0x00; 
+			Original_info[Original_info_Wr++]=0x00;  
+			break;
+	case 0x001d:		
+	
+					   //  A.21  IC卡认证  备用服务器地址
+				 Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes  
+				 Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x1D;
+			Original_info[Original_info_Wr++]=0  ; // 参数长度
+	
+			//memcpy(( char * ) Original_info+ Original_info_Wr,"202.96.42.114",13);
+			//Original_info_Wr+=13;
+	         break;
+	case 0x0020:		
+	
+								 //  A.22  位置汇报策略
+				 Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+				 Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x20;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			Original_info[Original_info_Wr++]=0x00;   // 参数值
+			Original_info[Original_info_Wr++]=0x00; 
+			Original_info[Original_info_Wr++]=0x00; 
+			Original_info[Original_info_Wr++]=JT808Conf_struct.SD_MODE.Send_strategy; 
+			break;
+	case 0x0021:
+															   //  A.23  位置汇报方案
+		    Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+		    Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x21;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			Original_info[Original_info_Wr++]=0x00;   // 参数值
+			Original_info[Original_info_Wr++]=0x00; 
+			Original_info[Original_info_Wr++]=0x00; 
+			Original_info[Original_info_Wr++]=JT808Conf_struct.PositionSd_Stratage; 
+			break;
+	case 0x0022:
+												  //  A.24 驾驶员未登录 汇报间隔
+				 Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+				 Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x22;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			Original_info[Original_info_Wr++]=0x00;   // 参数值
+			Original_info[Original_info_Wr++]=0x00; 
+			Original_info[Original_info_Wr++]=0x00; 
+			Original_info[Original_info_Wr++]=30; 
+			break;
+	case 0x0027:		
+	
+													   //  A.25  休眠时汇报间隔
+				 Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+				 Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x27;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			JT808Conf_struct.DURATION.Sleep_Dur=300;
+			Original_info[Original_info_Wr++]=(300>>24);   // 参数值  
+			Original_info[Original_info_Wr++]=(300>>16);
+			Original_info[Original_info_Wr++]=(300>>8);
+			Original_info[Original_info_Wr++]=(300);	
+			break;
+	case 0x0028:		 
+											//	A.26 紧急报警时 
+				 Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+				 Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x28;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			Original_info[Original_info_Wr++]=0x00;   // 参数值
+			Original_info[Original_info_Wr++]=0x00; 
+			Original_info[Original_info_Wr++]=0x00; 
+			Original_info[Original_info_Wr++]=10; 
+			break;		 
+	case 0x0029:
+			 //   A.27	  缺省时间上报间隔
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				 Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x29;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			Original_info[Original_info_Wr++]=(JT808Conf_struct.DURATION.Default_Dur>>24);	 // 参数值 
+			Original_info[Original_info_Wr++]=(JT808Conf_struct.DURATION.Default_Dur>>16);
+			Original_info[Original_info_Wr++]=(JT808Conf_struct.DURATION.Default_Dur>>8);
+			Original_info[Original_info_Wr++]=(JT808Conf_struct.DURATION.Default_Dur);	   
+			break;
+	case 0x002c:
+				 //   A.28	  缺省距离上报间隔
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				 Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x2c;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			//JT808Conf_struct.DISTANCE.Defalut_DistDelta=500;
+			Original_info[Original_info_Wr++]=(JT808Conf_struct.DISTANCE.Defalut_DistDelta>>24);   // 参数值 
+			Original_info[Original_info_Wr++]=(JT808Conf_struct.DISTANCE.Defalut_DistDelta>>16);
+			Original_info[Original_info_Wr++]=(JT808Conf_struct.DISTANCE.Defalut_DistDelta>>8);
+			Original_info[Original_info_Wr++]=(JT808Conf_struct.DISTANCE.Defalut_DistDelta);	 
+	        break;
+	case 0x002d:			 
+					 //   A.29	  驾驶员未登录间隔
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				 Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x2d;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			Original_info[Original_info_Wr++]=(JT808Conf_struct.DISTANCE.Defalut_DistDelta>>24);   // 参数值 
+			Original_info[Original_info_Wr++]=(JT808Conf_struct.DISTANCE.Defalut_DistDelta>>16);
+			Original_info[Original_info_Wr++]=(JT808Conf_struct.DISTANCE.Defalut_DistDelta>>8);
+			Original_info[Original_info_Wr++]=(JT808Conf_struct.DISTANCE.Defalut_DistDelta);	 
+			break;
+	case 0x002e:
+	
+					 //   A.30	休眠时汇报距离间隔
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				 Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x2e;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			Original_info[Original_info_Wr++]=(JT808Conf_struct.DISTANCE.Defalut_DistDelta>>24);   // 参数值 
+			Original_info[Original_info_Wr++]=(JT808Conf_struct.DISTANCE.Defalut_DistDelta>>16);
+			Original_info[Original_info_Wr++]=(JT808Conf_struct.DISTANCE.Defalut_DistDelta>>8);
+			Original_info[Original_info_Wr++]=(JT808Conf_struct.DISTANCE.Defalut_DistDelta);	 
+			break;
+	case 0x002f:
+						 //   A.31	  紧急报警时 定距离
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				 Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x2f;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			Original_info[Original_info_Wr++]=(200>>24);   // 参数值 
+			Original_info[Original_info_Wr++]=(200>>16);
+			Original_info[Original_info_Wr++]=(200>>8);
+			Original_info[Original_info_Wr++]=(200);	 
+			break;
+	case 0x0030:
+						  //   A.32 	拐点补传角度
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				 Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x30;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			Original_info[Original_info_Wr++]=(45>>24);   // 参数值 
+			Original_info[Original_info_Wr++]=(45>>16);
+			Original_info[Original_info_Wr++]=(45>>8);
+			Original_info[Original_info_Wr++]=(45); 	
+	       break;
+	case 0x0031:
+				//	 A.33	  电子围栏半径
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				 Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x31;
+			Original_info[Original_info_Wr++]=2  ; // 参数长度
+		  // 参数值 
+			Original_info[Original_info_Wr++]=(500>>8);
+			Original_info[Original_info_Wr++]=(500);	 
+	        break;
+	case 0x0040:
+				 //   A.34	  设置求助号码
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				 Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x40;
+			Original_info[Original_info_Wr++]=0  ; // 参数长度
+			break;
+	case 0x0041:
+					//	 A.35	 复位电话号码
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				 Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x41;
+			Original_info[Original_info_Wr++]=0  ; // 参数长度
+			break;
+	
+	case 0x0042:
+				 //   A.36	  恢复出厂设置电话号码
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				 Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x42;
+			Original_info[Original_info_Wr++]=0  ; // 参数长度
+	         break;
+	case 0x0043:
+					   //  A37	监控平台SMS 短息号码
+				 Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+				 Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x43;
+			Original_info[Original_info_Wr++]=5  ; // 参数长度
+
+	       
+		   memcpy(( char * ) Original_info+ Original_info_Wr,JT808Conf_struct.SMS_RXNum,strlen(JT808Conf_struct.SMS_RXNum)); 
+		   Original_info_Wr+=strlen(JT808Conf_struct.SMS_RXNum); 
+	        break;
+    case 0x0044:	
+					
+				 //   A.38	  sms 短息报警号码
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				  Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x44;
+			Original_info[Original_info_Wr++]=0  ; // 参数长度
+	        break;
+	case 0x0045:
+							//	 A.39	接听策略
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				  Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x45;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+				  Original_info[Original_info_Wr++]=1;	// ACC on 自动接听
+	        break;
+	case 0x0046:
+	
+								   //	A.40	 每次通话时长
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				 Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x46;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			Original_info[Original_info_Wr++]=(120>>24);   // 参数值 
+			Original_info[Original_info_Wr++]=(120>>16);
+			Original_info[Original_info_Wr++]=(120>>8);
+			Original_info[Original_info_Wr++]=(120);  
+			break;
+	case 0x0047:
+	
+								  //   A.41    每月通话时长
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				 Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x47;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			Original_info[Original_info_Wr++]=(36000>>24);	 // 参数值 
+			Original_info[Original_info_Wr++]=(36000>>16);
+			Original_info[Original_info_Wr++]=(36000>>8);
+			Original_info[Original_info_Wr++]=(36000);	 
+			break;
+	case 0x0048:
+	
+					 //   A42	 设置监听号码
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				  Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x48;
+			Original_info[Original_info_Wr++]=0  ; // 参数长度
+	        break;
+	case 0x0049:
+			  //   A.43    平台监管特权号码
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				  Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x49;
+			Original_info[Original_info_Wr++]=0  ; // 参数长度
+	         break;
+	case 0x0050:
+	
+			//	 A.44	 报警屏蔽字
+		            Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+              Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x50;
+		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		Original_info[Original_info_Wr++]=Warn_MaskWord[0];
+		Original_info[Original_info_Wr++]=Warn_MaskWord[1];
+		Original_info[Original_info_Wr++]=Warn_MaskWord[2];
+		Original_info[Original_info_Wr++]=Warn_MaskWord[3]; 
+	        break;
+	case 0x0051:
+	
+		  //   A.45  报警	发送Sms  开关
+				Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+				Original_info[Original_info_Wr++]=0x00;
+		  Original_info[Original_info_Wr++]=0x00;
+		  Original_info[Original_info_Wr++]=0x51;
+				  Original_info[Original_info_Wr++]=4  ; // 参数长度
+		  Original_info[Original_info_Wr++]=Text_MaskWord[0];
+		  Original_info[Original_info_Wr++]=Text_MaskWord[1];
+		  Original_info[Original_info_Wr++]=Text_MaskWord[2];
+		  Original_info[Original_info_Wr++]=Text_MaskWord[3]; 
+			break;
+	case 0x0052:
+	
+	 //   A.46	  报警拍照开关
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				  Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x52;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x01;
+			break;
+	case 0x0053:
+	
+	 //   A.47	报警拍照存储标志
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				  Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x53;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			break;
+	case 0x0054:
+	
+	 //   A.48	  关键报警标志
+		   Original_info[Original_info_Wr++]=0x00;	 // 参数ID 4Bytes
+		   Original_info[Original_info_Wr++]=0x00;
+	 Original_info[Original_info_Wr++]=0x00;
+	 Original_info[Original_info_Wr++]=0x54;
+	 Original_info[Original_info_Wr++]=4  ; // 参数长度
+	 Original_info[Original_info_Wr++]=Key_MaskWord[0];
+	 Original_info[Original_info_Wr++]=Key_MaskWord[1];
+	 Original_info[Original_info_Wr++]=Key_MaskWord[2];
+	 Original_info[Original_info_Wr++]=Key_MaskWord[3];
+			break;
+	case 0x0055:
+			
+	   //	A.49   最大速度门限
+			Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x55;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			JT808Conf_struct.Speed_warn_MAX=100;
+			Original_info[Original_info_Wr++]=( JT808Conf_struct.Speed_warn_MAX>>24);	// 参数值
+			Original_info[Original_info_Wr++]=( JT808Conf_struct.Speed_warn_MAX>>16);  
+			Original_info[Original_info_Wr++]=( JT808Conf_struct.Speed_warn_MAX>>8);
+			Original_info[Original_info_Wr++]=( JT808Conf_struct.Speed_warn_MAX);
+			break;
+	case 0x0056:
+	
+			   //	A.50	 超速持续时间
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				  Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x56;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=JT808Conf_struct.Spd_Exd_LimitSeconds;
+			break;
+	case 0x0057:
+			
+			 //  A.51	连续驾驶门限
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				  Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x57;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			Original_info[Original_info_Wr++]=(TiredConf_struct.TiredDoor.Door_DrvKeepingSec>>24);	 // 参数值
+			Original_info[Original_info_Wr++]=(TiredConf_struct.TiredDoor.Door_DrvKeepingSec>>16);	
+			Original_info[Original_info_Wr++]=(TiredConf_struct.TiredDoor.Door_DrvKeepingSec>>8);
+			Original_info[Original_info_Wr++]=(TiredConf_struct.TiredDoor.Door_DrvKeepingSec);
+			break;
+	case 0x0058:
+	
+			 //  A.52  当天累计驾驶门限
+				 Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+				 Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x58;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			Original_info[Original_info_Wr++]=(TiredConf_struct.TiredDoor.Door_DayAccumlateDrvSec>>24);	 // 参数值
+			Original_info[Original_info_Wr++]=(TiredConf_struct.TiredDoor.Door_DayAccumlateDrvSec>>16);	
+			Original_info[Original_info_Wr++]=(TiredConf_struct.TiredDoor.Door_DayAccumlateDrvSec>>8);
+			Original_info[Original_info_Wr++]=(TiredConf_struct.TiredDoor.Door_DayAccumlateDrvSec);
+			break;
+	case 0x0059:
+	
+			 //   A.53	 最小休息时间
+			 Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+			 Original_info[Original_info_Wr++]=0x00;
+			 Original_info[Original_info_Wr++]=0x00;
+			 Original_info[Original_info_Wr++]=0x59;
+			 Original_info[Original_info_Wr++]=4  ; // 参数长度
+			 Original_info[Original_info_Wr++]=(TiredConf_struct.TiredDoor.Door_MinSleepSec>>24);	 // 参数值
+			 Original_info[Original_info_Wr++]=(TiredConf_struct.TiredDoor.Door_MinSleepSec>>16);	
+			 Original_info[Original_info_Wr++]=(TiredConf_struct.TiredDoor.Door_MinSleepSec>>8);
+			 Original_info[Original_info_Wr++]=(TiredConf_struct.TiredDoor.Door_MinSleepSec);		
+			 break;
+	case 0x005A:
+	
+						 //   A.54	最长停车时间
+			 Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+			 Original_info[Original_info_Wr++]=0x00;
+			 Original_info[Original_info_Wr++]=0x00;
+			 Original_info[Original_info_Wr++]=0x5A;
+			 Original_info[Original_info_Wr++]=4  ; // 参数长度
+			 TiredConf_struct.TiredDoor.Door_MaxParkingSec=3600;
+			 Original_info[Original_info_Wr++]=(TiredConf_struct.TiredDoor.Door_MaxParkingSec>>24);  // 参数值
+			 Original_info[Original_info_Wr++]=(TiredConf_struct.TiredDoor.Door_MaxParkingSec>>16); 
+			 Original_info[Original_info_Wr++]=(TiredConf_struct.TiredDoor.Door_MaxParkingSec>>8);
+			 Original_info[Original_info_Wr++]=(TiredConf_struct.TiredDoor.Door_MaxParkingSec); 	
+			 break;
+	case 0x005B:
+	
+						  //   A.55  超速报警预警差值
+			 Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+			 Original_info[Original_info_Wr++]=0x00;
+			 Original_info[Original_info_Wr++]=0x00;
+			 Original_info[Original_info_Wr++]=0x5B;
+			 Original_info[Original_info_Wr++]=2  ; // 参数长度
+			// 参数值
+			 Original_info[Original_info_Wr++]=(JT808Conf_struct.BD_MaxSpd_preWarnValue>>8); // 100
+			 Original_info[Original_info_Wr++]=(JT808Conf_struct.BD_MaxSpd_preWarnValue);	
+			 break;
+	case 0x005C:
+	
+	
+						   //	A.56  疲劳驾驶预警差值
+			 Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+			 Original_info[Original_info_Wr++]=0x00;
+			 Original_info[Original_info_Wr++]=0x00;
+			 Original_info[Original_info_Wr++]=0x5C;
+			 Original_info[Original_info_Wr++]=2  ; // 参数长度
+			// 参数值
+			 Original_info[Original_info_Wr++]=(JT808Conf_struct.BD_TiredDrv_preWarnValue>>8);
+			 Original_info[Original_info_Wr++]=(JT808Conf_struct.BD_TiredDrv_preWarnValue);		
+			 break;
+	case 0x005D:
+	
+						//	 A.57  碰撞报警参数设置
+			 Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+			 Original_info[Original_info_Wr++]=0x00;
+			 Original_info[Original_info_Wr++]=0x00;
+			 Original_info[Original_info_Wr++]=0x5D;
+			 Original_info[Original_info_Wr++]=2  ; // 参数长度
+			// 参数值
+			 Original_info[Original_info_Wr++]=(17924>>8);
+			 Original_info[Original_info_Wr++]=(17924); 	
+			 break;
+	case 0x005E:	
+						//	 A.58  侧翻报警参数设置
+			 Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+			 Original_info[Original_info_Wr++]=0x00;
+			 Original_info[Original_info_Wr++]=0x00;
+			 Original_info[Original_info_Wr++]=0x5E;
+			 Original_info[Original_info_Wr++]=2  ; // 参数长度
+			// 参数值
+			 Original_info[Original_info_Wr++]=(30>>8);
+			 Original_info[Original_info_Wr++]=(30);	
+			 break;
+	case 0x0064:	
+	 //   A.59	 定时拍照控制
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				  Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x64;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			break;
+	case 0x0065:
+	
+	 //   A.60	定距拍照控制
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				  Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x65;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			break;
+	case 0x0070:
+	
+	 //   A.61 图像、视频质量
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				  Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x70;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x05;
+			break;
+	case 0x0071:
+	
+	 //   A.62	亮度
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				  Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x71;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=127;
+			break;
+	case 0x0072:
+	
+	 //   A.63	 对比度
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				  Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x72;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=64;
+			break;
+	case 0x0073:
+	
+	
+	 //   A.64	饱和度
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				  Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x73;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=64;
+			break;
+	case 0x0074:
+	
+	
+	 //   A.65	色度
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				  Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x74;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=127;
+			break;
+	case 0x0080:
+	
+	 //   A.66	 车辆里程表读数
+		   Original_info[Original_info_Wr++]=0x00;	 // 参数ID 4Bytes
+		   Original_info[Original_info_Wr++]=0x00;
+	 Original_info[Original_info_Wr++]=0x00;
+	 Original_info[Original_info_Wr++]=0x64;
+	 Original_info[Original_info_Wr++]=4  ; // 参数长度
+	 reg_u32=JT808Conf_struct.Distance_m_u32/100;
+	 Original_info[Original_info_Wr++]=(reg_u32>>24);	 // 参数值
+	 Original_info[Original_info_Wr++]=(reg_u32>>16);	
+	 Original_info[Original_info_Wr++]=(reg_u32>>8);
+	 Original_info[Original_info_Wr++]=(reg_u32);		  
+			break;
+	case 0x0081:
+	
+	
+	
+	 //   A.67	 车辆所在省域
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				  Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x81;
+			Original_info[Original_info_Wr++]=2  ; // 参数长度
+				 Original_info[Original_info_Wr++]=(u8)(10>>8);
+				  Original_info[Original_info_Wr++]=(u8)10;
+				  break;
+	case 0x0082:
+	
+	//	 A.68	车辆所在市域
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				  Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x82;
+			Original_info[Original_info_Wr++]=2  ; // 参数长?
+			   //  county  ID
+				  Original_info[Original_info_Wr++]=(u8)(1010>>8);
+				  Original_info[Original_info_Wr++]=(u8)1010;	
+				  break;
+	case 0x0083:
+	
+														
+		   //	A.69   车牌号
+			Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x83;
+			Original_info[Original_info_Wr++]=strlen((const char*)JT808Conf_struct.Vechicle_Info.Vech_Num); // 参数长度
+			memcpy( ( char * ) Original_info+ Original_info_Wr, ( char * )JT808Conf_struct.Vechicle_Info.Vech_Num,strlen((const char*)JT808Conf_struct.Vechicle_Info.Vech_Num) ); // 参数值
+			Original_info_Wr+=strlen((const char*)JT808Conf_struct.Vechicle_Info.Vech_Num); 
+			break;
+	case 0x0084:
+			
+	//	 A.70	车辆颜色
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				  Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x84;
+			Original_info[Original_info_Wr++]=1  ; // 参数长?
+			Original_info[Original_info_Wr++]=JT808Conf_struct.Vechicle_Info.Dev_Color;
+			break;
+	case 0x0090:
+	
+	//	 A.71	GNSS  模式设置
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				  Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x90;
+			Original_info[Original_info_Wr++]=1  ; // 参数长?
+	
+		   if( GpsStatus.Position_Moule_Status==1)
+				 Original_info[Original_info_Wr++]=2;
+		   
+		   if( GpsStatus.Position_Moule_Status==2)
+			  Original_info[Original_info_Wr++]=1;	 
+		   
+		   if( GpsStatus.Position_Moule_Status==3) 
+			  Original_info[Original_info_Wr++]=3;	   
+		   break;
+	case 0x0091:
+	
+	//	 A.72	GNSS 波特率设置
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				  Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x91;
+			Original_info[Original_info_Wr++]=1  ; // 参数长?
+			Original_info[Original_info_Wr++]=2;
+			break;
+	case 0x0092:
+	
+	//	 A.73	GNSS nmea  输出更新频率
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				  Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x92;
+			Original_info[Original_info_Wr++]=1  ; // 参数长?
+			Original_info[Original_info_Wr++]=1;
+			break;
+	case 0x0093:
+	
+	 //   A74	车辆里程表读数
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				  Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x93;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=1;
+			break;
+	case 0x0094:
+	
+	//	 A.75  GNSS定位上传方式
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				  Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x94;
+			Original_info[Original_info_Wr++]=1  ; // 参数长?
+			Original_info[Original_info_Wr++]=0;
+			break;
+	case 0x0095:
+	
+	 //   A76	模块详细数据上传设置
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				  Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x95;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0;
+			break;
+	case 0x0100:
+	
+	 //   A77	CAN1   采集间隔
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				  Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x01;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			break;
+	case 0x0101:
+	
+	 //   A78	CAN1   上传间隔
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				  Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x01;
+			Original_info[Original_info_Wr++]=0x01;
+			Original_info[Original_info_Wr++]=2  ; // 参数长度
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			break;
+	case 0x0102:
+	
+	 //   A79	 CAN2	采集间隔
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				  Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x01;
+			Original_info[Original_info_Wr++]=0x02;
+			Original_info[Original_info_Wr++]=4  ; // 参数长度
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0;		
+			break;
+	case 0x0103:
+	
+	 //   A80  CAN2   上传间隔
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				  Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x01;
+			Original_info[Original_info_Wr++]=0x03;
+			Original_info[Original_info_Wr++]=2  ; // 参数长度
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+	        break;
+	case 0x0110:
+	
+	
+	 //   A81  CAN	总线ID 单独采集设置
+				  Original_info[Original_info_Wr++]=0x00;	// 参数ID 4Bytes
+				  Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x01;
+			Original_info[Original_info_Wr++]=0x10;
+			Original_info[Original_info_Wr++]=8 ; // 参数长度
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0;
+				  Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0x00;
+			Original_info[Original_info_Wr++]=0;		 
+			break;
+	 default:
+	 	    break;
+   	}
+
+}
 
 //-----------------------------------------------------------------------
+u8  Sub_stuff_AppointedPram_0106(void)
+{    // 7E81060005013901234505004F0100000021B77E
+     u16  i=0,len=0;
+	
+  
+     //  1. Head     
+      if(!Protocol_Head(MSG_0x0104,Packet_Normal)) 
+ 	  return false; // 终端参数上传
+
+           //   float ID
+	    Original_info[Original_info_Wr++]=(u8)(Centre_FloatID>>8);
+	    Original_info[Original_info_Wr++]=(u8)Centre_FloatID; 
+     //   参数个数	
+	    Original_info[Original_info_Wr++]=Setting_Qry.Num_pram;
+
+      for(i=0;i<Setting_Qry.Num_pram;i++)
+	   {    
+	   	    len=Paramater_0106_stuff(Setting_Qry.List_pram[i],Original_info);   //    填写信息	   	    
+	   	    rt_kprintf("\r\n SendID:  %X  i=%d ",Setting_Qry.List_pram[i],i);     
+            //  Original_info_Wr+=len;
+       }
+       
+	// Paramater_0106_stuff(CMD_U32ID,Original_info);	//	  填写信息
+	// rt_kprintf("\r\n SendID:  %4X ",CMD_U32ID);	   
+	    
+		  //  3. Send 
+  Protocol_End(Packet_Normal ,0);
+  if(DispContent)
+	rt_kprintf("\r\n	发送单个参数查询信息! \r\n");    
+
+  return true;
+	 
+}
 u8  Stuff_SettingPram_0104H(void)
 {
    u8  reg_str[30];
+   u32  reg_u32=0;
   
   //  1. Head     
   if(!Protocol_Head(MSG_0x0104,Packet_Normal)) 
@@ -2409,66 +3496,297 @@ u8  Stuff_SettingPram_0104H(void)
 	    Original_info[Original_info_Wr++]=(u8)(Centre_FloatID>>8);
 	    Original_info[Original_info_Wr++]=(u8)Centre_FloatID;
 	   //   参数个数	
-	    Original_info[Original_info_Wr++]=11;
+	    Original_info[Original_info_Wr++]=81;
 	   //   参数列表
-
-	   //   2.1   车牌号
-        Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
-        Original_info[Original_info_Wr++]=0x00;
+          //  A.1 心跳包间隔   
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+             Original_info[Original_info_Wr++]=0x00;
 		Original_info[Original_info_Wr++]=0x00;
-		Original_info[Original_info_Wr++]=0x83;
-		Original_info[Original_info_Wr++]=strlen((const char*)JT808Conf_struct.Vechicle_Info.Vech_Num); // 参数长度
-		memcpy( ( char * ) Original_info+ Original_info_Wr, ( char * )JT808Conf_struct.Vechicle_Info.Vech_Num,strlen((const char*)JT808Conf_struct.Vechicle_Info.Vech_Num) ); // 参数值
-		Original_info_Wr+=strlen((const char*)JT808Conf_struct.Vechicle_Info.Vech_Num); 
-        
-		//   2.2  主服务器IP    
-        Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
-        Original_info[Original_info_Wr++]=0x00;
-		Original_info[Original_info_Wr++]=0x00;
-		Original_info[Original_info_Wr++]=0x13;    
-		                                         // 参数长度			    
-		memset(reg_str,0,sizeof(reg_str));
-	   memcpy(reg_str,DomainNameStr,strlen((char const*)DomainNameStr));
-		Original_info[Original_info_Wr++]=strlen((const char*)reg_str);
-		memcpy( ( char * ) Original_info+ Original_info_Wr, ( char * )reg_str,strlen((const char*)reg_str));  // 参数值	 
-		Original_info_Wr+=strlen((const char*)reg_str);
-
-		//   2.3   主服务TCP端口
-        Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
-        Original_info[Original_info_Wr++]=0x00;
-		Original_info[Original_info_Wr++]=0x00;
-		Original_info[Original_info_Wr++]=0x18;
+		Original_info[Original_info_Wr++]=0x01;
 		Original_info[Original_info_Wr++]=4  ; // 参数长度
-		Original_info[Original_info_Wr++]=0x00;   // 参数值
-		Original_info[Original_info_Wr++]=0x00; 
-		Original_info[Original_info_Wr++]=(RemotePort_main>>8); 
-		Original_info[Original_info_Wr++]=RemotePort_main; 
-													    
-		 //   2.4  APN 字符串
-        Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
-        Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=(JT808Conf_struct.DURATION.Heart_Dur>>24);   // 参数值 
+		Original_info[Original_info_Wr++]=(JT808Conf_struct.DURATION.Heart_Dur>>16);
+		Original_info[Original_info_Wr++]=(JT808Conf_struct.DURATION.Heart_Dur>>8);
+		Original_info[Original_info_Wr++]=(JT808Conf_struct.DURATION.Heart_Dur);     
+         //  A.2 TCP  消息应答间隔   
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+             Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x02;
+		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		Original_info[Original_info_Wr++]=(JT808Conf_struct.DURATION.TCP_ACK_Dur>>24);   // 参数值 
+		Original_info[Original_info_Wr++]=(JT808Conf_struct.DURATION.TCP_ACK_Dur>>16);
+		Original_info[Original_info_Wr++]=(JT808Conf_struct.DURATION.TCP_ACK_Dur>>8);
+		Original_info[Original_info_Wr++]=(JT808Conf_struct.DURATION.TCP_ACK_Dur);     
+
+	       //  A.3 TCP  消息重传次数   
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+             Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x03;
+		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		Original_info[Original_info_Wr++]=(JT808Conf_struct.DURATION.TCP_ReSD_Num>>24);   // 参数值 
+		Original_info[Original_info_Wr++]=(JT808Conf_struct.DURATION.TCP_ReSD_Num>>16);
+		Original_info[Original_info_Wr++]=(JT808Conf_struct.DURATION.TCP_ReSD_Num>>8);
+		Original_info[Original_info_Wr++]=(JT808Conf_struct.DURATION.TCP_ReSD_Num);     	
+
+              //  A.4   UDP 应答超时
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+              Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x04;
+		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		Original_info[Original_info_Wr++]=(5>>24);   // 参数值 
+		Original_info[Original_info_Wr++]=(5>>16);
+		Original_info[Original_info_Wr++]=(5>>8);
+		Original_info[Original_info_Wr++]=(5);     	
+
+           
+              //  A.5   UDP 重传次数
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+              Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x05;
+		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		Original_info[Original_info_Wr++]=(JT808Conf_struct.DURATION.UDP_ReSD_Num>>24);   // 参数值 
+		Original_info[Original_info_Wr++]=(JT808Conf_struct.DURATION.UDP_ReSD_Num>>16);
+		Original_info[Original_info_Wr++]=(JT808Conf_struct.DURATION.UDP_ReSD_Num>>8);
+		Original_info[Original_info_Wr++]=(JT808Conf_struct.DURATION.UDP_ReSD_Num);     	
+
+               
+              //  A.6   SMS消息应答超时时间
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+              Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x06;
+		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		Original_info[Original_info_Wr++]=0;   // 参数值 
+		Original_info[Original_info_Wr++]=0;
+		Original_info[Original_info_Wr++]=0;
+		Original_info[Original_info_Wr++]=5;     	
+
+
+
+              //  A.7   SMS 消息重传次数
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+              Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x07;
+		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		Original_info[Original_info_Wr++]=0;   // 参数值 
+		Original_info[Original_info_Wr++]=0;
+		Original_info[Original_info_Wr++]=0;
+		Original_info[Original_info_Wr++]=3;     	
+
+             //   A.8  APN 字符串
+             Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+             Original_info[Original_info_Wr++]=0x00;
 		Original_info[Original_info_Wr++]=0x00;
 		Original_info[Original_info_Wr++]=0x10;
 		Original_info[Original_info_Wr++]=strlen((const char*)APN_String); // 参数长度
 		memcpy( ( char * ) Original_info+ Original_info_Wr, ( char * )APN_String,strlen((const char*)APN_String)); // 参数值
 		Original_info_Wr+=strlen((const char*)APN_String);
 
-        //  2.5   备用IP		 
-        Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
-        Original_info[Original_info_Wr++]=0x00;
+               //   A.9  APN 用户名
+             Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+             Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x11;
+		Original_info[Original_info_Wr++]=4; // 参数长度
+		memcpy( ( char * ) Original_info+ Original_info_Wr, "user",4); // 参数值
+		Original_info_Wr+=4;
+
+               //   A.10  APN 密码
+             Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+             Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x12;
+		Original_info[Original_info_Wr++]=4; // 参数长度
+		memcpy( ( char * ) Original_info+ Original_info_Wr, "user",4); // 参数值
+		Original_info_Wr+=4;
+
+             //   A.11   主服务器IP    
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+              Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x13;    
+		                                         // 参数长度		
+
+	   memset(reg_str,0,sizeof(reg_str));     //  填写域名
+	   memcpy(reg_str,"jt1.gghypt.net",strlen((char const*)"jt1.gghypt.net"));
+	 // memcpy(reg_str,"fde.0132456.net",strlen((char const*)"jt1.gghypt.net"));
+	   Original_info[Original_info_Wr++]=strlen((const char*)reg_str);
+          memcpy( ( char * ) Original_info+ Original_info_Wr, ( char * )reg_str,strlen((const char*)reg_str));  // 参数值	 
+	   Original_info_Wr+=strlen((const char*)reg_str);
+
+                 //   A.12   BAK  APN 字符串
+             Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+             Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x14;
+		Original_info[Original_info_Wr++]=strlen((const char*)"UNINET"); // 参数长度
+		memcpy( ( char * ) Original_info+ Original_info_Wr,"UNINET",6); // 参数值
+		Original_info_Wr+=6;
+
+               //   A.13 BAK APN 用户名
+             Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+             Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x15;
+		Original_info[Original_info_Wr++]=4; // 参数长度
+		memcpy( ( char * ) Original_info+ Original_info_Wr, "user",4); // 参数值
+		Original_info_Wr+=4;
+
+               //   A.14  BAK  APN 密码
+             Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+             Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x16;
+		Original_info[Original_info_Wr++]=4; // 参数长度
+		memcpy( ( char * ) Original_info+ Original_info_Wr, "user",4); // 参数值
+		Original_info_Wr+=4;
+
+                    //  A.15   备用IP		 
+             Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+              Original_info[Original_info_Wr++]=0x00;
 		Original_info[Original_info_Wr++]=0x00;
 		Original_info[Original_info_Wr++]=0x17;    
 		                                         // 参数长度		 	    
-		memset(reg_str,0,sizeof(reg_str));
-	    IP_Str((char*)reg_str, *( u32 * ) RemoteIP_aux);
-		Original_info[Original_info_Wr++]=strlen((const char*)reg_str);
-		memcpy( ( char * ) Original_info+ Original_info_Wr, ( char * )reg_str,strlen((const char*)reg_str));  // 参数值	 
-		Original_info_Wr+=strlen((const char*)reg_str);
+	  memset(reg_str,0,sizeof(reg_str));     //  填写域名
+	  memcpy(reg_str,DomainNameStr_aux,strlen((char const*)DomainNameStr_aux));
+	 // memcpy(reg_str,"fde.0132456.net",strlen((char const*)"jt1.gghypt.net"));
+	   Original_info[Original_info_Wr++]=strlen((const char*)reg_str);
+          memcpy( ( char * ) Original_info+ Original_info_Wr, ( char * )reg_str,strlen((const char*)reg_str));  // 参数值	 
+	   Original_info_Wr+=strlen((const char*)reg_str);
+
 		
           
-		 //   2.6   缺省时间上报间隔
-        Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
-        Original_info[Original_info_Wr++]=0x00;
+
+             //  A.16  主服务TCP端口
+             Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+             Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x18;
+		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		Original_info[Original_info_Wr++]=0x00;   // 参数值
+		Original_info[Original_info_Wr++]=0x00; 
+		Original_info[Original_info_Wr++]=(7008>>8); 
+		Original_info[Original_info_Wr++]=7008; 
+													    
+            //  A.17  备用服务TCP端口
+             Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+             Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x19;
+		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		Original_info[Original_info_Wr++]=0x00;   // 参数值
+		Original_info[Original_info_Wr++]=0x00; 
+		Original_info[Original_info_Wr++]=(7008>>8); 
+		Original_info[Original_info_Wr++]=7008; 
+
+             //  A.18  IC卡认证 主服务器地址
+             Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+             Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x1A;
+		Original_info[Original_info_Wr++]=0  ; // 参数长度
+
+		//memcpy(( char * ) Original_info+ Original_info_Wr,"202.96.42.113",13);
+		//Original_info_Wr+=13;
+
+                        //  A.19  IC卡认证 主服务器TCP
+             Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+             Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x1B;
+		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		Original_info[Original_info_Wr++]=0x00;   // 参数值
+		Original_info[Original_info_Wr++]=0x00; 
+		Original_info[Original_info_Wr++]=0x00; 
+		Original_info[Original_info_Wr++]=0x00;  
+
+                            //  A.20  IC卡认证 主服务器UDP
+             Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+             Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x1C;
+		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		Original_info[Original_info_Wr++]=0x00;   // 参数值
+		Original_info[Original_info_Wr++]=0x00; 
+		Original_info[Original_info_Wr++]=0x00; 
+		Original_info[Original_info_Wr++]=0x00;  
+
+                   //  A.21  IC卡认证  备用服务器地址
+             Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes  
+             Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x1D;
+		Original_info[Original_info_Wr++]=0  ; // 参数长度
+
+		//memcpy(( char * ) Original_info+ Original_info_Wr,"202.96.42.114",13);
+		//Original_info_Wr+=13;
+
+
+                             //  A.22  位置汇报策略
+             Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+             Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x20;
+		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		Original_info[Original_info_Wr++]=0x00;   // 参数值
+		Original_info[Original_info_Wr++]=0x00; 
+		Original_info[Original_info_Wr++]=0x00; 
+		Original_info[Original_info_Wr++]=JT808Conf_struct.SD_MODE.Send_strategy; 
+
+                                                           //  A.23  位置汇报方案
+             Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+             Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x21;
+		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		Original_info[Original_info_Wr++]=0x00;   // 参数值
+		Original_info[Original_info_Wr++]=0x00; 
+		Original_info[Original_info_Wr++]=0x00; 
+		Original_info[Original_info_Wr++]=JT808Conf_struct.PositionSd_Stratage; 
+
+                                              //  A.24 驾驶员未登录 汇报间隔
+             Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+             Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x22;
+		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		Original_info[Original_info_Wr++]=0x00;   // 参数值
+		Original_info[Original_info_Wr++]=0x00; 
+		Original_info[Original_info_Wr++]=0x00; 
+		Original_info[Original_info_Wr++]=30; 
+
+			                                       //  A.25  休眠时汇报间隔
+             Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+             Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x27;
+		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		JT808Conf_struct.DURATION.Sleep_Dur=300;
+		Original_info[Original_info_Wr++]=(300>>24);   // 参数值  
+		Original_info[Original_info_Wr++]=(300>>16);
+		Original_info[Original_info_Wr++]=(300>>8);
+		Original_info[Original_info_Wr++]=(300);     	
+		 
+                                        //  A.26 紧急报警时 
+             Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+             Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x28;
+		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		Original_info[Original_info_Wr++]=0x00;   // 参数值
+		Original_info[Original_info_Wr++]=0x00; 
+		Original_info[Original_info_Wr++]=0x00; 
+		Original_info[Original_info_Wr++]=10; 
+                 
+
+  		 //   A.27    缺省时间上报间隔
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+             Original_info[Original_info_Wr++]=0x00;
 		Original_info[Original_info_Wr++]=0x00;
 		Original_info[Original_info_Wr++]=0x29;
 		Original_info[Original_info_Wr++]=4  ; // 参数长度
@@ -2476,28 +3794,255 @@ u8  Stuff_SettingPram_0104H(void)
 		Original_info[Original_info_Wr++]=(JT808Conf_struct.DURATION.Default_Dur>>16);
 		Original_info[Original_info_Wr++]=(JT808Conf_struct.DURATION.Default_Dur>>8);
 		Original_info[Original_info_Wr++]=(JT808Conf_struct.DURATION.Default_Dur);     
-		
-		 //   2.7   中心监控号码
-        Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
-        Original_info[Original_info_Wr++]=0x00;
+
+    		 //   A.28    缺省距离上报间隔
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+             Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x2c;
+		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		//JT808Conf_struct.DISTANCE.Defalut_DistDelta=500;
+		Original_info[Original_info_Wr++]=(JT808Conf_struct.DISTANCE.Defalut_DistDelta>>24);   // 参数值 
+		Original_info[Original_info_Wr++]=(JT808Conf_struct.DISTANCE.Defalut_DistDelta>>16);
+		Original_info[Original_info_Wr++]=(JT808Conf_struct.DISTANCE.Defalut_DistDelta>>8);
+		Original_info[Original_info_Wr++]=(JT808Conf_struct.DISTANCE.Defalut_DistDelta);     
+
+             
+             	 //   A.29    驾驶员未登录间隔
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+             Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x2d;
+		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		Original_info[Original_info_Wr++]=(JT808Conf_struct.DISTANCE.Defalut_DistDelta>>24);   // 参数值 
+		Original_info[Original_info_Wr++]=(JT808Conf_struct.DISTANCE.Defalut_DistDelta>>16);
+		Original_info[Original_info_Wr++]=(JT808Conf_struct.DISTANCE.Defalut_DistDelta>>8);
+		Original_info[Original_info_Wr++]=(JT808Conf_struct.DISTANCE.Defalut_DistDelta);     
+
+
+               	 //   A.30  休眠时汇报距离间隔
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+             Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x2e;
+		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		Original_info[Original_info_Wr++]=(JT808Conf_struct.DISTANCE.Defalut_DistDelta>>24);   // 参数值 
+		Original_info[Original_info_Wr++]=(JT808Conf_struct.DISTANCE.Defalut_DistDelta>>16);
+		Original_info[Original_info_Wr++]=(JT808Conf_struct.DISTANCE.Defalut_DistDelta>>8);
+		Original_info[Original_info_Wr++]=(JT808Conf_struct.DISTANCE.Defalut_DistDelta);     
+
+                 	 //   A.31    紧急报警时 定距离
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+             Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x2f;
+		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		Original_info[Original_info_Wr++]=(200>>24);   // 参数值 
+		Original_info[Original_info_Wr++]=(200>>16);
+		Original_info[Original_info_Wr++]=(200>>8);
+		Original_info[Original_info_Wr++]=(200);     
+
+                      //   A.32     拐点补传角度
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+             Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x30;
+		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		Original_info[Original_info_Wr++]=(45>>24);   // 参数值 
+		Original_info[Original_info_Wr++]=(45>>16);
+		Original_info[Original_info_Wr++]=(45>>8);
+		Original_info[Original_info_Wr++]=(45);     
+
+
+            //   A.33     电子围栏半径
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+             Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x31;
+		Original_info[Original_info_Wr++]=2  ; // 参数长度
+	  // 参数值 
+		Original_info[Original_info_Wr++]=(500>>8);
+		Original_info[Original_info_Wr++]=(500);     
+
+
+             //   A.34    设置求助号码
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+             Original_info[Original_info_Wr++]=0x00;
 		Original_info[Original_info_Wr++]=0x00;
 		Original_info[Original_info_Wr++]=0x40;
-		Original_info[Original_info_Wr++]=strlen((const char*)JT808Conf_struct.LISTEN_Num); // 参数长度
-		memcpy( ( char * ) Original_info+ Original_info_Wr, ( char * )JT808Conf_struct.LISTEN_Num,strlen((const char*)JT808Conf_struct.LISTEN_Num)); // 参数值
-		Original_info_Wr+=strlen((const char*)JT808Conf_struct.LISTEN_Num);
-		 //   2.8   最大速度门限
+		Original_info[Original_info_Wr++]=0  ; // 参数长度
+
+                //   A.35    复位电话号码
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+             Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x41;
+		Original_info[Original_info_Wr++]=0  ; // 参数长度
+
+
+             //   A.36    恢复出厂设置电话号码
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+             Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x42;
+		Original_info[Original_info_Wr++]=0  ; // 参数长度
+
+
+                   //  A37  监控平台SMS 短息号码
+             Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+             Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x43;
+		Original_info[Original_info_Wr++]=5  ; // 参数长度
+
+		memcpy(( char * ) Original_info+ Original_info_Wr,JT808Conf_struct.SMS_RXNum,strlen(JT808Conf_struct.SMS_RXNum)); 
+		Original_info_Wr+=strlen(JT808Conf_struct.SMS_RXNum); 
+
+
+                
+             //   A.38    sms 短息报警号码
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+              Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x44;
+		Original_info[Original_info_Wr++]=0  ; // 参数长度
+
+
+                        //   A.39   接听策略
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+              Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x45;
+		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+              Original_info[Original_info_Wr++]=1;  // ACC on 自动接听
+
+
+
+                               //   A.40     每次通话时长
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+             Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x46;
+		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		Original_info[Original_info_Wr++]=(120>>24);   // 参数值 
+		Original_info[Original_info_Wr++]=(120>>16);
+		Original_info[Original_info_Wr++]=(120>>8);
+		Original_info[Original_info_Wr++]=(120);   
+
+
+                              //   A.41    每月通话时长
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+             Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x47;
+		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		Original_info[Original_info_Wr++]=(36000>>24);   // 参数值 
+		Original_info[Original_info_Wr++]=(36000>>16);
+		Original_info[Original_info_Wr++]=(36000>>8);
+		Original_info[Original_info_Wr++]=(36000);   
+
+
+                 //   A42    设置监听号码
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+              Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x48;
+		Original_info[Original_info_Wr++]=0  ; // 参数长度
+
+
+          //   A.43    平台监管特权号码
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+              Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x49;
+		Original_info[Original_info_Wr++]=0  ; // 参数长度
+
+
+        //   A.44    报警屏蔽字
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+              Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x50;
+		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		Original_info[Original_info_Wr++]=Warn_MaskWord[0];
+		Original_info[Original_info_Wr++]=Warn_MaskWord[1];
+		Original_info[Original_info_Wr++]=Warn_MaskWord[2];
+		Original_info[Original_info_Wr++]=Warn_MaskWord[3]; 
+
+
+      //   A.45  报警   发送Sms  开关
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+              Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x51;
+             	Original_info[Original_info_Wr++]=4  ; // 参数长度
+		Original_info[Original_info_Wr++]=Text_MaskWord[0];
+		Original_info[Original_info_Wr++]=Text_MaskWord[1];
+		Original_info[Original_info_Wr++]=Text_MaskWord[2];
+		Original_info[Original_info_Wr++]=Text_MaskWord[3];
+
+ //   A.46    报警拍照开关
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+              Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x52;
+		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x01;
+
+ //   A.47  报警拍照存储标志
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+              Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x53;
+		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+
+ //   A.48    关键报警标志
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+              Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x54;
+		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		Original_info[Original_info_Wr++]=Key_MaskWord[0];
+		Original_info[Original_info_Wr++]=Key_MaskWord[1];
+		Original_info[Original_info_Wr++]=Key_MaskWord[2];
+		Original_info[Original_info_Wr++]=Key_MaskWord[3];
+		
+   //   A.49   最大速度门限
         Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
         Original_info[Original_info_Wr++]=0x00;
 		Original_info[Original_info_Wr++]=0x00;
 		Original_info[Original_info_Wr++]=0x55;
 		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		JT808Conf_struct.Speed_warn_MAX=100;
 		Original_info[Original_info_Wr++]=( JT808Conf_struct.Speed_warn_MAX>>24);   // 参数值
 		Original_info[Original_info_Wr++]=( JT808Conf_struct.Speed_warn_MAX>>16);  
 		Original_info[Original_info_Wr++]=( JT808Conf_struct.Speed_warn_MAX>>8);
 		Original_info[Original_info_Wr++]=( JT808Conf_struct.Speed_warn_MAX);
-		 //   2.9   连续驾驶门限
-        Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
-        Original_info[Original_info_Wr++]=0x00;
+
+	       //   A.50     超速持续时间
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+              Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x56;
+		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=JT808Conf_struct.Spd_Exd_LimitSeconds;
+		
+		 //  A.51   连续驾驶门限
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+              Original_info[Original_info_Wr++]=0x00;
 		Original_info[Original_info_Wr++]=0x00;
 		Original_info[Original_info_Wr++]=0x57;
 		Original_info[Original_info_Wr++]=4  ; // 参数长度
@@ -2505,7 +4050,21 @@ u8  Stuff_SettingPram_0104H(void)
 		Original_info[Original_info_Wr++]=(TiredConf_struct.TiredDoor.Door_DrvKeepingSec>>16);  
 		Original_info[Original_info_Wr++]=(TiredConf_struct.TiredDoor.Door_DrvKeepingSec>>8);
 		Original_info[Original_info_Wr++]=(TiredConf_struct.TiredDoor.Door_DrvKeepingSec);
-		 //   2.10   最小休息时间
+
+		 //  A.52  当天累计驾驶门限
+             Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+             Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x58;
+		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		Original_info[Original_info_Wr++]=(TiredConf_struct.TiredDoor.Door_DayAccumlateDrvSec>>24);   // 参数值
+		Original_info[Original_info_Wr++]=(TiredConf_struct.TiredDoor.Door_DayAccumlateDrvSec>>16);  
+		Original_info[Original_info_Wr++]=(TiredConf_struct.TiredDoor.Door_DayAccumlateDrvSec>>8);
+		Original_info[Original_info_Wr++]=(TiredConf_struct.TiredDoor.Door_DayAccumlateDrvSec);
+
+
+
+		 //   A.53   最小休息时间
 		 Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
 		 Original_info[Original_info_Wr++]=0x00;
 		 Original_info[Original_info_Wr++]=0x00;
@@ -2515,23 +4074,368 @@ u8  Stuff_SettingPram_0104H(void)
 		 Original_info[Original_info_Wr++]=(TiredConf_struct.TiredDoor.Door_MinSleepSec>>16);	
 		 Original_info[Original_info_Wr++]=(TiredConf_struct.TiredDoor.Door_MinSleepSec>>8);
 		 Original_info[Original_info_Wr++]=(TiredConf_struct.TiredDoor.Door_MinSleepSec);         
-		 //  2.11  终端ID 号码
-               Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+
+             		 //   A.54  最长停车时间
+		 Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
 		 Original_info[Original_info_Wr++]=0x00;
-		 Original_info[Original_info_Wr++]=0xF0;
 		 Original_info[Original_info_Wr++]=0x00;
-		 Original_info[Original_info_Wr++]=12  ; // 参数长度
-		  // 参数值
-		 memcpy( ( char * ) Original_info+ Original_info_Wr, ( char * )SimID_12D,12); // 参数值
-		 Original_info_Wr+=12;      
-		 
-		 
+		 Original_info[Original_info_Wr++]=0x5A;
+		 Original_info[Original_info_Wr++]=4  ; // 参数长度
+		 TiredConf_struct.TiredDoor.Door_MaxParkingSec=3600;
+		 Original_info[Original_info_Wr++]=(TiredConf_struct.TiredDoor.Door_MaxParkingSec>>24);	 // 参数值
+		 Original_info[Original_info_Wr++]=(TiredConf_struct.TiredDoor.Door_MaxParkingSec>>16);	
+		 Original_info[Original_info_Wr++]=(TiredConf_struct.TiredDoor.Door_MaxParkingSec>>8);
+		 Original_info[Original_info_Wr++]=(TiredConf_struct.TiredDoor.Door_MaxParkingSec);         
+
+                      //   A.55  超速报警预警差值
+		 Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+		 Original_info[Original_info_Wr++]=0x00;
+		 Original_info[Original_info_Wr++]=0x00;
+		 Original_info[Original_info_Wr++]=0x5B;
+		 Original_info[Original_info_Wr++]=2  ; // 参数长度
+		// 参数值
+ 		 Original_info[Original_info_Wr++]=(JT808Conf_struct.BD_MaxSpd_preWarnValue>>8); // 100
+		 Original_info[Original_info_Wr++]=(JT808Conf_struct.BD_MaxSpd_preWarnValue);          
+
+
+                       //   A.56  疲劳驾驶预警差值
+		 Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+		 Original_info[Original_info_Wr++]=0x00;
+		 Original_info[Original_info_Wr++]=0x00;
+		 Original_info[Original_info_Wr++]=0x5C;
+		 Original_info[Original_info_Wr++]=2  ; // 参数长度
+		// 参数值
+ 		 Original_info[Original_info_Wr++]=(JT808Conf_struct.BD_TiredDrv_preWarnValue>>8);
+		 Original_info[Original_info_Wr++]=(JT808Conf_struct.BD_TiredDrv_preWarnValue);          
+
+
+
+                    //   A.57  碰撞报警参数设置
+		 Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+		 Original_info[Original_info_Wr++]=0x00;
+		 Original_info[Original_info_Wr++]=0x00;
+		 Original_info[Original_info_Wr++]=0x5D;
+		 Original_info[Original_info_Wr++]=2  ; // 参数长度
+		// 参数值
+ 		 Original_info[Original_info_Wr++]=(17924>>8);
+		 Original_info[Original_info_Wr++]=(17924);          
+
+
+
+                    //   A.58  侧翻报警参数设置
+		 Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+		 Original_info[Original_info_Wr++]=0x00;
+		 Original_info[Original_info_Wr++]=0x00;
+		 Original_info[Original_info_Wr++]=0x5E;
+		 Original_info[Original_info_Wr++]=2  ; // 参数长度
+		// 参数值
+ 		 Original_info[Original_info_Wr++]=(30>>8);
+		 Original_info[Original_info_Wr++]=(30);          
+
+
+ //   A.59   定时拍照控制
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+              Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x80;
+		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		reg_u32=JT808Conf_struct.Distance_m_u32/100;
+		Original_info[Original_info_Wr++]=(reg_u32>>24);	// 参数值
+		Original_info[Original_info_Wr++]=(reg_u32>>16);   
+		Original_info[Original_info_Wr++]=(reg_u32>>8);
+		Original_info[Original_info_Wr++]=(reg_u32);		 
+
+ //   A.60  定距拍照控制
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+              Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x65;
+		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+
+ //   A.61 图像、视频质量
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+              Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x70;
+		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x05;
+
+ //   A.62  亮度
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+              Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x71;
+		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=127;
+
+ //   A.63   对比度
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+              Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x72;
+		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=64;
+
+
+ //   A.64  饱和度
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+              Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x73;
+		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=64;
+
+
+ //   A.65  色度
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+              Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x74;
+		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=127;
+
+ //   A.66   车辆里程表读数
+	   Original_info[Original_info_Wr++]=0x00;	 // 参数ID 4Bytes
+	   Original_info[Original_info_Wr++]=0x00;
+ Original_info[Original_info_Wr++]=0x00;
+ Original_info[Original_info_Wr++]=0x64;
+ Original_info[Original_info_Wr++]=4  ; // 参数长度
+ reg_u32=JT808Conf_struct.Distance_m_u32/100;
+ Original_info[Original_info_Wr++]=(reg_u32>>24);	 // 参数值
+ Original_info[Original_info_Wr++]=(reg_u32>>16);	
+ Original_info[Original_info_Wr++]=(reg_u32>>8);
+ Original_info[Original_info_Wr++]=(reg_u32);		  
+
+
+
+ //   A.67   车辆所在省域
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+              Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x81;
+		Original_info[Original_info_Wr++]=2  ; // 参数长度
+             Original_info[Original_info_Wr++]=(u8)(10>>8);
+              Original_info[Original_info_Wr++]=(u8)10;
+
+//   A.68   车辆所在市域
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+              Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x82;
+		Original_info[Original_info_Wr++]=2  ; // 参数长?
+	       //  county  ID
+              Original_info[Original_info_Wr++]=(u8)(1010>>8);
+              Original_info[Original_info_Wr++]=(u8)1010;   
+
+													
+	   //   A.69   车牌号
+        Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+        Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x83;
+		Original_info[Original_info_Wr++]=strlen((const char*)JT808Conf_struct.Vechicle_Info.Vech_Num); // 参数长度
+		memcpy( ( char * ) Original_info+ Original_info_Wr, ( char * )JT808Conf_struct.Vechicle_Info.Vech_Num,strlen((const char*)JT808Conf_struct.Vechicle_Info.Vech_Num) ); // 参数值
+		Original_info_Wr+=strlen((const char*)JT808Conf_struct.Vechicle_Info.Vech_Num); 
+        
+//   A.70   车辆颜色
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+              Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x84;
+		Original_info[Original_info_Wr++]=1  ; // 参数长?
+		Original_info[Original_info_Wr++]=JT808Conf_struct.Vechicle_Info.Dev_Color;
+
+//   A.71   GNSS  模式设置
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+              Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x90;
+		Original_info[Original_info_Wr++]=1  ; // 参数长?
+
+	   if( GpsStatus.Position_Moule_Status==1)
+		     Original_info[Original_info_Wr++]=2;
+	   
+	   if( GpsStatus.Position_Moule_Status==2)
+		  Original_info[Original_info_Wr++]=1;   
+	   
+	   if( GpsStatus.Position_Moule_Status==3) 
+		  Original_info[Original_info_Wr++]=3;     
+
+//   A.72   GNSS 波特率设置
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+              Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x91;
+		Original_info[Original_info_Wr++]=1  ; // 参数长?
+		Original_info[Original_info_Wr++]=2;
+
+//   A.73   GNSS nmea  输出更新频率
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+              Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x92;
+		Original_info[Original_info_Wr++]=1  ; // 参数长?
+		Original_info[Original_info_Wr++]=1;
+
+ //   A74   车辆里程表读数
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+              Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x93;
+		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=1;
+
+//   A.75  GNSS定位上传方式
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+              Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x94;
+		Original_info[Original_info_Wr++]=1  ; // 参数长?
+		Original_info[Original_info_Wr++]=0;
+
+ //   A76   模块详细数据上传设置
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+              Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x95;
+		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0;
+
+ //   A77   CAN1   采集间隔
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+              Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x01;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+
+ //   A78   CAN1   上传间隔
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+              Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x01;
+		Original_info[Original_info_Wr++]=0x01;
+		Original_info[Original_info_Wr++]=2  ; // 参数长度
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+
+ //   A79    CAN2   采集间隔
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+              Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x01;
+		Original_info[Original_info_Wr++]=0x02;
+		Original_info[Original_info_Wr++]=4  ; // 参数长度
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0;		
+
+ //   A80  CAN2   上传间隔
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+              Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x01;
+		Original_info[Original_info_Wr++]=0x03;
+		Original_info[Original_info_Wr++]=2  ; // 参数长度
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+
+
+
+ //   A81  CAN  总线ID 单独采集设置
+              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
+              Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x01;
+		Original_info[Original_info_Wr++]=0x10;
+		Original_info[Original_info_Wr++]=8 ; // 参数长度
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0;
+              Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0x00;
+		Original_info[Original_info_Wr++]=0;		   
   //  3. Send 
   Protocol_End(Packet_Normal ,0);
   if(DispContent)
-	rt_kprintf("\r\n	发送参数查询信息! \r\n");   
+	rt_kprintf("\r\n	发送参数查询信息! \r\n");    
 
   return true;
+}
+
+
+u8  Stuff_DeviceAttribute_BD_0107H(void)
+{
+     u16   infoLen=0;
+   // 1. Head
+	if(!Protocol_Head(MSG_0x0107,Packet_Normal)) 
+ 	  return false; 
+	 // 2. content   
+       Original_info[Original_info_Wr++]=(ProductAttribute._1_DevType>>8); 
+	   Original_info[Original_info_Wr++]=ProductAttribute._1_DevType;
+       memcpy( ( char * ) Original_info+ Original_info_Wr,(u8*)"70420",5);
+       Original_info_Wr+=5;	
+       memcpy( ( char * ) Original_info+ Original_info_Wr,(u8*)ProductAttribute._3_Dev_TYPENUM,20);
+       Original_info_Wr+=20;
+	    memcpy( ( char * ) Original_info+ Original_info_Wr,(u8*)DeviceNumberID+5,7);
+       Original_info_Wr+=7;	
+	   memcpy( ( char * ) Original_info+ Original_info_Wr,(u8*)ProductAttribute._5_Sim_ICCID,10);
+       Original_info_Wr+=10;   
+	   
+	Original_info[Original_info_Wr++]=ProductAttribute._6_HardwareVer_Len;   
+       memcpy( ( char * ) Original_info+ Original_info_Wr,(u8*)ProductAttribute._7_HardwareVer,ProductAttribute._6_HardwareVer_Len);
+       Original_info_Wr+=ProductAttribute._6_HardwareVer_Len;   
+	   
+	//Original_info[Original_info_Wr++]=ProductAttribute._8_SoftwareVer_len;      
+	//memcpy( ( char * ) Original_info+ Original_info_Wr,(u8*)ProductAttribute._9_SoftwareVer,ProductAttribute._8_SoftwareVer_len);
+	//Original_info_Wr+=ProductAttribute._8_SoftwareVer_len;
+
+	Original_info[Original_info_Wr++]=ProductAttribute._10_FirmWareVer_len;      
+	memcpy( ( char * ) Original_info+ Original_info_Wr,(u8*)ProductAttribute._11_FirmWare,ProductAttribute._10_FirmWareVer_len);
+	Original_info_Wr+=ProductAttribute._10_FirmWareVer_len; 
+
+	Original_info[Original_info_Wr++]=ProductAttribute._12_GNSSAttribute;
+	Original_info[Original_info_Wr++]=ProductAttribute._13_ComModuleAttribute;
+
+	 /*
+	  infoLen=sizeof(ProductAttribute);
+	  memcpy( ( char * ) Original_info+ Original_info_Wr,(u8*)&ProductAttribute,infoLen);
+	  Original_info_Wr+=infoLen;	 
+        */
+	  
+	 //  3. Send 
+	 Protocol_End(Packet_Normal ,0);
+	  if(DispContent)
+	 rt_kprintf("\r\n	发送终端属性 \r\n");    
+
+    return true;
 }
 //--------------------------------------------------------------------------
 u8  Stuff_EventACK_0301H(void)      
@@ -3536,6 +5440,11 @@ u8  Stuff_MultiMedia_Data_0801H(void)
 				   {
 					   Photo_sdState.SD_flag=disable;// clear    
 				   }
+				   else				   	
+				   if((1==MediaObj.RSD_State)&&(Photo_sdState.SD_flag==enable)) //  补报相关
+				   {
+					   Photo_sdState.SD_flag=disable;// clear    
+				   }
 				   else
 				   	 return false; 
 				   //  ---------------  填写内容  ---------------
@@ -3740,9 +5649,25 @@ u8  Stuff_MultiMedia_Data_0801H(void)
 	 	return false;
 	 }	
 	 //  5. Send 
-	 Protocol_End(Packet_Divide,0);
-	  if(DispContent)
-	   rt_kprintf("\r\n	Send Media Data \r\n");     
+	 
+		/*     debug   丢包情况   
+		       if((MediaObj.Media_currentPacketNum==3)&&(MediaObj.RSD_State==0))
+			 	    rt_kprintf("\r\n	jump 3  packet \r\n"); 
+			 else
+			   if((MediaObj.Media_currentPacketNum==5)&&(MediaObj.RSD_State==0))
+			 	    rt_kprintf("\r\n	jump 5  packet \r\n");	 
+			 else  
+			   if((MediaObj.Media_currentPacketNum==8)&&(MediaObj.RSD_State==0))
+			 	    rt_kprintf("\r\n	jump 8  packet \r\n");  
+			 else
+			     if((MediaObj.Media_currentPacketNum==11)&&(MediaObj.RSD_State==0))
+			 	    rt_kprintf("\r\n	jump 11  packet \r\n");	
+			 else	 
+		*/
+	     Protocol_End(Packet_Divide,0);
+	 
+	 if(DispContent)
+	     rt_kprintf("\r\n	Send Media Data \r\n");     
 	//  else
 	  {
 		 rt_kprintf("\r\n pic_total_num:  %d   current_num:  %d   \r\n ",MediaObj.Media_totalPacketNum,MediaObj.Media_currentPacketNum);
@@ -3778,9 +5703,10 @@ u8  Stuff_MultiMedia_Data_0801H(void)
 	 else
 	 if(1==MediaObj.RSD_State)
 	 {
-	   MediaObj.RSD_Reader++;
-	   if(MediaObj.RSD_Reader==MediaObj.RSD_total)
-	   	    MediaObj.RSD_State=2; //  置位等待状态，等待着中心再发重传指令
+	      rt_kprintf("\r\n  MediaObj.RSD_Reader =%d\r\n",MediaObj.RSD_Reader); 
+	      MediaObj.RSD_Reader++;
+	      if(MediaObj.RSD_Reader==MediaObj.RSD_total)
+	   	     MediaObj.RSD_State=2; //  置位等待状态，等待着中心再发重传指令
 	 }	
 	 //----------  返回  -------------------
 	 return true; 
@@ -3877,6 +5803,119 @@ u8  Stuff_DriverInfoSD_0702H(void)
 	 return true; 
 
 }
+u8  Stuff_ISP_Resualt_BD_0108H(void)
+{
+   // 1. Head
+	if(!Protocol_Head(MSG_0x0108,Packet_Normal)) 
+ 	  return false; 
+	 // 2. content   
+	 BD_ISP.ISP_running=0; // clear
+         //----------------------------------------------------
+         Original_info[Original_info_Wr++]=BD_ISP.Update_Type; // 升级类型
+	  Original_info[Original_info_Wr++]=0;//BD_ISP.Update_Type;  // 升级结果
+	 
+	 //  3. Send 
+	 Protocol_End(Packet_Normal ,0);
+	  if(DispContent)
+	 rt_kprintf("\r\n	远程升级结果上报 \r\n");    
+
+}
+u8  Stuff_BatchDataTrans_BD_0704H(void)
+{
+   // 1. Head
+	if(!Protocol_Head(MSG_0x0704,Packet_Normal)) 
+ 	     return false; 
+	 // 2. content   
+             // 2.1   数据项个数
+             Original_info[Original_info_Wr++]=1;   
+	       // 2.2   位置数据类型
+             Original_info[Original_info_Wr++]=0;   //  0: 正常上报  1: 盲区补报
+	      // 2.3   位置汇报数据项
+	      	// 1. 告警标志  4
+		memcpy( ( char * ) Original_info+ Original_info_Wr, ( char * )Warn_Status,4 );    
+		Original_info_Wr += 4;
+		// 2. 状态  4
+		memcpy( ( char * ) Original_info+ Original_info_Wr, ( char * )Car_Status,4 );   
+		Original_info_Wr += 4;
+		// 3.  纬度
+	       memcpy( ( char * ) Original_info+ Original_info_Wr,( char * )  Gps_Gprs.Latitude, 4 );//纬度   modify by nathan
+		Original_info_Wr += 4;
+		// 4.  经度
+		memcpy( ( char * ) Original_info+ Original_info_Wr, ( char * )  Gps_Gprs.Longitude, 4 );	  //经度    东经  Bit 7->0   西经 Bit 7 -> 1
+		Original_info_Wr += 4;
+		// 5.  高程
+		Original_info[Original_info_Wr++]=(u8)(GPS_Hight<<8);
+		Original_info[Original_info_Wr++]=(u8)GPS_Hight;
+		// 6.  速度    0.1 Km/h
+		Original_info[Original_info_Wr++]=(u8)(Speed_gps>>8);//(GPS_speed>>8); 
+		Original_info[Original_info_Wr++]=(u8)(Speed_gps);//GPS_speed;     
+		// 7. 方向   单位 1度
+		Original_info[Original_info_Wr++]=(GPS_direction>>8);  //High 
+		Original_info[Original_info_Wr++]=GPS_direction; // Low
+		// 8.  日期时间	
+		Original_info[Original_info_Wr++]=(((Gps_Gprs.Date[0])/10)<<4)+((Gps_Gprs.Date[0])%10);		
+		Original_info[Original_info_Wr++]=((Gps_Gprs.Date[1]/10)<<4)+(Gps_Gprs.Date[1]%10); 
+		Original_info[Original_info_Wr++]=((Gps_Gprs.Date[2]/10)<<4)+(Gps_Gprs.Date[2]%10);
+		Original_info[Original_info_Wr++]=((Gps_Gprs.Time[0]/10)<<4)+(Gps_Gprs.Time[0]%10);
+		Original_info[Original_info_Wr++]=((Gps_Gprs.Time[1]/10)<<4)+(Gps_Gprs.Time[1]%10);
+		Original_info[Original_info_Wr++]=((Gps_Gprs.Time[2]/10)<<4)+(Gps_Gprs.Time[2]%10);	 
+     
+	 //  3. Send 
+	  Protocol_End(Packet_Normal ,0);
+	  if(DispContent)
+	          rt_kprintf("\r\n	定位数据批量上传\r\n");    
+
+}
+
+
+u8  Stuff_CANDataTrans_BD_0705H(void)
+{
+      u16   DataNum=0,i=0;
+      u32   read_rd=0; 	  
+   // 1. Head
+	if(!Protocol_Head(MSG_0x0705,Packet_Normal)) 
+ 	  return false; 
+	 // 2. content   
+        // 数据项个数
+        DataNum=(CAN_trans.canid_1_SdWr>>3);  // 除以8 
+        Original_info[Original_info_Wr++]=(DataNum>>8);
+	 Original_info[Original_info_Wr++]=DataNum;
+	 Can_sdnum+=DataNum;  
+	 //接收时间
+        Original_info[Original_info_Wr++]=((time_now.hour/10)<<4)+(time_now.hour%10);
+	 Original_info[Original_info_Wr++]=((time_now.min/10)<<4)+(time_now.min%10);
+	 Original_info[Original_info_Wr++]=((time_now.sec/10)<<4)+(time_now.sec%10);    
+	 Original_info[Original_info_Wr++]=(Can_same%10);//0x00;  // ms 毫秒  
+	 Original_info[Original_info_Wr++]=0x00;    
+	 //  CAN 总线数据项
+	 read_rd=0;
+        for(i=0;i<DataNum;i++)
+        {	
+           /*
+		Original_info[Original_info_Wr++]= (CAN_trans.canid_1_Filter_ID>>24)|0x40;// 返回透传数据的类型 
+		Original_info[Original_info_Wr++]=(CAN_trans.canid_1_Filter_ID>>16);
+		Original_info[Original_info_Wr++]=(CAN_trans.canid_1_Filter_ID>>8);
+		Original_info[Original_info_Wr++]=CAN_trans.canid_1_Filter_ID;        
+	  */     
+		
+		Original_info[Original_info_Wr++]= (CAN_trans.canid_1_ID_SdBUF[i]>>24)|0x40;// 返回透传数据的类型 
+		Original_info[Original_info_Wr++]=(CAN_trans.canid_1_ID_SdBUF[i]>>16);
+		Original_info[Original_info_Wr++]=(CAN_trans.canid_1_ID_SdBUF[i]>>8);
+		Original_info[Original_info_Wr++]=CAN_trans.canid_1_ID_SdBUF[i];   
+		
+		//--------------------------------------------------------------------------
+		memcpy(Original_info+Original_info_Wr,CAN_trans.canid_1_Sdbuf+read_rd,8);    
+		Original_info_Wr+=8;
+		read_rd+=8;  
+        }	 
+	 CAN_trans.canid_1_SdWr=0;   
+	 //  3. Send 
+	 Protocol_End(Packet_Normal ,0);
+	  if(DispContent)
+	 rt_kprintf("\r\n	CAN 总线数据上传 数据项=%d   Rxnum=%d  Sd_num=%d  Can_loudiao=%d  Can_notsame=%d Same=%d\r\n",DataNum,Can_RXnum,Can_sdnum,Can_loudiao,Can_same,Can_notsame);       
+
+}
+
 //---------------------------------------------------------------------------------
 u8  Stuff_Worklist_0701H(void)      
 {  
@@ -4155,6 +6194,7 @@ u8  Save_MediaIndex( u8 type, u8* name, u8 ID,u8 Evencode)
   
 }
 //------------------------------------------------------------------
+#if 0
 u8  CentreSet_subService_8103H(u32 SubID, u8 infolen, u8 *Content )
 {  
  
@@ -4589,6 +6629,741 @@ u8  CentreSet_subService_8103H(u32 SubID, u8 infolen, u8 *Content )
 
     return true;
 }
+#endif
+u8  CentreSet_subService_8103H(u32 SubID, u8 infolen, u8 *Content )
+{  
+ 
+  u8    i=0;
+  u8    reg_str[80];
+  u8    reg_in[20];
+  u32   resualtu32=0;
+  
+
+   rt_kprintf("\r\n    收到中心设置命令 SubID=%X \r\n",SubID);  
+	   
+  switch(SubID)
+   {
+     case 0x0001:  // 终端心跳包发送间隔  单位:s
+                    if(infolen!=4)
+						break;					
+					JT808Conf_struct.DURATION.Heart_Dur=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
+                                    Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
+                                   rt_kprintf("\r\n 心跳包间隔: %d s\r\n",JT808Conf_struct.DURATION.Heart_Dur);
+                    break;
+	 case 0x0002:  // TCP 消息应答超时时间  单位:s	                
+                    if(infolen!=4)
+						break;					
+					JT808Conf_struct.DURATION.TCP_ACK_Dur=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
+                    Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
+					rt_kprintf("\r\n TCP消息应答间隔: %d s\r\n",JT808Conf_struct.DURATION.TCP_ACK_Dur); 
+	                break;
+	 case 0x0003:  //  TCP 消息重传次数	                
+                    if(infolen!=4)
+						break;					
+					JT808Conf_struct.DURATION.TCP_ReSD_Num=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
+                    Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
+					rt_kprintf("\r\n TCP重传次数: %d\r\n",JT808Conf_struct.DURATION.TCP_ReSD_Num); 
+	                break;
+	 case 0x0004:  // UDP 消息应答超时时间  单位:s	                
+                    if(infolen!=4)
+						break;					
+					JT808Conf_struct.DURATION.UDP_ACK_Dur=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
+                    Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
+                    rt_kprintf("\r\n UDP应答超时: %d\r\n",JT808Conf_struct.DURATION.UDP_ACK_Dur);
+	                break;
+	 case 0x0005:  //  UDP 消息重传次数	                
+                    if(infolen!=4)
+						break;					
+					JT808Conf_struct.DURATION.UDP_ReSD_Num=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
+                    Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
+					rt_kprintf("\r\n UDP重传次数: %d\r\n",JT808Conf_struct.DURATION.UDP_ReSD_Num); 
+					break;
+	 case 0x0010:  //  主服务器APN 
+                                    if(infolen==0)
+					  	break;
+					  memset(APN_String,0,sizeof(APN_String));					  
+					  memcpy(APN_String,(char*)Content,infolen);  
+					  memset((u8*)SysConf_struct.APN_str,0,sizeof(APN_String));	
+					  memcpy((u8*)SysConf_struct.APN_str,(char*)Content,infolen);  
+					 Api_Config_write(config,ID_CONF_SYS,(u8*)&SysConf_struct,sizeof(SysConf_struct));
+
+
+                                     DataLink_APN_Set(APN_String,1); 
+									 
+	                break; 
+	 case 0x0013:  //  主服务器地址  IP 或域名
+                      memset(reg_in,0,sizeof(reg_in)); 
+					  memcpy(reg_in,Content,infolen);
+                        rt_kprintf("\r\n  不允许修改 主IP 和域名: %s \r\n",reg_in);
+                       Fail_Flag=1;
+                       break;// 平台不让修改域名和IP 
+					  
+					 //----------------------------	
+					 
+					 i =str2ip((char*)reg_in, RemoteIP_main);
+					 if (i <= 3)
+					 {
+					  rt_kprintf("\r\n  域名: %s \r\n",reg_in); 
+					  
+					  memset(DomainNameStr,0,sizeof(DomainNameStr));					  
+					  memset(SysConf_struct.DNSR,0,sizeof(DomainNameStr));
+					  memcpy(DomainNameStr,(char*)Content,infolen);   
+					  memcpy(SysConf_struct.DNSR,(char*)Content,infolen);   
+					 Api_Config_write(config,ID_CONF_SYS,(u8*)&SysConf_struct,sizeof(SysConf_struct));
+
+                                     //----- 传给 GSM 模块------
+                                    DataLink_DNSR_Set(SysConf_struct.DNSR,1); 
+
+									 
+					  SD_ACKflag.f_CentreCMDack_0001H=1 ;// 2 DataLink_EndFlag=1; //AT_End(); 先返回结果再挂断  
+					  break;
+					 }
+					 memset(reg_str,0,sizeof(reg_str));
+					 IP_Str((char*)reg_str, *( u32 * ) RemoteIP_main); 		  
+					 strcat((char*)reg_str, " :");		 
+					 sprintf((char*)reg_str+strlen((const char*)reg_str), "%u\r\n", RemotePort_main);  
+					 memcpy(SysConf_struct.IP_Main,RemoteIP_main,4);
+					 SysConf_struct.Port_main=RemotePort_main;
+					 
+					 Api_Config_write(config,ID_CONF_SYS,(u8*)&SysConf_struct,sizeof(SysConf_struct));
+					 rt_kprintf("\r\n 中心设置主服务器 IP \r\n");
+					 rt_kprintf("\r\n SOCKET :");  
+					 rt_kprintf((char*)reg_str);   
+					  //-----------  Below add by Nathan  ----------------------------				  
+					  rt_kprintf("\r\n		   备用IP: %d.%d.%d.%d : %d \r\n",RemoteIP_aux[0],RemoteIP_aux[1],RemoteIP_aux[2],RemoteIP_aux[3],RemotePort_main);   
+					 
+					  //-----------  Below add by Nathan  ----------------------------
+					 DataLink_MainSocket_set(RemoteIP_main,RemotePort_main,1);
+	                              //-------------------------------------------------------------	
+					   
+					   SD_ACKflag.f_CentreCMDack_0001H=1 ;//DataLink_EndFlag=1; //AT_End(); 先返回结果再挂断  
+
+	                break;
+	 case 0x0014:  // 备份服务器 APN
+
+	                break;
+	 case 0x0017:  // 备份服务器  IP     
+
+
+	  
+				  memset(reg_in,0,sizeof(reg_in)); 
+				  memcpy(reg_in,Content,infolen);
+
+				     rt_kprintf("\r\n  不允许修改 备用IP 和域名: %s \r\n",reg_in);
+                      Fail_Flag=1;
+                       break;// 平台不让修改域名和IP  
+					  
+				 //---------------------------- 
+				  i =str2ip((char*)reg_in, RemoteIP_aux);
+				  if (i <= 3)
+				 {
+					  rt_kprintf("\r\n  域名aux: %s \r\n",reg_in); 					  
+					 memset(DomainNameStr_aux,0,sizeof(DomainNameStr_aux));					  
+					 memset(SysConf_struct.DNSR_Aux,0,sizeof(DomainNameStr_aux));     
+					  memcpy(DomainNameStr_aux,(char*)Content,infolen);   
+					  memcpy(SysConf_struct.DNSR_Aux,(char*)Content,infolen);    
+					 Api_Config_write(config,ID_CONF_SYS,(u8*)&SysConf_struct,sizeof(SysConf_struct));
+                                     //----- 传给 GSM 模块------
+                                    DataLink_DNSR2_Set(SysConf_struct.DNSR_Aux,1);
+									 
+					  SD_ACKflag.f_CentreCMDack_0001H=1 ;//DataLink_EndFlag=1; //AT_End(); 先返回结果再挂断  
+					  break;
+				 }  				  
+				  memset(reg_str,0,sizeof(reg_str));
+				  IP_Str((char*)reg_str, *( u32 * ) RemoteIP_aux);		   
+				  strcat((char*)reg_str, " :"); 	  
+				  sprintf((char*)reg_str+strlen((const char*)reg_str), "%u\r\n", RemotePort_aux);  
+				 
+				  Api_Config_write(config,ID_CONF_SYS,(u8*)&SysConf_struct,sizeof(SysConf_struct));
+				  rt_kprintf("\r\n 中心设置备用服务器 IP \r\n");
+				  rt_kprintf("\r\nUDP SOCKET :");  
+				  rt_kprintf((char*)reg_str);  
+				  DataLink_AuxSocket_set(RemoteIP_aux,RemotePort_aux,1);
+				   //-----------  Below add by Nathan  ----------------------------				   
+				   rt_kprintf("\r\n 		备用IP: %d.%d.%d.%d : %d \r\n",RemoteIP_aux[0],RemoteIP_aux[1],RemoteIP_aux[2],RemoteIP_aux[3],RemotePort_aux);	
+	                break;
+	 case 0x0018:  //  服务器 TCP 端口
+                    //----------------------------	
+                      if(infolen!=4)
+						break;	
+					  RemotePort_main=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
+
+					  Api_Config_write(config,ID_CONF_SYS,(u8*)&SysConf_struct,sizeof(SysConf_struct));
+					  rt_kprintf("\r\n 中心设置主服务器 PORT \r\n");
+					  rt_kprintf("\r\nUDP SOCKET :");  
+					  rt_kprintf((char*)reg_str);  
+					   //-----------  Below add by Nathan  ----------------------------
+                                     DataLink_MainSocket_set(RemoteIP_main,RemotePort_main,1);					   //-------------------------------------------------------------		   
+					   SD_ACKflag.f_CentreCMDack_0001H=1 ;//DataLink_EndFlag=1; //AT_End(); 先返回结果再挂断	
+	                break;
+	 case 0x0019:  //  服务器 UDP 端口
+                    
+					if(infolen!=4)
+					  break;  
+					RemotePort_aux=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
+					
+					 Api_Config_write(config,ID_CONF_SYS,(u8*)&SysConf_struct,sizeof(SysConf_struct));
+					rt_kprintf("\r\n 中心设置UDP服务器 PORT \r\n");
+					rt_kprintf("\r\nUDP SOCKET :");   
+					rt_kprintf((char*)reg_str);    
+					rt_kprintf("\r\n		 备用IP: %d.%d.%d.%d : %d \r\n",RemoteIP_aux[0],RemoteIP_aux[1],RemoteIP_aux[2],RemoteIP_aux[3],RemotePort_aux);	 
+	                break;
+     case 0x0020:  //  汇报策略  0 定时汇报  1 定距汇报 2 定时和定距汇报
+                    if(infolen!=4)
+						break;	
+                    resualtu32=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
+					
+					JT808Conf_struct.SD_MODE.Send_strategy=resualtu32;					
+					switch(resualtu32)
+						{
+						   case 0:rt_kprintf("\r\n 定时汇报 \r\n");
+						          JT808Conf_struct.SD_MODE.DUR_TOTALMODE=1;  // 使能定时发送
+                                  JT808Conf_struct.SD_MODE.Dur_DefaultMode=1; //  缺省方式上报
+
+								    JT808Conf_struct.SD_MODE.DIST_TOTALMODE=0;
+                                  JT808Conf_struct.SD_MODE.Dist_DefaultMode=0;
+						   	      break;
+						   case 1:rt_kprintf("\r\n 定距汇报 \r\n");
+						          JT808Conf_struct.SD_MODE.DIST_TOTALMODE=1;
+                                  JT808Conf_struct.SD_MODE.Dist_DefaultMode=1;
+
+								    JT808Conf_struct.SD_MODE.DUR_TOTALMODE=0;  // 使能定时发送
+                                   JT808Conf_struct.SD_MODE.Dur_DefaultMode=0; //  缺省方式上报
+						   	      break;
+						   case 2:rt_kprintf("\r\n 定时和定距汇报\r\n"); 
+						            JT808Conf_struct.SD_MODE.DIST_TOTALMODE=1;
+                                  JT808Conf_struct.SD_MODE.Dist_DefaultMode=1;
+
+								   JT808Conf_struct.SD_MODE.DUR_TOTALMODE=1;  // 使能定时发送
+                                  JT808Conf_struct.SD_MODE.Dur_DefaultMode=1; //  缺省方式上报
+								  
+						   	      break;
+						   default:
+						   	      break;
+
+						}
+					
+					Api_Config_write(config,ID_CONF_SYS,(u8*)&SysConf_struct,sizeof(SysConf_struct));
+	                break;
+	 case 0x0021:  //  位置汇报方案  0 根据ACC上报  1 根据ACC和登录状态上报 
+                    JT808Conf_struct.PositionSd_Stratage=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
+	                break;
+       //--------
+					
+	 case 0x0022:  //  驾驶员未登录 汇报时间间隔 单位:s    >0	                  
+                    if(infolen!=4)
+						break;					
+					JT808Conf_struct.DURATION.NoDrvLogin_Dur=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
+                                    Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
+                                   rt_kprintf("\r\n 驾驶员未登录汇报间隔: %d\r\n",JT808Conf_struct.DURATION.NoDrvLogin_Dur);  
+	                break;
+	 case 0x0027:   //  休眠时汇报时间间隔，单位 s  >0	                
+                    if(infolen!=4)
+						break;					
+					JT808Conf_struct.DURATION.Sleep_Dur=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
+                    Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
+                    rt_kprintf("\r\n 休眠汇报时间间隔: %d \r\n",JT808Conf_struct.DURATION.Sleep_Dur);   
+	                break;
+	 case 0x0028:   //  紧急报警时汇报时间间隔  单位 s	                
+                    if(infolen!=4)
+						break;					
+					JT808Conf_struct.DURATION.Emegence_Dur=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
+                   Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct)); 
+                    rt_kprintf("\r\n 紧急报警时间间隔: %d \r\n",JT808Conf_struct.DURATION.Emegence_Dur);   
+	                break;
+	 case 0x0029:   //  缺省时间汇报间隔  单位 s
+	                if(infolen!=4)
+						break;					
+					JT808Conf_struct.DURATION.Default_Dur=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
+                    Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));   
+					rt_kprintf("\r\n 缺省汇报时间间隔: %d \r\n",JT808Conf_struct.DURATION.Default_Dur);   
+	                break;
+       //---------
+					
+	 case 0x002C:   //  缺省距离汇报间隔  单位 米
+	                if(infolen!=4)
+						break;					
+					JT808Conf_struct.DISTANCE.Defalut_DistDelta=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
+                    Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
+					rt_kprintf("\r\n 缺省距离汇报间隔: %d m\r\n",JT808Conf_struct.DISTANCE.Defalut_DistDelta); 
+	                break;
+	 case 0x002D:   //  驾驶员未登录汇报距离间隔 单位 米
+	               if(infolen!=4)
+						break;					
+					JT808Conf_struct.DISTANCE.NoDrvLogin_Dist=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
+                    Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct)); 
+					rt_kprintf("\r\n 驾驶员未登录汇报距离: %d m\r\n",JT808Conf_struct.DISTANCE.NoDrvLogin_Dist); 
+	                break;
+	 case 0x002E:   //  休眠时汇报距离间隔  单位 米
+	               if(infolen!=4)
+						break;					
+					JT808Conf_struct.DISTANCE.Sleep_Dist=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
+                    Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
+					rt_kprintf("\r\n 休眠时定距上报间隔: %d m\r\n",JT808Conf_struct.DISTANCE.Sleep_Dist); 
+	                break;
+	 case 0x002F:   //  紧急报警时汇报距离间隔  单位 米
+	               if(infolen!=4)
+						break;					
+					JT808Conf_struct.DISTANCE.Emergen_Dist=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
+                    Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
+					rt_kprintf("\r\n 紧急报警时定距上报间隔: %d m\r\n",JT808Conf_struct.DISTANCE.Emergen_Dist); 
+	                break;
+	 case 0x0030:   //  拐点补传角度 , <180
+                    if(infolen!=4)
+						break;					
+					JT808Conf_struct.DURATION.SD_Delta_maxAngle=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
+                    Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
+					rt_kprintf("\r\n 拐点补传角度: %d 度\r\n",JT808Conf_struct.DISTANCE.Emergen_Dist);  
+	                break;
+  
+	 case 0x0040:   //   监控平台电话号码  
+	                 if(infolen==0)
+					 	 break;
+					i=strlen((const char*)JT808Conf_struct.LISTEN_Num);
+					rt_kprintf("\r\n old: %s \r\n",JT808Conf_struct.LISTEN_Num);
+					 
+					memset(JT808Conf_struct.LISTEN_Num,0,sizeof(JT808Conf_struct.LISTEN_Num));
+					memcpy(JT808Conf_struct.LISTEN_Num,Content,infolen);											
+					Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));  
+ 					rt_kprintf("\r\n new: %s \r\n",JT808Conf_struct.LISTEN_Num);
+                     
+	                //CallState=CallState_rdytoDialLis;  // 准备开始拨打监听号码 
+	                rt_kprintf("\r\n 设置监控平台号码: %s \r\n",JT808Conf_struct.LISTEN_Num);   
+
+	                break;
+	 case 0x0041:   //   复位电话号码，可采用此电话号码拨打终端电话让终端复位
+                    if(infolen==0)
+					 	 break;
+					memset(reg_str,0,sizeof(reg_str)); 
+					memcpy(reg_str,Content,infolen);											
+ 					rt_kprintf("\r\n 复位电话号码 %s \r\n",reg_str);  
+	                break;
+	 case 0x0042:   //   恢复出厂设置电话，可采用该电话号码是终端恢复出厂设置
+
+	                break;
+	 case 0x0045:   //  终端电话接听策略 0 自动接听  1 ACC ON自动接听 OFF时手动接听
+
+	                break;
+	 case 0x0046:   //  每次通话最长时间 ，单位  秒
+                    
+	                break;
+	 case 0x0047:   //  当月最长通话时间，单位  秒
+
+	                break;
+	 case 0x0048:   //  监听电话号码                    
+					if(infolen==0)
+						 break;
+					memset(JT808Conf_struct.LISTEN_Num,0,sizeof(JT808Conf_struct.LISTEN_Num));
+					memcpy(JT808Conf_struct.LISTEN_Num,Content,infolen); 										
+					Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));  
+					CallState=CallState_rdytoDialLis;  // 准备开始拨打监听号码 
+					rt_kprintf("\r\n 立即拨打监听号码: %s \r\n",JT808Conf_struct.LISTEN_Num);  
+	                break;  
+
+	    //----------				
+	 case 0x0050:  //  报警屏蔽字， 与位置信息中报警标志相对应。相应位为1时报警被屏蔽---
+                    
+                    if(infolen!=4)
+						break;	
+                    Warn_MaskWord[0]=Content[0];
+					Warn_MaskWord[1]=Content[1];
+					Warn_MaskWord[2]=Content[2];
+					Warn_MaskWord[3]=Content[3];  
+				    resualtu32=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3]; 
+                    rt_kprintf("\r\n 报警屏蔽字: %x \r\n",resualtu32);    //
+					break;
+	 case 0x0052:  //  报警拍照开关， 与报警标志对应的位1时，拍照
+
+	                break;
+	 case 0x0053:  //  报警拍照存储  	与报警标志对应的位1时，拍照存储 否则实时上传
+
+	                break;
+	 case 0x0054:  //  关键标志  		与报警标志对应的位1  为关键报警
+	                     if(infolen!=4)
+						break;	
+                    Key_MaskWord[0]=Content[0];
+					Key_MaskWord[1]=Content[1];
+					Key_MaskWord[2]=Content[2];
+					Key_MaskWord[3]=Content[3];  
+				    resualtu32=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3]; 
+                    rt_kprintf("\r\n 关键报警标志: %x \r\n",resualtu32);    // 
+		 
+
+	                break;
+        //---------  
+					
+	 case 0x0055:  //  最高速度   单位   千米每小时
+                   if(infolen!=4)
+						break;
+				    JT808Conf_struct.Speed_warn_MAX=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8)	+Content[3];
+				   memset(reg_str,0,sizeof(reg_str));
+				   memcpy(reg_str,& JT808Conf_struct.Speed_warn_MAX,4);
+				   memcpy(reg_str+4,&JT808Conf_struct.Spd_Exd_LimitSeconds,4);
+				    Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
+				   rt_kprintf("\r\n 最高速度: %d km/h \r\n", JT808Conf_struct.Speed_warn_MAX); 
+				   Spd_ExpInit();
+	                break;
+	 case 0x0056:  //  超速持续时间    单位 s
+                   if(infolen!=4)
+						break;
+				   JT808Conf_struct.Spd_Exd_LimitSeconds=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8)	+Content[3];
+				   memset(reg_str,0,sizeof(reg_str));
+				   memcpy(reg_str,& JT808Conf_struct.Speed_warn_MAX,4);
+				   memcpy(reg_str+4,&JT808Conf_struct.Spd_Exd_LimitSeconds,4); 
+				    Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
+				   rt_kprintf("\r\n 超时持续时间: %d s \r\n",JT808Conf_struct.Spd_Exd_LimitSeconds); 
+				   Spd_ExpInit();
+	                break;
+	 case 0x0057:  //  连续驾驶时间门限 单位  s
+					 if(infolen!=4)
+						  break;
+				   TiredConf_struct.TiredDoor.Door_DrvKeepingSec=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8)   +Content[3];
+                               Api_Config_write(tired_config,0,(u8*)&TiredConf_struct,sizeof(TiredConf_struct));				  
+				   Warn_Status[3]&=~0x04;  //BIT(2)	接触疲劳驾驶报警 
+				   TIRED_Drive_Init();    // 清除疲劳驾驶状态      
+				    rt_kprintf("\r\n 连续驾驶时间门限: %d s \r\n",TiredConf_struct.TiredDoor.Door_DrvKeepingSec);  
+	               break;
+	 case 0x0058:  //  当天累计驾驶时间门限  单位  s
+				   if(infolen!=4)
+						break;
+				   TiredConf_struct.TiredDoor.Door_DayAccumlateDrvSec=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8)   +Content[3];
+                               Api_Config_write(tired_config,0,(u8*)&TiredConf_struct,sizeof(TiredConf_struct));			
+				   TiredConf_struct.Tired_drive.ACC_ONstate_counter=0;
+				   TiredConf_struct.Tired_drive.ACC_Offstate_counter=0;
+                                Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct)); 
+                               rt_kprintf("\r\n 当天累计驾驶时间: %d s \r\n",TiredConf_struct.TiredDoor.Door_DayAccumlateDrvSec); 
+	                break;
+     case 0x0059:  //  最小休息时间  单位 s
+				   if(infolen!=4)
+						break;
+				    TiredConf_struct.TiredDoor.Door_MinSleepSec=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8)   +Content[3];
+                               Api_Config_write(tired_config,0,(u8*)&TiredConf_struct,sizeof(TiredConf_struct));				  
+					rt_kprintf("\r\n 最小休息时间: %d s \r\n",TiredConf_struct.TiredDoor.Door_MinSleepSec);  
+	                break;
+	 case 0x005A:  //  最长停车时间   单位 s
+					 if(infolen!=4)
+						  break;
+					TiredConf_struct.TiredDoor.Door_MaxParkingSec=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8)	 +Content[3];
+                                   Api_Config_write(tired_config,0,(u8*)&TiredConf_struct,sizeof(TiredConf_struct));				
+					TiredConf_struct.TiredDoor.Parking_currentcnt=0; 
+					 Warn_Status[1]&=~0x08;  // 清除超时触发 
+					rt_kprintf("\r\n 最长停车时间: %d s \r\n",TiredConf_struct.TiredDoor.Door_MaxParkingSec);   
+	                break;
+	     //--------- 
+	 case  0x0070: //  图像/视频质量  1-10  1 最好
+
+	                break;
+	 case  0x0071: //  亮度  0-255
+
+	                break;
+	 case  0x0072: //  对比度  0-127
+
+	                break;
+	 case  0x0073: // 饱和度  0-127
+
+	                break;
+	 case  0x0074: // 色度   0-255
+
+	                break;
+		  //---------
+	 case  0x0080: // 车辆里程表读数   1/10 km
+	                // resualtu32=JT808Conf_struct.Distance_m_u32/100;
+					 
+					 resualtu32=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8)  +Content[3];					
+                     Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
+					 rt_kprintf("\r\n 中心设置里程:  %d  1/10km/h\r\n",resualtu32);  
+					
+
+	                break;
+	 case  0x0081: // 车辆所在的省域ID
+	                if(infolen!=2)
+						  break;
+					JT808Conf_struct.Vechicle_Info.Dev_ProvinceID=(Content[0]<<8)+Content[1];
+                                   Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
+					rt_kprintf("\r\n 车辆所在省域ID: 0x%X \r\n",JT808Conf_struct.Vechicle_Info.Dev_ProvinceID); 
+	                break;
+	 case  0x0082: // 车辆所在市域ID
+	                if(infolen!=2)
+						  break;
+					JT808Conf_struct.Vechicle_Info.Dev_ProvinceID=(Content[0]<<8)+Content[1];
+                                   Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
+					rt_kprintf("\r\n 车辆所在市域ID: 0x%X \r\n",JT808Conf_struct.Vechicle_Info.Dev_ProvinceID); 
+	                break;
+	 case  0x0083: // 公安交通管理部门颁发的机动车号牌
+	                if(infolen<4)
+						  break;					
+					memset(JT808Conf_struct.Vechicle_Info.Vech_Num,0,sizeof(JT808Conf_struct.Vechicle_Info.Vech_Num));
+					memcpy(JT808Conf_struct.Vechicle_Info.Vech_Num,Content,infolen);
+                                   Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
+					rt_kprintf("\r\n 机动车驾驶证号: %s  \r\n",JT808Conf_struct.Vechicle_Info.Vech_Num);  
+	                break;
+	 case  0x0084: // 车牌颜色  按照国家规定
+	                if(infolen!=1)
+						  break;
+					JT808Conf_struct.Vechicle_Info.Dev_Color=Content[0];           
+                                   Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
+					rt_kprintf("\r\n 车辆颜色: %d  \r\n",JT808Conf_struct.Vechicle_Info.Dev_Color);    
+
+					//  redial();
+					// idip("clear");
+	                break;
+       //--------------- BD  新增----------------------------------
+       case  0x001A: //  IC卡 主服务器或域名
+                                    memset(reg_in,0,sizeof(reg_in)); 
+					  memcpy(reg_in,Content,infolen);
+					 //----------------------------	
+					 
+					 i =str2ip((char*)reg_in, SysConf_struct.BD_IC_main_IP);
+					 if (i <= 3)
+					 {
+					  rt_kprintf("\r\n IC  主 域名: %s \r\n",reg_in); 
+					  
+					  memset(SysConf_struct.BD_IC_DNSR,0,sizeof(SysConf_struct.BD_IC_DNSR));
+					  memcpy(SysConf_struct.BD_IC_DNSR,(char*)Content,infolen);   
+					 Api_Config_write(config,ID_CONF_SYS,(u8*)&SysConf_struct,sizeof(SysConf_struct));
+					  break;
+					 }
+					 memset(reg_str,0,sizeof(reg_str));
+					 IP_Str((char*)reg_str, *( u32 * ) SysConf_struct.BD_IC_main_IP); 		  
+				       Api_Config_write(config,ID_CONF_SYS,(u8*)&SysConf_struct,sizeof(SysConf_struct));
+					rt_kprintf("\r\n IC  主IP: %d.%d.%d.%d \r\n",SysConf_struct.BD_IC_main_IP[0],SysConf_struct.BD_IC_main_IP[1],SysConf_struct.BD_IC_main_IP[2],SysConf_struct.BD_IC_main_IP[3]);    
+			break;
+       case  0x001B:// IC 卡  主TCP端口
+                                    SysConf_struct.BD_IC_TCP_port=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8)+Content[3];
+                                 	 Api_Config_write(config,ID_CONF_SYS,(u8*)&SysConf_struct,sizeof(SysConf_struct));
+					  rt_kprintf("\r\n IC  TCP Port: %d \r\n",SysConf_struct.BD_IC_TCP_port); 	
+                                     //  IC 卡中心
+					  DataLink_IC_Socket_set(SysConf_struct.BD_IC_main_IP,SysConf_struct.BD_IC_TCP_port,0); 
+	              break;
+       case  0x001C:// IC卡   主UDP 端口
+                                     SysConf_struct.BD_IC_UDP_port=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8)+Content[3];
+                                    Api_Config_write(config,ID_CONF_SYS,(u8*)&SysConf_struct,sizeof(SysConf_struct));
+					 rt_kprintf("\r\n IC  UDP Port : %d \r\n",SysConf_struct.BD_IC_UDP_port); 	 			
+	              break;
+       case  0x001D:// IC 卡备用服务器和端口
+                                    memset(reg_in,0,sizeof(reg_in)); 
+					  memcpy(reg_in,Content,infolen);
+					 //----------------------------						 
+					 i =str2ip((char*)reg_in, SysConf_struct.BD_IC_Aux_IP);
+					 if (i <= 3)
+					 {
+					  rt_kprintf("\r\n IC  主 域名: %s \r\n",reg_in); 
+					  
+					  memset(SysConf_struct.BD_IC_DNSR_Aux,0,sizeof(SysConf_struct.BD_IC_DNSR_Aux));
+					  memcpy(SysConf_struct.BD_IC_DNSR_Aux,(char*)Content,infolen);   
+					 Api_Config_write(config,ID_CONF_SYS,(u8*)&SysConf_struct,sizeof(SysConf_struct));
+					  break;
+					 }
+					 memset(reg_str,0,sizeof(reg_str));
+					 IP_Str((char*)reg_str, *( u32 * ) SysConf_struct.BD_IC_Aux_IP); 		  
+				        Api_Config_write(config,ID_CONF_SYS,(u8*)&SysConf_struct,sizeof(SysConf_struct));
+					 rt_kprintf("\r\n IC  备用IP: %d.%d.%d.%d \r\n",SysConf_struct.BD_IC_Aux_IP[0],SysConf_struct.BD_IC_Aux_IP[1],SysConf_struct.BD_IC_Aux_IP[2],SysConf_struct.BD_IC_Aux_IP[3]);    
+
+	              break;
+	case   0x0031://  电子围栏半径(非法位移阈值)
+                            if(infolen!=2)
+						break;					
+				JT808Conf_struct.BD_CycleRadius_DoorValue=(Content[0]<<8)+Content[1]; 
+	                     Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
+		  		rt_kprintf("\r\n 电子围栏半径(非法移动阈值): %d m\r\n",JT808Conf_struct.BD_CycleRadius_DoorValue);  
+			break;
+	case   0x005B: // 超速报警预警差值   1/10 KM/h
+	                     if(infolen!=2)
+						break;					
+				JT808Conf_struct.BD_MaxSpd_preWarnValue=(Content[0]<<8)+Content[1]; 
+	                     Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
+		  		rt_kprintf("\r\n 超速报警预警差值: %d x 0.1km/h\r\n",JT808Conf_struct.BD_MaxSpd_preWarnValue);
+
+	              break;
+	case   0x005C: // 疲劳驾驶阈值  单位:s
+	                    if(infolen!=2)
+						break;					
+				JT808Conf_struct.BD_TiredDrv_preWarnValue=(Content[0]<<8)+Content[1]; 
+	                     Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
+		  		rt_kprintf("\r\n 疲劳驾驶阈值: %d s\r\n",JT808Conf_struct.BD_TiredDrv_preWarnValue);	
+	              break;
+	case   0x005D:// 碰撞报警参数设置 
+	        	       if(infolen!=2)
+						break;					
+				JT808Conf_struct.BD_Collision_Setting=(Content[0]<<8)+Content[1]; 
+	                     Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
+		  		rt_kprintf("\r\n 碰撞报警参数设置 : %x \r\n",JT808Conf_struct.BD_MaxSpd_preWarnValue);	
+	              break;
+	case   0x005E: // 侧翻报警参数设置   默认30度
+		              if(infolen!=2)
+						break;					
+				JT808Conf_struct.BD_Laydown_Setting=(Content[0]<<8)+Content[1]; 
+	                     Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
+		  		rt_kprintf("\r\n侧翻报警参数设置: %x r\n",JT808Conf_struct.BD_Laydown_Setting);	
+	              break;
+       //---  CAMERA 
+	case   0x0064://  定时拍照控制
+	                        if(infolen!=4)
+						break;
+	                         JT808Conf_struct.BD_CameraTakeByTime_Settings=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8)+Content[3];
+                                Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
+				    rt_kprintf("\r\n 定时拍照控制: %X\r\n",JT808Conf_struct.BD_CameraTakeByTime_Settings); 			
+	              break;
+	case   0x0065://  定距离拍照控制
+                               if(infolen!=4)
+						break;
+				    JT808Conf_struct.BD_CameraTakeByDistance_Settings=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8)+Content[3];
+                                Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
+				    rt_kprintf("\r\n  定距离拍照控制: %X\r\n",JT808Conf_struct.BD_CameraTakeByDistance_Settings); 	
+                     break;
+	 //--- GNSS
+	case    0x0090: // GNSS 定位模式 
+		           	
+                                   JT808Conf_struct.BD_EXT.GNSS_Mode=Content[0]; 
+					  rt_kprintf("\r\n  GNSS Value= 0x%2X	\r\n",Content[0]);		   
+				        switch(JT808Conf_struct.BD_EXT.GNSS_Mode)
+				      	{
+		                         case 0x01:  // 单 GPS 定位模式                        
+								   gps_mode("2");
+							          Car_Status[1]&=~0x0C; // clear bit3 bit2      1100
+							          Car_Status[1]|=0x04; // Gps mode   0100
+								 break;
+					    case  0x02:  // 	单BD2 定位模式
+					                        gps_mode("1");
+								    Car_Status[1]&=~0x0C; // clear bit3 bit2 
+							           Car_Status[1]|=0x08; // BD mode	1000		
+						               break;
+					    case  0x03: //  BD2+GPS 定位模式 
+								   gps_mode("3");
+								    Car_Status[1]&=~0x0C; // clear bit3 bit2 
+							           Car_Status[1]|=0x0C; // BD+GPS  mode	1100	
+						               break;							   	
+				      	}				
+                                  Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
+	              break;
+       case    0x0091: // GNSS 波特率
+	                      JT808Conf_struct.BD_EXT.GNSS_Baud=Content[0];
+				switch(JT808Conf_struct.BD_EXT.GNSS_Baud)
+				{ 
+				    case 0x00:  //  4800
+                                                  JT808Conf_struct.BD_EXT.GNSS_Baud_Value=4800;    
+							//rt_thread_delay(5);						  
+							//gps_write("$PCAS01,0*1C\r\n",14);	
+							//rt_thread_delay(5);	
+							// gps_baud( 4800 );
+						        break;
+				     case 0x01: //9600   --default 
+				                     JT808Conf_struct.BD_EXT.GNSS_Baud_Value=9600;
+							//rt_thread_delay(5);			 
+                                                 //gps_write("$PCAS01,1*1D\r\n",14);	
+							//rt_thread_delay(5);
+							//gps_baud( 9600 );
+						        break;
+				     case  0x02: // 19200
+				                     JT808Conf_struct.BD_EXT.GNSS_Baud_Value=19200;
+							//rt_thread_delay(5);			 
+                                                 //gps_write("$PCAS01,2*1E\r\n",14);	
+							//rt_thread_delay(5);	
+							//gps_baud( 19200 );
+					               break;
+				     case  0x03://  38400
+                                                  JT808Conf_struct.BD_EXT.GNSS_Baud_Value=38400;
+							 //rt_thread_delay(5);						  
+							 //gps_write("$PCAS01,3*1F\r\n",14);	
+							 //rt_thread_delay(5);	
+							 //gps_baud( 38400 ); 
+					               break;
+				     case  0x04:// 57600
+				                      JT808Conf_struct.BD_EXT.GNSS_Baud_Value=57600;
+							 //rt_thread_delay(5);			  
+                                                  //gps_write("$PCAS01,4*18\r\n",14);	
+							 //rt_thread_delay(5);		
+							 //gps_baud( 57600 );
+					               break;
+				     case   0x05:// 115200
+				                      JT808Conf_struct.BD_EXT.GNSS_Baud_Value=115200; 
+							//rt_thread_delay(5);			  
+                                                 // gps_write("$PCAS01,5*19\r\n",14);	
+							 //rt_thread_delay(5);	
+							// gps_baud( 115200 ); 
+					               break;				    				
+
+				}
+		      	 //---UART_GPS_Init(baud);  //   修改串口波特率 
+		      	 rt_thread_delay(20);
+                      // BD_EXT_Write();   
+			rt_kprintf("\r\n 中心设置GNSS 波特率:  %d s\r\n",JT808Conf_struct.BD_EXT.GNSS_Baud_Value); 
+
+	              break;
+       case    0x0092: // GNSS 模块详细定位数据输出频率
+
+	              break;
+       case    0x0093://  GNSS 模块详细定位数据采集频率  1
+
+	              break;
+       case    0x0094:// GNSS 模块详细定位数据上传方式
+                   if(Content[0]=0x01)
+                       rt_kprintf("\r\n 按时间上传");
+				   if(Content[0]=0x00)
+                       rt_kprintf("\r\n 本地存储不上传"); 
+				   
+	              break;
+       case    0x0095://  GNSS 模块详细上传设置
+                        // GNSS_rawdata.SendDuration=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];;  // 
+	              break;
+	 //----CAN--
+	case      0x0100://  CAN  总线通道 1  采集间隔              0   : 表示不采集 
+                     if(infolen!=4)
+						break;					
+			CAN_trans.can1_sample_dur=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
+                     Can_RXnum=0;
+			Can_sdnum=0;	
+			Can_same=0; 
+		     break;
+	case    0x0101://  CAN  总线通道 1 上传时间间隔    0 :  表示不上传
+                    if(infolen!=2)
+						break;					
+			CAN_trans.can1_trans_dur=(Content[0]<<8) +Content[1];
+	           
+	              break;
+	case    0x0102://  CAN  总线通道 2  采集间隔              0   : 表示不采集 
+                     if(infolen!=4)
+						break;					
+			CAN_trans.can2_sample_dur=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
+	              break;
+	case    0x0103://  CAN  总线通道 2 上传时间间隔    0 :  表示不上传
+                     if(infolen!=2)
+						break;					
+			CAN_trans.can2_trans_dur=(Content[0]<<8) +Content[1];	           
+	              break;
+	case    0x0110://  CAN 总线ID 单独采集设置
+                     CAN_trans.canid_2_NotGetID= ((Content[4]&0x1F)<<24)+(Content[5]<<16)+(Content[6]<<8) +Content[7];
+		       rt_kprintf("\r\n不采集ID  0x0110= %08X\r\n",CAN_trans.canid_2_NotGetID);   		  
+
+	            break;	
+	case    0x0111://  CAN 总线ID 单独采集设置 其他
+                    if(infolen!=8)
+						break;		
+			OutPrint_HEX("0x0111",Content,8);			
+		       memcpy(	CAN_trans.canid_1,Content,8);
+			memset(CAN_trans.canid_1_Rxbuf,0,sizeof(CAN_trans.canid_1_Rxbuf));
+			CAN_trans.canid_1_RxWr=0;    // clear  write
+			CAN_trans.canid_timer=0;
+			CAN_trans.canid_0705_sdFlag=0;
+           
+		        //------ 解析赋值 --------
+                      CAN_trans.canid_1_sample_dur=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
+                      if(Content[4]&0x40) // bit 30   
+			 	   CAN_trans.canid_1_ext_state=1;
+			 else
+			 	   CAN_trans.canid_1_ext_state=0;
+                       CAN_trans.canid_1_Filter_ID=((Content[4]&0x1F)<<24)+(Content[5]<<16)+(Content[6]<<8) +Content[7];
+
+                       rt_kprintf("\r\n FilterID=%08X, EXTstate: %d   can1_samle=%d ms   canid_1_sample_dur=%dms    Trans_dur=%d s\r\n", CAN_trans.canid_1_Filter_ID, CAN_trans.canid_1_ext_state,CAN_trans.can1_sample_dur,CAN_trans.canid_1_sample_dur,CAN_trans.can1_trans_dur);
+			 
+	             break;
+	 default:
+				return false;
+   }
+
+    return true;
+}
+
 //--------------------------------------------------------------------
 u8  CentreSet_subService_8105H(u32 Control_ID, u8 infolen, u8 *Content )
 {
@@ -4764,308 +7539,6 @@ void CenterSet_subService_8701H(u8 cmd,  u8*Instr)
    if(Recode_Obj.Error!=2)
         VDR_product_14H(cmd);     
     
-}
-
-//-----------------------------------------------
-u8  CentreSet_subService_FF01H(u32 SubID, u8 infolen, u8 *Content )
-{  
- 
- 
-  u32  baud=0;
-  u8    u3_Txstr[40];
-  u8    Destu3_Txstr[40];
-  u8    len=0;
-		u8 i=0;
-
-
-   rt_kprintf("\r\n    收到扩展终端设置命令 SubID=%X \r\n",SubID);  
-	   
-  switch(SubID)
-   {
-     case 0x0001:  //GNSS 定位模式切换
-                    if(infolen!=4)
-						break;			 		
-		      BD_EXT.BD_Mode=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
-
-		      switch(BD_EXT.BD_Mode)
-		      	{
-                         case 0x00:  // 单 GPS 定位模式                        
-						   gps_mode("2");
-						 break;
-			    case  0x01:  // 	单BD2 定位模式
-			                        gps_mode("1");
-				               break;
-			    case  0x02: //  BD2+GPS 定位模式
-						   gps_mode("3");
-				               break;							   	
-		      	}
-                    //BD_EXT_Write();   
-                    break;
-	 case 0x0002:  // GNSS 波特率设置            
-                    if(infolen!=4)
-						break;					
-			BD_EXT.BD_Baud=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
-			switch(BD_EXT.BD_Baud)
-				{ 
-				    case 0x00:  //  4800
-                                                  baud=4800;    
-							//rt_thread_delay(5);						  
-							//gps_write("$PCAS01,0*1C\r\n",14);	
-							//rt_thread_delay(5);	
-							// gps_baud( 4800 );
-						        break;
-				     case 0x01: //9600   --default 
-				                     baud=9600;
-							//rt_thread_delay(5);			 
-                                                 //gps_write("$PCAS01,1*1D\r\n",14);	
-							//rt_thread_delay(5);
-							//gps_baud( 9600 );
-						        break;
-				     case  0x02: // 19200
-				                     baud=19200;
-							//rt_thread_delay(5);			 
-                                                 //gps_write("$PCAS01,2*1E\r\n",14);	
-							//rt_thread_delay(5);	
-							//gps_baud( 19200 );
-					               break;
-				     case  0x03://  38400
-                                                  baud=38400;
-							 //rt_thread_delay(5);						  
-							 //gps_write("$PCAS01,3*1F\r\n",14);	
-							 //rt_thread_delay(5);	
-							 //gps_baud( 38400 ); 
-					               break;
-				     case  0x04:// 57600
-				                      baud=57600;
-							 //rt_thread_delay(5);			  
-                                                  //gps_write("$PCAS01,4*18\r\n",14);	
-							 //rt_thread_delay(5);		
-							 //gps_baud( 57600 );
-					               break;
-				     case   0x05:// 115200
-				                      baud=115200; 
-							//rt_thread_delay(5);			  
-                                                 // gps_write("$PCAS01,5*19\r\n",14);	
-							 //rt_thread_delay(5);	
-							// gps_baud( 115200 ); 
-					               break;				    				
-
-				}
-		      	 //---UART_GPS_Init(baud);  //   修改串口波特率 
-		      	 rt_thread_delay(20);
-                      // BD_EXT_Write();   
-			rt_kprintf("\r\n 中心设置GNSS 波特率:  %d s\r\n",baud); 
-	                break;
-	 case 0x0003:  //  BNSS NMEA 输出更新率               
-                    if(infolen!=4)
-						break;					
- 		       BD_EXT.BD_OutputFreq=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
-                     switch(BD_EXT.BD_OutputFreq)
-                     	{
-                                 case 0x00: 
-							 baud=500;
-							 gps_write("$PCAS02,500*1A\r\n",16);	
- 							 rt_thread_delay(5);	
-							 break;
-				     case 0x01:
-					 	          baud=1000;
-							  gps_write("$PCAS02,1000*2E\r\n",16);
-							  rt_thread_delay(5);	
-							  break;
-				     case 0x02: 			  
-							  baud=2000;
-							 gps_write("$PCAS02,2000*2D\r\n",16);
-							 rt_thread_delay(5);	
-							  break;
-				     case  0x03:
-					 	         baud=3000;
-							 gps_write("$PCAS02,3000*2C\r\n",16);
-							 rt_thread_delay(5);	
-							 break;
-				     case  0x04:
-					 	        baud=4000;
-							 gps_write("$PCAS02,4000*2B\r\n",16);
-							 rt_thread_delay(5);	
-							 break;
-
-                     	}
-			     // BD_EXT_Write();   
-			      rt_kprintf("\r\n  GNSS 输出更新: %dms\r\n",baud);  
-	                break;
-	 case 0x0004:  // GNSS 采集NMEA 数据频率               
-                    if(infolen!=4)
-						break;					
-			 BD_EXT.BD_SampleFrea=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
-                       rt_kprintf("\r\n GNSS 采集频率: %d s\r\n", BD_EXT.BD_SampleFrea);   
-	                break;
-	 case 0x0005:  //  CAN 1  参数设置               
-                    if(infolen!=4)
-						break;					
-			BD_EXT.CAN_1_Mode=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
-                     CAN_App_Init();
-			//BD_EXT_Write();   
-			rt_kprintf("\r\n 中心设置CAN1 : 0x%08X\r\n",BD_EXT.CAN_1_Mode); 
-			break;
-	 case 0x0006:  //  CAN2   参数设置    ----- 要和小板通信
-                    if(infolen!=4)
-						break;					
-			BD_EXT.CAN_2_Mode=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
-                    // BD_EXT_Write();  
-			memset( u3_Txstr,0,sizeof(u3_Txstr));
-			memset( Destu3_Txstr,0,sizeof(Destu3_Txstr));		 
-			u3_Txstr[0]=0x7E;       // 头
-		       u3_Txstr[1]=0x33;		//  CAN 相关
-		       u3_Txstr[2]=0x01;    //  参数设置 
-		       u3_Txstr[3]=(BD_EXT.CAN_2_Mode>>24);
-			u3_Txstr[4]=(BD_EXT.CAN_2_Mode>>16);   	
-	              u3_Txstr[5]=(BD_EXT.CAN_2_Mode>>8);	       
-                     u3_Txstr[6]=(BD_EXT.CAN_2_Mode);	  
-			u3_Txstr[7]=0x7E;	              				 
-
-                     Destu3_Txstr[0]=0x7E;
-			len=Protocol_808_Encode(Destu3_Txstr+1, u3_Txstr+1, 6);
-			Destu3_Txstr[len+1]=0x7E;
-		
-			rt_kprintf("\r\n U3_orginal:");
-			for(i=0;i<8;i++)
-				rt_kprintf("% 02X",u3_Txstr[i]); 
-			rt_kprintf("\r\nU3_len=%d \r\n",len);
-			for(i=0;i<len+2;i++)
-				rt_kprintf("% 02X",Destu3_Txstr[i]);     
-			 // U3_PutData(Destu3_Txstr,len+2);  //  发送给串口	
-			rt_device_write(&Device_CAN2,0, Destu3_Txstr,len+2);       
-			rt_kprintf("\r\n 中心设置CAN2 : 0x%08X\r\n",BD_EXT.CAN_2_Mode);    
-	                break; 
-        case 0x0007:  //  碰撞参数设置
-                    if(infolen!=4)
-						break;					
-			BD_EXT.Collision_Check=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
-                     //BD_EXT_Write();   
-			memset( u3_Txstr,0,sizeof(u3_Txstr));
-			memset( Destu3_Txstr,0,sizeof(Destu3_Txstr));		 
-			u3_Txstr[0]=0x7E;       // 头
-		       u3_Txstr[1]=0x32;		//  CAN 相关 
-		       u3_Txstr[2]=0x01;    //  参数设置 
-		       u3_Txstr[3]=(BD_EXT.Collision_Check>>24);
-			u3_Txstr[4]=(BD_EXT.Collision_Check>>16);   	
-	              u3_Txstr[5]=(BD_EXT.Collision_Check>>8);	       
-                     u3_Txstr[6]=BD_EXT.Collision_Check;	 
-			u3_Txstr[7]=0x7E;	               				 
-
-			Destu3_Txstr[0]=0x7E;
-			len=Protocol_808_Encode(Destu3_Txstr+1, u3_Txstr+1, 6);
-			Destu3_Txstr[len+1]=0x7E;
-
-			//   设置配置碰撞参数
-			mma8451_config((uint16_t) (BD_EXT.Collision_Check>>16),(uint16_t) (BD_EXT.Collision_Check));
-			rt_kprintf("\r\n 中心设置碰撞参数: 0x%08X\r\n",BD_EXT.Collision_Check);; 
-	              break; 
-		
-	 default: 
-				return false; 
-   }
-   rt_thread_delay(20);	   	  
-    return true;
-}
-//--------------------------------------------------
-u8  CentreSet_subService_FF03H(u32 SubID, u8 infolen, u8 *Content )
-{  
-    u8  i=0;
-    u8    u3_Txstr[40];
-    u8    Destu3_Txstr[40];
-    u8    len=0;
-
-
-   rt_kprintf("\r\n    收到扩展终端参数设置1 命令 SubID=%X \r\n",SubID);  
-	   
-  switch(SubID)
-   {
-     case 0x0001:  // CAN ID 设置
-                    if(infolen<4)
-						break;			 		
-		        // Content[0];  //  设置属性
-			  //Content[1] ;//本消息中包含CAN ID 的数量
-		     //------------------------------------	  
-			//Content[2];  //  CAN ID 的ID 			
-		     if(Content[3]&0x80)//  CAN ID   的属性  
-		     	{
-			      BD_EXT.CAN_2_ID=(Content[4]<<24)+(Content[5]<<16)+(Content[6]<<8)+Content[7];// 
-                            if(Content[3]&0x40)
-					 BD_EXT.CAN_2_Type=1; // 标准帧
-				else 
-					 BD_EXT.CAN_2_Type=0;  
-			      BD_EXT.CAN_2_Duration=(Content[9]<<8)+Content[10];   // 0   表示停止
-
-				 
-				//     得有个和小板通信的处理
-				memset( Destu3_Txstr,0,sizeof(Destu3_Txstr));		 
-				u3_Txstr[0]=0x7E;       // 头
-			       u3_Txstr[1]=0x33;		//  CAN 相关
-			       u3_Txstr[2]=0x02;    //  参数设置 
-			       u3_Txstr[3]=Content[3]; // 属性
-			       u3_Txstr[4]=Content[4]; //  ID 
-				u3_Txstr[5]=Content[5];   	
-		              u3_Txstr[6]=Content[6];	       
-	                     u3_Txstr[7]=Content[7];
-				u3_Txstr[8]=Content[8]; // ID 		 
-				u3_Txstr[9]=Content[9]; 	//
-				u3_Txstr[10]=Content[10]; 	
-				u3_Txstr[11]=0x7E;	              				 
-
-				 Destu3_Txstr[0]=0x7E;
-			        len=Protocol_808_Encode(Destu3_Txstr+1, u3_Txstr+1, 10);  
-			        Destu3_Txstr[len+1]=0x7E;
-
-			       rt_kprintf("\r\nU3_len=%d   :\r\n",len);  
-			       for(i=0;i<len+2;i++)
-				        rt_kprintf("% 02X",Destu3_Txstr[i]);     	 
-				   
-			       // U3_PutData(Destu3_Txstr,len+2);  //  发送给串口	
-			       rt_device_write(&Device_CAN2,0, Destu3_Txstr,len+2);       
-				rt_kprintf("\r\n 中心设置CAN2 : 0x%08X   Dur: %d s\r\n",BD_EXT.CAN_2_ID,BD_EXT.CAN_2_Duration);     
-			        //----------------------------------
-			 } 
-			 else
-     			   {
-      			       BD_EXT.CAN_1_ID=(Content[4]<<24)+(Content[5]<<16)+(Content[6]<<8)+Content[7];// 
-                             if(Content[3]&0x40)   
-					 BD_EXT.CAN_1_Type=1; // 标准帧
-				else 
-					 BD_EXT.CAN_1_Type=0;   
-				 BD_EXT.CAN_1_Duration=(Content[9]<<8)+Content[10];  // 0   表示停止  
-
-				rt_kprintf("\r\n 中心设置CAN1 : 0x%08X   Dur: %d s\r\n",BD_EXT.CAN_1_ID,BD_EXT.CAN_1_Duration);    
-
-			   }   
-                    BD_EXT_Write();    
-                    break;
-	 case 0x0002:  // 文本信息标志含义     
-	            // Content[0]; // 没用
-	              //if((Content[1]==0)||(Content[1]==1))  //  部分类型都给显示屏 
-	             	{
-				memset( TextInfo.TEXT_Content,0,sizeof(TextInfo.TEXT_Content));
-				DwinLCD.TxInfolen=AsciiToGb(TextInfo.TEXT_Content,infolen-2,Content+2);
-				//memcpy(TextInfo.TEXT_Content,Content+2,infolen-2);
-				TextInfo.TEXT_SD_FLAG=1;	// 置发送给显示屏标志位  // ||||||||||||||||||||||||||||||||||
-                            rt_kprintf("\r\n  CAN 文本:  "); 
-				for(i=0;i<DwinLCD.TxInfolen;i++) 
-							 rt_kprintf("%c",TextInfo.TEXT_Content[i]);
-				  rt_kprintf("\r\n ");
-			}	
-
-		          #ifdef LCD_5inch
-						           //======  信息都在屏幕上显示  
-                                                   memset(DwinLCD.TXT_content,0,sizeof(DwinLCD.TXT_content)); 
-                                                   DwinLCD.TXT_contentLen=AsciiToGb(DwinLCD.TXT_content,infolen-2,Content+2);  						  
-							  DwinLCD.Type=LCD_SDTXT;  						
-							   
-			   #endif  		
-
-		      break;
-	 default: 
-				return false;
-   }
-    return true;
 }
 //-----------------------------------------------
 void  ISP_Get_RawData(u8 * Instr, u16  InLen)
@@ -5352,7 +7825,7 @@ void Media_RSdMode_Timer(void)
     if((1==MediaObj.RSD_State))
 	   	{ 
 	        MediaObj.RSD_Timer++;
-			if(MediaObj.RSD_Timer>10)
+			if(MediaObj.RSD_Timer>12)
 				{
 	              MediaObj.RSD_Timer=0;
 				  MediaObj.SD_Data_Flag=1; // 置重传发送多媒体信息标志位
@@ -5361,6 +7834,7 @@ void Media_RSdMode_Timer(void)
 				  	 case 0://  图像
 				  	         Photo_sdState.SD_packetNum=MediaObj.Media_ReSdList[MediaObj.RSD_Reader];
 	                         Photo_sdState.SD_flag=1;
+							  rt_kprintf("\r\n 补报 %d 包\r\n",Photo_sdState.SD_packetNum); 
 							 break;
 					 case 1:// 音频                             
 				  	         Sound_sdState.SD_packetNum=MediaObj.Media_ReSdList[MediaObj.RSD_Reader];
@@ -5418,8 +7892,8 @@ void Photo_send_start(u16 Numpic)
 //  UINT ByteRead;  
  // FIL FileCurrent; 
 
-        rt_kprintf("   \r\n  Photo_send_start =%d \r\n",Numpic); 
-        Photo_sdState.photo_sending=disable;  
+     rt_kprintf("   \r\n  Photo_send_start =%d \r\n",Numpic);        
+	 Photo_sdState.photo_sending=other;	//disable        
 	 Photo_sdState.SD_flag=0;  
 	 Photo_sdState.SD_packetNum=1; // 从1 开始
         Photo_sdState.Exeption_timer=0;
@@ -5610,7 +8084,7 @@ void Video_Timer(void)
   
   if((Video_sdState.photo_sending==enable)&&(2==MediaObj.Media_Type)) // 视频
   {
-	 if((Video_sdState.SD_packetNum<=Video_sdState.Total_packetNum+1)&&(2!=MediaObj.RSD_State))  
+	 if((Video_sdState.SD_packetNum<=Video_sdState.Total_packetNum+1)&&(0==MediaObj.RSD_State))  
 	  {  //  一下定时器在	在顺序发送过过程中	 和   收到重传开始后有效
 		  Video_sdState.Data_SD_counter++;
 		  if( Video_sdState.Data_SD_counter>40)   
@@ -5631,7 +8105,7 @@ void Sound_Timer(void)
   
   if((Sound_sdState.photo_sending==enable)&&(1==MediaObj.Media_Type)) // 音频
   {
-	 if((Sound_sdState.SD_packetNum<=Sound_sdState.Total_packetNum+1)&&(2!=MediaObj.RSD_State))  
+	 if((Sound_sdState.SD_packetNum<=Sound_sdState.Total_packetNum+1)&&(0==MediaObj.RSD_State))  
 	  {  //  一下定时器在	在顺序发送过过程中	 和   收到重传开始后有效
 		  Sound_sdState.Data_SD_counter++;
 		  if( Sound_sdState.Data_SD_counter>14)         
@@ -5650,16 +8124,15 @@ void Photo_Timer(void)
 {
 	if((Photo_sdState.photo_sending==enable)&&(0==MediaObj.Media_Type))
 	{
-	   if((Photo_sdState.SD_packetNum<=Photo_sdState.Total_packetNum+1)&&(2!=MediaObj.RSD_State))  
+	   if((Photo_sdState.SD_packetNum<=Photo_sdState.Total_packetNum+1)&&(0==MediaObj.RSD_State))  
 	   	{  //  一下定时器在   在顺序发送过过程中   和   收到重传开始后有效 
 	        Photo_sdState.Data_SD_counter++;
 			if( Photo_sdState.Data_SD_counter>12)  //40   12     
 				{
-	                        Photo_sdState.Data_SD_counter=0;
+	               Photo_sdState.Data_SD_counter=0;
 				   Photo_sdState.Exeption_timer=0;			
-	                         Photo_sdState.SD_flag=1;
-				   MediaObj.SD_Data_Flag=1; 
-				  
+	               Photo_sdState.SD_flag=1;
+				   MediaObj.SD_Data_Flag=1;   				   
 				}
 	   	} 	
 	}
@@ -5744,10 +8217,54 @@ void Spd_ExpInit(void)
    speed_Exd.speed_flag=0;
 }
 
+//  河北天地通多媒体事件信息上传报文应答不好，所以单独处理  
+ void Multimedia_0800H_ACK_process(void)
+ {
+      						 Media_Clear_State();  //  clear 
+											 
+                                            if(0==MediaObj.Media_Type)
+											{
+											   MediaObj.Media_transmittingFlag=1; 
+											   PositionSD_Enable(); 
+											   Current_UDP_sd=1;
+											   
+											   Photo_sdState.photo_sending=enable; 
+											   Photo_sdState.SD_packetNum=1; // 第一包开始 
+											   PositionSD_Enable();  //   使能上报
+											   rt_kprintf("\r\n 开始上传照片! ....\r\n");   												
+                            	            }
+											else
+											if(1==MediaObj.Media_Type)
+											{
+											   MediaObj.Media_transmittingFlag=1;  
+											   
+											   Sound_sdState.photo_sending=enable; 
+											   Sound_sdState.SD_packetNum=1; // 第一包开始 
+											   PositionSD_Enable();  //   使能上报 
+											   Current_UDP_sd=1;
+											   rt_kprintf("\r\n 开始上传音频! ....\r\n");    												
+                            	            }	
+											else
+											if(2==MediaObj.Media_Type)
+											{
+											   MediaObj.Media_transmittingFlag=1;   
+											   PositionSD_Enable();  //   使能上报
+											   Current_UDP_sd=1;
+											   Video_sdState.photo_sending=enable; 
+											   Video_sdState.SD_packetNum=1; // 第一包开始   
+											   rt_kprintf("\r\n 开始上传视频! ....\r\n");    												
+                            	            }	
+
+
+
+
+ }
+
+
 //-----------------------------------------------------------
 void TCP_RX_Process( u8  LinkNum)  //  ---- 808  标准协议 
 {
-  	  u16	i=0;//,DF_PageAddr;
+  	  u16	i=0,j=0;//,DF_PageAddr;
 	  u16  infolen=0,contentlen=0;
 	 // u8   ireg[5]; 
 	  u8   Ack_Resualt=1;
@@ -5832,25 +8349,6 @@ void TCP_RX_Process( u8  LinkNum)  //  ---- 808  标准协议
 											   StatusReg_WARN_Clear();	
 											   rt_kprintf( "\r\n紧急报警收到应答，得清除!\r\n");   
 									  }
-									  //------------------------------------
-                                     if(Warn_Status[1]&0x10)// 进出区域报警
-                                     {
-						                  InOut_Object.TYPE=0;//圆形区域
-						                  InOut_Object.ID=0; //  ID
-						                  InOut_Object.InOutState=0;//  进报警 
-						                  Warn_Status[1]&=~0x10;
-                                     } 
-									   if(Warn_Status[1]&0x20)// 进出路线报警
-                                     {
-						                  InOut_Object.TYPE=0;//圆形区域
-						                  InOut_Object.ID=0; //  ID
-						                  InOut_Object.InOutState=0;//  进报警 
-						                  Warn_Status[1]&=~0x20;  
-                                     } 
-					 if(Warn_Status[0]&0x20)
-					 {
-                                                  Warn_Status[0]&=~0x20; 
-					 }
 									  //------------------------------------  
 										 rt_kprintf( "\r\nCentre ACK!\r\n");  	
 									    Api_cycle_Update();   
@@ -5884,6 +8382,7 @@ void TCP_RX_Process( u8  LinkNum)  //  ---- 808  标准协议
                                          rt_kprintf( "\r\n  Centre  Heart ACK!\r\n");  
 							           break;
                             case 0x0101:  //  终端注销应答
+                            case 0x0003:
                                         if(0==UDP_HEX_Rx[17])
                                         {  // 注销成功
                                           
@@ -5893,6 +8392,8 @@ void TCP_RX_Process( u8  LinkNum)  //  ---- 808  标准协议
  										 Reg_buf[20]=JT808Conf_struct.Regsiter_Status; 
  										Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));   
 										 rt_kprintf("\r\n  终端注销成功!  \r\n"); 
+                                         redial();
+										 idip("clear");
                                         }  
 
 							           break;
@@ -5951,18 +8452,19 @@ void TCP_RX_Process( u8  LinkNum)  //  ---- 808  标准协议
 							case 0x0701: 
                                            rt_kprintf("\r\n  电子运单上报---中心应答!  \r\n"); 							       
 											 
-							           break;		   
+							           break;		
+						   case 0x0705: 	//
+															  rt_kprintf("\r\n can-ack"); 
+								   break; 
+							 		   
 									   
 							default	 :
 								       break;
 					   	}
 
 
-					    //---------------------
-						 ACKFromCenterCounter=0; 
-						 fCentre_ACK=0;
-						 ACK_timer=0;
-				        break;
+					    //-------------------------------
+				      break;
            case  0x8100:    //  监控中心对终端注册消息的应答		
                        //-----------------------------------------------------------
 					   switch(UDP_HEX_Rx[15])
@@ -6001,6 +8503,7 @@ void TCP_RX_Process( u8  LinkNum)  //  ---- 808  标准协议
 		              break;
 		   case  0x8103:    //  设置终端参数   
 		               //  Ack_Resualt=0;
+		                Fail_Flag=0;
                       if(contentlen)
                        {                       // 和中心商议好了每次只下发操作一项设置
                          Total_ParaNum=UDP_HEX_Rx[13]; // 中心设置参数总数
@@ -6032,7 +8535,12 @@ void TCP_RX_Process( u8  LinkNum)  //  ---- 808  标准协议
 							 if(i==(Total_ParaNum-1))  //  设置到最后一个确认成功
 							 	Ack_Resualt=0;  //  成功/确认
                          }*/
-						 Ack_Resualt=0;
+						 
+						 if(Fail_Flag==0)
+						     Ack_Resualt=0;
+						 else
+						 	 Ack_Resualt=1;// 返回失败 
+						 
                       }	
 					  
 						 //-------------------------------------------------------------------
@@ -6056,6 +8564,7 @@ void TCP_RX_Process( u8  LinkNum)  //  ---- 808  标准协议
 			          break;
            case  0x8105:     // 终端控制
                     // Ack_Resualt=0; 
+                        rt_kprintf("\r\ny  终端控制 -1!\r\n"); 
                      if(contentlen)
                       {                       // 和中心商议好了每次只下发操作一项设置
                          Total_ParaNum=UDP_HEX_Rx[13]; //  终端控制命令字 
@@ -6089,7 +8598,7 @@ void TCP_RX_Process( u8  LinkNum)  //  ---- 808  标准协议
 
                          JT808Conf_struct.RT_LOCK.Lock_state=1;    // Enable Flag
 						 JT808Conf_struct.RT_LOCK.Lock_KeepCnter=0;  //  保持计数器
-						 Current_SD_Duration=JT808Conf_struct.RT_LOCK.Lock_KeepDur;  //更改发送间隔						 
+						 Current_SD_Duration=JT808Conf_struct.RT_LOCK.Lock_Dur;  //更改发送间隔						 
 
 						 JT808Conf_struct.SD_MODE.DUR_TOTALMODE=1;   // 更新定时相关状态位
 						 JT808Conf_struct.SD_MODE.Dur_DefaultMode=1; 
@@ -6344,10 +8853,10 @@ void TCP_RX_Process( u8  LinkNum)  //  ---- 808  标准协议
 					   if(infolen==0)
 							 break;
 					   if(0==UDP_HEX_Rx[13])   // 普通通话
-					   	   rt_kprintf("\r\n   电话回拨-->普通通话\r\n");
+					   	{   Speak_ON;rt_kprintf("\r\n   电话回拨-->普通通话\r\n");}
 					   else
 					   if(1==UDP_HEX_Rx[13])  //  监听
-					       rt_kprintf("\r\n   电话回拨-->监听");
+					    {  Speak_OFF;rt_kprintf("\r\n   电话回拨-->监听"); } 
 					   else
 					       break;
 	 					  memset(JT808Conf_struct.LISTEN_Num,0,sizeof(JT808Conf_struct.LISTEN_Num));
@@ -6956,22 +9465,74 @@ void TCP_RX_Process( u8  LinkNum)  //  ---- 808  标准协议
 		              	}
 					  else
 					  	{  //  重传包ID 列表 
-					  	  if(UDP_HEX_Rx[17]!=0)
+					  	  //if(UDP_HEX_Rx[17]!=0)
+						  if((UDP_HEX_Rx[17]!=0)&&(MultiTake.Taking==0))
 					  	  {
 						  	   MediaObj.RSD_State=1;   //   进入重传状态
 						  	   MediaObj.RSD_Timer=0;   //   清除重传定时器   
 						  	   MediaObj.RSD_Reader=0;
-							   MediaObj.RSD_total=UDP_HEX_Rx[17];    // 重传包总数
-						  	   memset(MediaObj.Media_ReSdList,0,125);
-							   memcpy(MediaObj.Media_ReSdList,UDP_HEX_Rx+18,UDP_HEX_Rx[17]); 
-	                            rt_kprintf("\r\n  重传列表: ");
+							   MediaObj.RSD_total=UDP_HEX_Rx[17];    // 重传包总数 
+
+
+						  	   memset(MediaObj.Media_ReSdList,0,sizeof(MediaObj.Media_ReSdList));                       
+						       //   获取重传列表 
+							   j=0;			
+                               // 根据总包数后边第一个字节区分是老版本还是新版本
+                               if(UDP_HEX_Rx[18]!=0)   // 老版本
+                               {
+									   for(i=0;i<MediaObj.RSD_total;i++)
+									   	{
+											//----- 天地通-----									
+		                                    MediaObj.Media_ReSdList[i]=UDP_HEX_Rx[18+i]; 
+										}		
+                               	}
+							   else
+							   	{          //  新版本协议                                   
+									 for(i=0;i<MediaObj.RSD_total;i++)
+									  {
+										  // formal
+										  MediaObj.Media_ReSdList[i]=(UDP_HEX_Rx[18+j]<<8)+UDP_HEX_Rx[19+j];
+										  j+=2;
+									  } 
+							   	}
+							   
+	                           rt_kprintf("\r\n  8800 重传列表Total=%d: ",MediaObj.RSD_total);
 							   for(i=0;i<MediaObj.RSD_total;i++)
-							     rt_kprintf(" %d",UDP_HEX_Rx[18+i]); 
-							   rt_kprintf("\r\n"); 
+							         rt_kprintf("%d,",MediaObj.Media_ReSdList[i]);   
+							   rt_kprintf("\r\n");   
+
 					  	   } 
 						}
                         
 		              break;
+					  //---------  BD  add -------------------------------
+			 case  0x8003: // BD--8.4 分包请求上传
+												// nouse	Detach_PKG.Original_floatID=(UDP_HEX_Rx[13]<<8)+UDP_HEX_Rx[14];//原始消息流水号
+								  MediaObj.RSD_State=1;   //   进入重传状态
+						  	      MediaObj.RSD_Timer=0;   //   清除重传定时器   
+						  	      MediaObj.RSD_Reader=0;				
+								  MediaObj.RSD_total=UDP_HEX_Rx[15];
+								  //  重传列表
+								  reg_u32=0;// 借用做下标计数器
+								  for(i=3;i<infolen;i+=2)
+								  {
+									 MediaObj.Media_ReSdList[reg_u32]=(UDP_HEX_Rx[16+2*reg_u32]<<24)+UDP_HEX_Rx[17+2*reg_u32+1];
+									 reg_u32++; 
+								  }
+
+								 rt_kprintf("\r\n  8003 重传列表Total=%d: ",MediaObj.RSD_total);
+							     for(i=0;i<MediaObj.RSD_total;i++)
+							         rt_kprintf("%d,",MediaObj.Media_ReSdList[i]);  
+							     rt_kprintf("\r\n");  
+					  
+									   {
+									   SD_ACKflag.f_CentreCMDack_0001H=1;
+									   Ack_Resualt=0;
+									   SD_ACKflag.f_CentreCMDack_resualt=Ack_Resualt;
+									 }	  
+								   
+								break;	  		   
+					  
 		   case  0x8801:   //    摄像头立即拍照		  
 
 				     Camera_Obj.Channel_ID=UDP_HEX_Rx[13];     //   通道
@@ -6988,12 +9549,18 @@ void TCP_RX_Process( u8  LinkNum)  //  ---- 808  标准协议
 					   SingleCamera_TakeRetry=0;   // clear 
 					}	   
 					rt_kprintf("\r\n   中心及时拍照  Camera: %d    \r\n",Camera_Number);	
-		              
-                     // if(SD_ACKflag.f_CentreCMDack_0001H==0)
+
+                                    if(UDP_HEX_Rx[18]==0x01)    // 拍照不上传
+                                      {    
+                                          Camera_Take_not_trans=1;
+                                           rt_kprintf("\r\n   拍照不上传\r\n");
+                                      }				
+					else
+						Camera_Take_not_trans=0;  
  					 {
  						 SD_ACKflag.f_CentreCMDack_0001H=1;
  						 Ack_Resualt=0;
- 						 SD_ACKflag.f_CentreCMDack_resualt=Ack_Resualt;
+ 						 SD_ACKflag.f_CentreCMDack_resualt=Ack_Resualt; 
  					 }
                       break;
 		   case  0x8802:   //    存储多媒体数据检索
@@ -7049,7 +9616,7 @@ void TCP_RX_Process( u8  LinkNum)  //  ---- 808  标准协议
                        	{ 
                        	  case 0x00:  // 停录音
                        	                      // VOC_REC_STOP(void);
-						       VOC_REC_Stop();
+						    //   VOC_REC_Stop();
 							/* 					  
 	                                     Dev_Voice.CMD_Type='0';
 										 Dev_Voice.info_sdFlag=0;    
@@ -7112,20 +9679,39 @@ void TCP_RX_Process( u8  LinkNum)  //  ---- 808  标准协议
  						 SD_ACKflag.f_CentreCMDack_resualt=Ack_Resualt;
  					 }
 		              break;
-		   case  0x8805:   //    单条存储多媒体数据检索上传命令	---- 补充协议要求
 
-                      reg_u32=(UDP_HEX_Rx[13]<<24)+(UDP_HEX_Rx[14]<<16)+(UDP_HEX_Rx[15]<<8)+UDP_HEX_Rx[16];
-					  rt_kprintf("\r\n单条存储多媒体数据检索上传 MeidiaID=%d 删除标志: %d ",reg_u32,UDP_HEX_Rx[17]);
-
-					  	  //------------------------------
-					 // if(SD_ACKflag.f_CentreCMDack_0001H==0)
- 					 {
- 						 SD_ACKflag.f_CentreCMDack_0001H=1;
- 						 Ack_Resualt=0;
- 						 SD_ACKflag.f_CentreCMDack_resualt=Ack_Resualt;
- 					 }
-		              break;
 		 case  0x8900:   //    数据下行透传                      
+                                   switch(UDP_HEX_Rx[13]) // 透传消息类型  // BD
+                                   {
+                                         case  0x41 : // 串口1  透传消息
+                                               rt_kprintf("\r\n 串口1 透传:"); 
+                                                  for(i=0;i<(infolen-1);i++)
+                                                       rt_kprintf("%c",UDP_HEX_Rx[14+i]);   
+											   rt_kprintf("\r\n");  	  
+												  	   
+								         break;
+									case  0x42:  //  串口2 透传消息
+									           rt_kprintf("\r\n 串口2 透传:"); 
+                                               for(i=0;i<(infolen-1);i++)
+                                                       rt_kprintf("%c",UDP_HEX_Rx[14+i]);   
+											   rt_kprintf("\r\n");  
+
+									                   break;
+									case  0x0B:  //  IC  卡 信息
+                                    /*                         memcpy(IC_MOD.IC_Rx,UDP_HEX_Rx+14,infolen-1);
+								     rt_kprintf("\r\n IC 卡透传len=%dBytes  RX:",infolen-1);
+									 for(i=0;i<infolen-1;i++)
+									 	rt_kprintf("%2X ",UDP_HEX_Rx[14+i]); 
+								     rt_kprintf("\r\n");	 
+                                                             //------ 直接发送给IC 卡模块-----
+                                                             Reg_buf[0]=0x00;
+								     memcpy(Reg_buf,IC_MOD.IC_Rx,infolen-1);
+                                                             DeviceData_Encode_Send(0x0B,0x40,Reg_buf,infolen); 									 
+						                   return;  */
+						                   break;
+
+                                    }
+		                       //---------------------------------------------------   
 		                      if(LinkNum==0)
 		                     {
                                      DataTrans.TYPE=UDP_HEX_Rx[13];
@@ -7182,72 +9768,193 @@ void TCP_RX_Process( u8  LinkNum)  //  ---- 808  标准协议
  						 SD_ACKflag.f_CentreCMDack_resualt=Ack_Resualt;
  					 } 
 				      break;	
-		  //----------     北斗相关扩展协议   ----------------------			  
-		  case   0xFF01:   // 扩展终端参数设置
-                                       if(contentlen)
-                                      {                       // 和中心商议好了每次只下发操作一项设置
-                                          Total_ParaNum=UDP_HEX_Rx[13]; // 中心设置参数总数
-                                          rt_kprintf("\r\n Set ParametersNum =%d  \r\n",Total_ParaNum);
-						 //------------------------------------------------------------------- 
-						 ContentRdAdd=14;
-						 Process_Resualt=0;  // clear resualt
-						 for(i=0;i<Total_ParaNum;i++)
-						 {
-						   //  数类型是DWORD 4 个字节
-						   SubCMD_FF01H=(UDP_HEX_Rx[ContentRdAdd]<<24)+(UDP_HEX_Rx[ContentRdAdd+1]<<16)+(UDP_HEX_Rx[ContentRdAdd+2]<<8)+UDP_HEX_Rx[ContentRdAdd+3]; 
-                                            //  子信息长度
-						   SubInfolen=UDP_HEX_Rx[ContentRdAdd+4];
-						   //  处理子信息 如果设置成功把相应Bit 位置为 1 否则保持 0
-						   if(CentreSet_subService_FF01H(SubCMD_FF01H,SubInfolen,UDP_HEX_Rx+ContentRdAdd+5))
-                                              Process_Resualt|=(0x01<<i);						   
-						   //  移动偏移地址
-						   ContentRdAdd+=5+UDP_HEX_Rx[ContentRdAdd+4]; // 偏移下标 
-						 } 						   
-						 Ack_Resualt=0;
-                                        }	
-                                          BD_EXT_Write();   
-					  
-                                   {
- 						 SD_ACKflag.f_CentreCMDack_0001H=1;
- 						 Ack_Resualt=0;
- 						 SD_ACKflag.f_CentreCMDack_resualt=Ack_Resualt;
- 					 }    
-		                   break;
-		  case   0xFF02: // 扩展终端参数查询
-                                  SD_ACKflag.f_BD_Extend_7F02H=1;
-				      rt_kprintf("\r\n  中心查询北斗相关设置信息\r\n");			  
-		                   break;
-		  case  0xFF03:   //  扩展终端参数设置1 命令
-                                   
-                                    if(contentlen)
-                                      {                       // 和中心商议好了每次只下发操作一项设置
-                                          Total_ParaNum=UDP_HEX_Rx[13]; // 中心设置参数总数
-                                          rt_kprintf("\r\n Set ParametersNum =%d  \r\n",Total_ParaNum);
-						 //------------------------------------------------------------------- 
-						 ContentRdAdd=14;
-						 Process_Resualt=0;  // clear resualt
-						 for(i=0;i<Total_ParaNum;i++)
-						 {
-						   //  数类型是DWORD 4 个字节
-						   SubCMD_FF03H=(UDP_HEX_Rx[ContentRdAdd]<<24)+(UDP_HEX_Rx[ContentRdAdd+1]<<16)+(UDP_HEX_Rx[ContentRdAdd+2]<<8)+UDP_HEX_Rx[ContentRdAdd+3]; 
-                                            //  子信息长度
-						   SubInfolen=UDP_HEX_Rx[ContentRdAdd+4];
-						   //  处理子信息 如果设置成功把相应Bit 位置为 1 否则保持 0
-						   if(CentreSet_subService_FF03H(SubCMD_FF03H,SubInfolen,UDP_HEX_Rx+ContentRdAdd+5))
-                                              Process_Resualt|=(0x01<<i);						   
-						   //  移动偏移地址
-						   ContentRdAdd+=5+UDP_HEX_Rx[ContentRdAdd+4]; // 偏移下标 
-						 } 						   
-						 Ack_Resualt=0;
-                                        }	
+			case  0x8106://BD--8.11 查询指定终端参数
+			                //7E 81 06 00 05 01 39 01 23 45 05 00 2A 01 00 00 00 21 D2 7E
+			                //7E81060005013901234505002A0100000021D27E
+			                //7E81060005013901234505002A03000000210000009400000055D27E
+			                Setting_Qry.Num_pram=UDP_HEX_Rx[13];// 个数
+			                if(Setting_Qry.Num_pram>90)
+								     Setting_Qry.Num_pram=90;
+                            reg_u32=0;// 借用做下标计数器
 
+                          //  CMD_U32ID=(UDP_HEX_Rx[14+4*reg_u32]<<24)+(UDP_HEX_Rx[14+4*reg_u32+1]<<16)+(UDP_HEX_Rx[14+4*reg_u32+2]<<8)+(UDP_HEX_Rx[14+4*reg_u32+3]);
+							
+							for(i=0;i<Setting_Qry.Num_pram;i++)  
+							{
+	                           Setting_Qry.List_pram[reg_u32]=(UDP_HEX_Rx[14+4*reg_u32]<<24)+(UDP_HEX_Rx[14+4*reg_u32+1]<<16)+(UDP_HEX_Rx[14+4*reg_u32+2]<<8)+(UDP_HEX_Rx[14+4*reg_u32+3]); 
+							   rt_kprintf("ID:  %4X ",Setting_Qry.List_pram[reg_u32]); 
+							   reg_u32++;     
+							}
+							
 
-                                  {
- 						 SD_ACKflag.f_CentreCMDack_0001H=1;
- 						 Ack_Resualt=0;
- 						 SD_ACKflag.f_CentreCMDack_resualt=Ack_Resualt;
- 					 } 
-			            break;
+							
+
+						     SD_ACKflag.f_SettingPram_0104H=2;	// 中心查询指定参数	 		   
+			                 break;
+			case  0x8107:// BD--8.14 查询终端属性   
+                                             SD_ACKflag.f_BD_DeviceAttribute_8107=1; // 消息体为空
+			                       break;
+             case   0x8108://BD--8.16 下发终端升级包   远程升级  (重要) 
+
+                            //   1.  分包判断bit 位  
+                            if(UDP_HEX_Rx[3]&0x20) 
+						  	{   //  分包判断
+						  	     BD_ISP.Total_PacketNum=(UDP_HEX_Rx[13]<<8)+UDP_HEX_Rx[14];  // 总包数
+						         BD_ISP.CurrentPacket_Num=(UDP_HEX_Rx[15]<<8)+UDP_HEX_Rx[16]; // 当前包序号从1 开始
+						  	} 
+						 else
+						 	{
+							 	//------------   ACK   Flag -----------------
+							  	 SD_ACKflag.f_CentreCMDack_0001H=1;
+		 						 Ack_Resualt=0;
+		 						 SD_ACKflag.f_CentreCMDack_resualt=Ack_Resualt;
+						 	}	
+						//   2.  检测 
+						if(BD_ISP.CurrentPacket_Num==1)
+						{	
+	                              BD_ISP.Update_Type=UDP_HEX_Rx[17];  //升级包类型
+		                                            //----  Debug ------
+								  switch(BD_ISP.Update_Type)
+								  {
+								      case  0:   
+									  	      rt_kprintf("\r\n 升级类型: 终端\r\n");
+										      break;
+								      case  12:   
+									  	      rt_kprintf("\r\n 升级类型: IC 卡读卡器\r\n");
+										      break;
+								      case  52:   
+									  	      rt_kprintf("\r\n 升级类型: 北斗模块\r\n");
+										      break;
+								  }
+	                             //----------------------
+	                              memcpy(BD_ISP.ProductID,UDP_HEX_Rx+18,5);// 制造商ID
+	                              BD_ISP.Version_len=UDP_HEX_Rx[23]; // 版本号长度
+								  memcpy(BD_ISP.VersionStr,UDP_HEX_Rx+20,BD_ISP.Version_len);	// 软件版本号
+								  i=24+BD_ISP.Version_len;
+								  BD_ISP.Content_len=(UDP_HEX_Rx[i]<<24)+(UDP_HEX_Rx[i+1]<<16)+(UDP_HEX_Rx[i+2]<<8)+UDP_HEX_Rx[i+3];// 升级包长度
+								  i+=4;  
+		                          rt_kprintf("\r\n 升级包长度:%d Bytes\r\n",BD_ISP.Content_len);
+
+								  infolen=infolen-11-BD_ISP.Version_len;// infolen 					 
+
+								  BD_ISP.PacketRX_wr=0; // clear
+								  BD_ISP.ISP_running=1;					 
+						}					  
+						   //--------  升级包内容  -------------					 
+						  if(infolen)      //  升级内容以后根据类型往不同的存储区域写
+                            {
+                                  memcpy(BD_ISP.ContentData,UDP_HEX_Rx+i+4,infolen); // 升级包内容
+                                  BD_ISP.PacketRX_wr+=infolen;   
+						    }
+						   //------------   ACK   Flag -----------------
+						  	 SD_ACKflag.f_CentreCMDack_0001H=1;
+	 						 Ack_Resualt=0;
+	 						 SD_ACKflag.f_CentreCMDack_resualt=Ack_Resualt;	
+						   //------------------------------------------------------------------------	 
+                                            break;
+            case   0x8203://BD--8.22  人工确认报警消息
+                                     rt_kprintf( "\r\n收到8203!\r\n"); 
+                             	    if (Warn_Status[3]&0x01)  //紧急报警
+									  {
+											  StatusReg_WARN_Clear();			  
+											  f_Exigent_warning = 0;
+											  warn_flag=0;
+											  Send_warn_times=0; 
+											   StatusReg_WARN_Clear();	
+											   rt_kprintf( "\r\n紧急报警收到应答，得清除!\r\n");   
+									  }
+			 
+                                            HumanConfirmWarn.Warn_FloatID=(UDP_HEX_Rx[13]<<8)+UDP_HEX_Rx[14];
+                                            HumanConfirmWarn.ConfirmWarnType=(UDP_HEX_Rx[15]<<24)+(UDP_HEX_Rx[16]<<16)+(UDP_HEX_Rx[17]<<8)+UDP_HEX_Rx[18];
+                                            if(HumanConfirmWarn.Warn_FloatID==0x00)
+                                            	{    //  如果为0 表示所有消息
+                                            	     Warn_Status[3] &= ~0x01;  // bit 0
+							     Warn_Status[3]&=~0x08;	// bit3
+							     Warn_Status[1]&=~0x10;	// bit20 进出区域报警 
+							     Warn_Status[1]&=~0x20;    // bit 21 进出线路报警
+							     Warn_Status[1]&=~0x40; 	// bit 22  路段行驶时间不足报警 
+							     Warn_Status[0]&=~0x08;    // bit 27  确认车辆非法点火报警
+							     Warn_Status[0]&=~0x10;    // bit 28  确认车辆非法报警
+                                                      Warn_Status[0]&=~0x80;    //bit 31  非法开门 (终端不设置区域时，车门开关无效) 
+                                            	}
+						  else
+						  	{
+						  	     	  //--------------------------------
+									  if ((Warn_Status[3]&0x01)&&(0x00000001&HumanConfirmWarn.ConfirmWarnType))  //紧急报警
+									  {
+											  StatusReg_WARN_Clear();		 	  
+											  f_Exigent_warning = 0;
+											  warn_flag=0;
+											  Send_warn_times=0; 
+											   StatusReg_WARN_Clear();	
+											   rt_kprintf( "\r\n紧急报警收到应答，得清除!\r\n");   
+									  }
+			                                      	  if( (Warn_Status[3]&0x08)&&(0x00000008&HumanConfirmWarn.ConfirmWarnType))   //危险报警-BD
+									    {
+														  Warn_Status[3]&=~0x08;
+									     }
+									  
+									  //------------------------------------
+				                                     if((Warn_Status[1]&0x10)&&(0x00001000&HumanConfirmWarn.ConfirmWarnType)) // 进出区域报警
+				                                     {
+										                  InOut_Object.TYPE=0;//圆形区域
+										                  InOut_Object.ID=0; //  ID
+										                  InOut_Object.InOutState=0;//  进报警 
+										                  Warn_Status[1]&=~0x10;
+				                                     } 
+									if((Warn_Status[1]&0x20)&&(0x00002000&HumanConfirmWarn.ConfirmWarnType)) // 进出路线报警
+				                                     {
+										                  InOut_Object.TYPE=0;//圆形区域
+										                  InOut_Object.ID=0; //  ID
+										                  InOut_Object.InOutState=0;//  进报警 
+										                  Warn_Status[1]&=~0x20;  
+				                                     } 
+									 if((Warn_Status[1]&0x40)&&(0x00004000&HumanConfirmWarn.ConfirmWarnType))  // 路段行驶时间不足、过长
+									 {
+				                                                  Warn_Status[1]&=~0x40; 
+									 }
+									  //-----------------------------------------
+									   if((Warn_Status[0]&0x08)&&(0x08000000&HumanConfirmWarn.ConfirmWarnType))  //车辆非法点火
+									  {
+                                                                              Warn_Status[0]&=~0x08; 
+									  }
+									   if((Warn_Status[0]&0x10)&&(0x10000000&HumanConfirmWarn.ConfirmWarnType))  //车辆非法位移
+									  {
+                                                                              Warn_Status[0]&=~0x10; 
+									  } 
+									      if((Warn_Status[0]&0x80)&&(0x80000000&HumanConfirmWarn.ConfirmWarnType))  //非法开门报警(终端未设置区域时，不判断非法开门)
+                                                                {              
+                                                                        Warn_Status[0]&=~0x80; 
+									  }
+									  //------------------------------------  
+						  	}
+
+                             		   //------------   ACK   Flag -----------------
+						  	 SD_ACKflag.f_CentreCMDack_0001H=1;
+	 						 Ack_Resualt=0;
+	 						 SD_ACKflag.f_CentreCMDack_resualt=Ack_Resualt;	
+							    //---------  报警确认后发送，立即发送定位包				
+                             PositionSD_Enable();
+							    Current_UDP_sd=1;	
+						  break;					
+                     case   0x8702:// BD-8.47-  上报驾驶员身份信息请求
+                                             SD_ACKflag.f_DriverInfoSD_0702H=1; // 消息体为空
+					         break;
+		       case  0x8805:   //BD--8.55    单条存储多媒体数据检索上传命令	---- 补充协议要求
+
+	                                    reg_u32=(UDP_HEX_Rx[13]<<24)+(UDP_HEX_Rx[14]<<16)+(UDP_HEX_Rx[15]<<8)+UDP_HEX_Rx[16];
+						  rt_kprintf("\r\n单条存储多媒体数据检索上传 MeidiaID=%d 删除标志: %d ",reg_u32,UDP_HEX_Rx[17]);
+
+                                           Camera_Number=1; 
+                                           Photo_send_start(Camera_Number);  //在不是多路拍照的情况下拍完就可以上传了
+							  //------------------------------
+						 // if(SD_ACKflag.f_CentreCMDack_0001H==0)
+	 					 {
+	 						 SD_ACKflag.f_CentreCMDack_0001H=1; 
+	 						 Ack_Resualt=0;
+	 						 SD_ACKflag.f_CentreCMDack_resualt=Ack_Resualt;
+	 					 }
+		                   break;
 		    default:
 				      break;  	    
 	    } 
@@ -8847,7 +11554,7 @@ void Save_AvrgSpdPerMin(void)
 
   }
 
-void Save_TiredDrive_Record(void)
+void Save_TiredDrive_Record(void) 
 {
   u8   content[40];
   u8   wr_add=0,FCS=0,i; 
@@ -8881,6 +11588,66 @@ void Save_TiredDrive_Record(void)
 
 }
 
+//E:\work_xj\F4_BD\北斗行车记录仪过检(新协议)\2-21 RT-Thread_NewBoard-LCD2-Jiance\bsp\stm32f407vgt6_RecDrv\app_712\lcd\Menu_0_3_Sim.c
+void CAN_struct_init(void)
+{
+      //-------  protocol variables
+     CAN_trans.can1_sample_dur=0;  // can1 采集间隔  ms
+     CAN_trans.can1_trans_dur=0;  // can1  上报间隔 s
+     CAN_trans.can1_enable_get=0; // 500ms 
+
+     CAN_trans.can2_sample_dur=0;  // can2 采集间隔  ms
+     CAN_trans.can2_trans_dur=0;  // can2  上报间隔 s      
+     
+   //   u8      canid_1[8];// 原始设置
+     CAN_trans.canid_1_Filter_ID=0;  // 接收判断用
+      //u8      canid_1_Rxbuf[400]; // 接收buffer
+     CAN_trans.canid_1_RxWr=0; // 写buffer下标
+     CAN_trans.canid_1_SdWr=0;
+      CAN_trans.canid_1_ext_state=0; // 扩展帧状态
+     CAN_trans.canid_1_sample_dur=10;  // 改ID 的采集间隔
+     CAN_trans.canid_ID_enableGet=0;   
+
+      //------- system variables  
+      CAN_trans.canid_timer=0;  //定时器
+      CAN_trans.canid_0705_sdFlag=0;// 发送标志位	   
+
+}
+
+void  CAN_send_timer(void)
+{
+   u16 i=0,datanum=0;;
+       if(CAN_trans.can1_trans_dur>0) 
+      {  
+            CAN_trans.canid_timer++;
+	    // if( CAN_trans.canid_timer>=CAN_trans.can1_trans_dur)		
+	      if( CAN_trans.canid_timer>=4)      	        
+	      {	  
+                   CAN_trans.canid_timer=0; 
+		     //------  判断有没有数据项
+		     if(CAN_trans.canid_1_RxWr)
+		     	{
+		     	      datanum=(CAN_trans.canid_1_RxWr>>3); 
+		     	      memcpy(CAN_trans.canid_1_Sdbuf,CAN_trans.canid_1_Rxbuf,CAN_trans.canid_1_RxWr);
+			      CAN_trans.canid_1_SdWr=CAN_trans.canid_1_RxWr;	
+			      for(i=0;i<datanum;i++)
+				       CAN_trans.canid_1_ID_SdBUF[i]=CAN_trans.canid_1_ID_RxBUF[i];  
+				  
+			      CAN_trans.canid_1_RxWr=0; // clear
+		             CAN_trans.canid_0705_sdFlag=1;
+		     	}
+			else
+			     rt_kprintf("\r\n rx=%d  dur=%ds   CAN send trigger ,no data \r\n",CAN_trans.canid_1_RxWr,CAN_trans.can1_trans_dur);   	
+
+	     	}	 
+
+       }
+	else
+       {
+                  CAN_trans.canid_0705_sdFlag=0;
+		    CAN_trans.canid_timer=0;
+	}
+}
 
 
 void  vdrflag_enable(u8 invalue)
@@ -9140,7 +11907,7 @@ void  redial(void)
       DataLink_EndFlag=1; //AT_End();   
         rt_kprintf("\r\n Redial\r\n");      
 }
-FINSH_FUNCTION_EXPORT(redial, redial);
+FINSH_FUNCTION_EXPORT(redial, redial); 
 
 void  port(u8 *instr)
 {
@@ -9155,6 +11922,26 @@ void  port(u8 *instr)
 }
 FINSH_FUNCTION_EXPORT(port, port); 
 
+void dnsr_main(u8*instr)
+{
+    u16  len=0;
 
+	len=strlen(instr);
+
+	if(len!=0)
+   {
+        memset(DomainNameStr,0,sizeof(DomainNameStr));					  
+		memset(SysConf_struct.DNSR,0,sizeof(DomainNameStr));  
+		memcpy(DomainNameStr,(char*)instr,len);
+		memcpy(SysConf_struct.DNSR,(char*)instr,len);
+		Api_Config_write(config,ID_CONF_SYS,(u8*)&SysConf_struct,sizeof(SysConf_struct));
+		//----- 传给 GSM 模块------
+		DataLink_DNSR_Set(SysConf_struct.DNSR,1); 
+         //--------    清除鉴权码 -------------------
+	     idip("clear");		
+	}					 
+
+}
+FINSH_FUNCTION_EXPORT(dnsr_main, dnsr_main);  
 
 // C.  Module

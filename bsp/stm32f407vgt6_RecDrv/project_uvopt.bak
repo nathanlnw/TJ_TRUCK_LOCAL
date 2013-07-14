@@ -202,8 +202,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <TopLine>1</TopLine>
+      <CurrentLine>1</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>applications\application.c</PathWithFileName>
       <FilenameWithoutPath>application.c</FilenameWithoutPath>
@@ -1490,8 +1490,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>21</TopLine>
-      <CurrentLine>26</CurrentLine>
+      <TopLine>1995</TopLine>
+      <CurrentLine>1993</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\app_712\gsm\Device_gsm.c</PathWithFileName>
       <FilenameWithoutPath>Device_gsm.c</FilenameWithoutPath>
@@ -3178,8 +3178,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <TopLine>1</TopLine>
+      <CurrentLine>1</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\app_712\lcd\Menu_5_5_Can.c</PathWithFileName>
       <FilenameWithoutPath>Menu_5_5_Can.c</FilenameWithoutPath>
@@ -3338,8 +3338,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <TopLine>47</TopLine>
+      <CurrentLine>45</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\app_712\lcd\Menu_0_5_Colour.c</PathWithFileName>
       <FilenameWithoutPath>Menu_0_5_Colour.c</FilenameWithoutPath>

@@ -337,12 +337,52 @@ void  Emergence_Warn_Process(void)
 		 // fTimer3s_warncount=0;
 		 if ( ( warn_flag == 0 ) && ( f_Exigent_warning == 0 )&&(fTimer3s_warncount==4) )
 		 {
-				 warn_flag = 1; 					// 报警标志位
-				 Send_warn_times = 0;		  //  发送次数 
-				 rt_kprintf( "紧急报警 ");				 
-				 StatusReg_WARN_Enable(); // 修改报警状态位
-				 PositionSD_Enable();  
-				 Current_UDP_sd=1;   				 
+			    warn_flag = 1; 					// 报警标志位
+			    Send_warn_times = 0;		  //  发送次数 
+		        //-----------------------------------
+				#if  0
+					 rt_kprintf( "紧急报警 ");				 
+					 StatusReg_WARN_Enable(); // 修改报警状态位
+					 PositionSD_Enable();  
+					 Current_UDP_sd=1;   	
+			   #endif  
+			   //---------------------
+			   
+			   if((Key_MaskWord[3]&0x01)==0x00)
+				 {
+					if((Warn_MaskWord[3]&0x01)==0x01)
+					 {
+						   rt_kprintf( "紧急报警 触发不上报，屏蔽字使能  !");		 
+			   
+					 }
+					 else
+					 {
+						  rt_kprintf( "紧急报警 "); 			  
+						  StatusReg_WARN_Enable(); // 修改报警状态位
+						  PositionSD_Enable();	
+						  Current_UDP_sd=1;  
+						 // warn_msg_sd(); // 短息报警
+					  }
+				  }
+				  else
+					 {
+						   if((Warn_MaskWord[3]&0x01)==0x01)
+							 {
+								   rt_kprintf( "\r\n紧急报警 触发上报，屏蔽字使能 ,关键字使能就上报! ");	 
+			   
+							 }
+							else
+								rt_kprintf( "\r\n紧急报警 触发上报，关键字使能就上报! ");		
+								 
+							 {
+								  StatusReg_WARN_Enable(); // 修改报警状态位
+								  PositionSD_Enable();	
+								  Current_UDP_sd=1; 
+								//  warn_msg_sd();// 短息报警
+							  }
+			   
+			   
+					 }
 		 }
 	}
 
@@ -433,17 +473,40 @@ static void timeout_app(void *  parameter)
                    App808_tick_counter(); 
 
                   //---------------------------------- 
-                  if( ReadCycle_status==RdCycle_SdOver)
+           if( ReadCycle_status==RdCycle_SdOver)
 		   {	   
-		        ReadCycle_timer++;	   
-			 if(ReadCycle_timer>5)  //5s No resulat
+			        ReadCycle_timer++;	   
+				 if(ReadCycle_timer>5)  //5s No resulat
+				 {
+				      ReadCycle_timer=0; 
+			             Api_cycle_Update();	   
+				 }		
+           }	
+		   //--------  多媒体时间信息上传 后处理(不判应答)-----
+           //--------------  多媒体上传相关   天地通有时不给多媒体信息上传应答  --------------                                       
+	       if(MediaObj.Media_transmittingFlag==1)  // clear		 							      
+		     {
+		         MediaObj.Media_transmittingFlag=2;   
+				 if(Duomeiti_sdFlag==1)
+				  { 
+				      Duomeiti_sdFlag=0; 
+				      Media_Clear_State();
+					Photo_send_end();
+					Sound_send_end();
+					Video_send_end();
+	                                                     rt_kprintf("\r\n  手动上报多媒体上传处理\r\n");
+				  }	
+				 rt_kprintf("\r\n  多媒体信息前的多媒体发送完毕 \r\n");  
+		   	  }	
+			WatchDog_Feed();       
+
+		    if( MediaObj.SD_media_Flag==2)
 			 {
-			      ReadCycle_timer=0; 
-		             Api_cycle_Update();	   
-			 }		
-                  }	   
-		    //---------------------------------	
-     	 }	
+			        Multimedia_0800H_ACK_process();      // timeout  replace  RxACK
+				  MediaObj.SD_media_Flag=0; 
+	         }		 
+	         //-----------------------------------------------------------  
+	   }	
 	 
          //   Media 
            if(OneSec_CounterApp>>1)   //  除以2 为1	   
@@ -557,6 +620,9 @@ static void App808_thread_entry(void* parameter)
 		  
 		  SIMID_Convert_SIMCODE(); //   translate		   
 		  total_ergotic();
+		  
+		  CAN_struct_init();   
+		  
        //  	 tf_open();      // open device  
 	// pos=dfs_mount("spi_sd","/sd","elm",0,0);	
        //   if(pos)

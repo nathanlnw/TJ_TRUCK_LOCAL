@@ -71,6 +71,7 @@
 #define   MSG_0x0001           0x0001      // 终端通用应答
 #define   MSG_0x8001           0x8001      // 平台通用应答
 #define   MSG_0x0002           0x0002      // 终端心跳 
+#define   MSG_0x0003           0x0003      // 终端注销
 #define   MSG_0x0100           0x0100      // 终端注册
 #define   MSG_0x8100           0x8100      // 终端注册应答
 #define   MSG_0x0101           0x0101      // 终端注销
@@ -108,6 +109,11 @@
 #define   MSG_0x8701           0x8701      // 行驶记录仪但是下传
 #define   MSG_0x0701           0x0701      // ---电子运单上报
 #define   MSG_0x0702           0x0702      // 驾驶员身份信息采集上报
+#define   MSG_0x0107           0x0107      //  BD --终端属性查询
+#define   MSG_0x0108           0x0108      //  BD--终端升级结果通知
+#define   MSG_0x0704           0x0704      //  BD--定位数据批量上传
+#define   MSG_0x0705           0x0705      //  BD-- CAN 总线数据上传
+#define   MSG_0x0805           0x0805      //  BD-- 摄像头立即拍摄命令应答
 #define   MSG_0x0800           0x0800      // ---多媒体事件信息上传
 #define   MSG_0x0801           0x0801      // ---多媒体数据上传
 #define   MSG_0x8800           0x8800      // ---多媒体数据上传应答
@@ -200,8 +206,10 @@ u8  f_Worklist_SD_0701H; //   电子运单上传
      //  -----  北斗扩展----
 u8  f_BD_Extend_7F02H; // 北斗信息查询应答
 u8  f_BD_Extend_7F00H;// 扩展终端上发指令
-
-u8  f_BD_CentreTakeAck_0805H;  //  北斗0805  应答
+u8  f_BD_DeviceAttribute_8107; //  中心查找终端属性
+u8  f_BD_BatchTrans_0704H;   //  定位数据批量上传
+u8  f_BD_CentreTakeAck_0805H; // 中心拍照命令应答 
+u8  f_BD_ISPResualt_0108H;   //    终端升级结果  
 
 }TCP_ACKFlag;
  
@@ -243,6 +251,81 @@ typedef struct _VechInfo
  u16    Dev_CityID;          // 车辆所在市ID    
  u8     Dev_Color;           // 车牌颜色           // JT415    1  蓝 2 黄 3 黑 4 白 9其他
 }VechINFO;
+
+//--------- 终端属性---------
+typedef struct  _PRODUCT_ATTRIBUTE
+{
+   u16  _1_DevType; //   终端类型   
+   u8   _2_ProducterID[5];// 制造商ID
+   u8   _3_Dev_TYPENUM[20];//终端型号
+   u8   _4_Dev_ID[7];//终端ID	
+   u8   _5_Sim_ICCID[10];//终端SIM卡ICCID	
+   u8   _6_HardwareVer_Len;//硬件版本号长度
+   u8   _7_HardwareVer[20]; // 硬件版本号
+   u8   _8_SoftwareVer_len;// 软件版本号长度
+   u8  _9_SoftwareVer[20];//软件版本号
+   u8 _10_FirmWareVer_len;// 固件版本号长度
+   u8 _11_FirmWare[20];// 固件版本号
+   u8 _12_GNSSAttribute; // 定位模块属性
+   u8 _13_ComModuleAttribute;// 通信模块属性
+}PRODUCT_ATTRIBUTE;
+
+//-------- 北斗 扩展  -------------
+typedef struct _BD_EXTEND
+{
+	  // 1. ----  车台设置相关 ----
+	  u32	  Termi_Type;	 // 终端类型
+	  u32	  Software_Ver; //	软件版本
+	  u32	  GNSS_Attribute;	// BD  模块属性
+	  u32	  GSMmodule_Attribute; // GSM 模块属性
+	  u32	  Device_Attribute;   //  终端属性	
+	
+	 //  2.  北斗设置
+		u8	 GNSS_Mode; 	//	北斗模块通信模式
+		u8	 GNSS_Baud; 	//	北斗模块 通信波特率  表示
+		u32   GNSS_Baud_Value;//   北斗模块数值
+		u8	   BD_OutputFreq;  // 北斗模块输出更新率设置 
+		u32   BD_SampleFrea; //  北斗模块采集 NMEA	数据频率
+				//-----  2013 BD add -------------
+		u8	   BD_OriginalDataTransMode;	 //  GNSS 模块详细定位信息上传方式
+		u8	   BD_OriginalDataTransSettings; //  GNSS 模块详细数据上传设置01: 单位为秒	02 : 单位为米 03: 单位为秒
+			
+	
+	 // 3.	CAN   相关设置
+		u32   CAN_1_Mode;	 //  CAN  模式	01:还回模式  10  : 普通模式   11:  静默模式  
+		u32   CAN_1_ID;
+		u8	  CAN_1_Type;  
+		u8	  CAN_1_SampleDuration;  //  单位秒
+		u8	  CAN_1_TransDuration;	//	单位 秒
+			
+		u32   CAN_2_Mode;	//	 CAN  模式
+		u32   CAN_2_ID;
+		u8	   CAN_2_Type;		
+		u8	   CAN_2_SampleDuration;  //  单位秒
+		u8	   CAN_2_TransDuration;  //  单位 秒 
+		u32   Collision_Check;	   //  bit 31 : 开启关闭碰撞  b7-b0  碰撞时间门限 b8-b15  碰撞加速度门限
+	
+		u8	   CloseAllcan;  
+	
+	 //   位置附加信息
+		  // 1. 信号强度
+		  u16  FJ_SignalValue;	//	信号强度   高字节 0 ；低字节  高4为 X2 gprs强度 ，低4位 卫星颗数
+		 //  2. 自定义状态机模拟量上传	
+		  u8	FJ_IO_1;
+	   u8	 FJ_IO_2;
+	   u16	AD_0;  //  2 Byte
+	   u16	AD_1; //   2 Byte
+	
+		  u8  Extent_IO_status;  // 新北斗协议 IO 状态
+	
+	
+	//	  围栏相关判断
+		  u8	Close_CommunicateFlag;	//	进区域 关闭通信   
+		  u8	Trans_GNSS_Flag;	//	进区域采集GNSS
+	 
+
+  
+} BD_EXTEND;
 
 
 
@@ -329,6 +412,8 @@ typedef struct _SEND_DIST
 //----------- 上报模式  ---------------
 typedef struct _SEND_MODE
 { 
+  
+  u8 Send_strategy;  
   u8 DUR_TOTALMODE;     // -----   定时上报方式
   u8 Dur_DefaultMode;  
   u8 Dur_SleepMode;     
@@ -445,7 +530,7 @@ typedef struct _MULTIMEDIA
   u8   RSD_total;     //  重传选项数目  
   
    
-  u8	Media_ReSdList[10]; //  多媒体重传消息列表 
+  u16	Media_ReSdList[125]; //  多媒体重传消息列表 
 }MULTIMEDIA;   
 //------  Voice Record 录音相关 ----
 typedef struct _VOICE_RECODE
@@ -526,9 +611,49 @@ typedef struct TIRDdrv
   u8    Flag;                    // ACCon =1  ,ACC_off=0; ACC关保持ACCon=1，直到休息过后清 0    
   u8    Status_TiredwhRst;    //  当复位时 疲劳驾驶的状态   0 :停车  1:停车但没触发 2:触发了还没结束                              
 
+  
+  u32   PreWarn_Dur;  //疲劳驾驶预报警
+  u32   CurrentDay_DriveTimer_0;         //  上报策略为  0 时 
+  u32   CurrentDay_DriveTimer_Driver_1;  // 上报策略为1 时
+  u32   CurrentDay_DriveTimer_Driver_2; //  上报策略为1 时 
 }TID_DRV; 
 
+typedef struct _DetachPKG
+{
+    u16  Original_floatID;  //  原始消息流水号
+    u8    NumOf_Resend;   //  重传包序号
+    u16  List_Resend[50];  //重传包ID 列表   
 
+}DETACH_PKG;
+
+typedef struct  _SET_QRY
+{
+    u8    Num_pram;//   参数个数
+    u32  List_pram[90];//  cansh ID   
+}SET_QRY;
+
+typedef struct _HUMAN_CONFIRM_WARN
+{
+   u16 Warn_FloatID;// 报警消息流水号
+   u32 ConfirmWarnType; // 人工确认报警类型
+
+}HUMAN_CONFIRM_WARN;
+
+//  ISP_BD add
+typedef struct _ISP_BD
+{
+   u8     ISP_running;//  远程下载进行中
+   u16   Total_PacketNum;//  总包数
+   u16   CurrentPacket_Num;//  当前报数
+   u32   PacketRX_wr;//  接收数据累加长度
+   u8     Update_Type;  // 终端数据类型
+   u8  ProductID[5];// 制造商编号
+   u8  Version_len; // 版本号长度
+   u8  VersionStr[20];//  版本号
+   u32  Content_len;// 升级包长度
+   u8   ContentData[1024]; // 数据包内容
+   u8   ISP_resualt;  //升级结果
+}ISP_BD;
 
 
 /*
@@ -540,20 +665,25 @@ typedef struct  _SYSConfig           //  name:  config
     u16     Version_ID ;   //  系统版本IDE
     u8       APN_str[40];  //   接入点名称
     u8       IP_Main[4];   //   主IP 地址 
-    u16     Port_main;   //   主socket  端口
+    u16      Port_main;   //   主socket  端口
     u8       IP_Aux[4];   //   辅IP 地址 
-    u16     Port_Aux;    //   辅socket  端口
+    u16      Port_Aux;    //   辅socket  端口
     u8       DNSR[50];    //  DNSR 1  域名解析
     u8       DNSR_Aux[50]; //   DNSR2   域名解析     
-
 	//  LINK2  Setting
 	u8		Link2_IP[4]; 
-	u16 	Link2_Port; 	      
-	
-	
+	u16 	Link2_Port; 	   	
     u16     AccOn_Dur;   //  ACC 开  上报间隔
     u16     AccOff_Dur;  //   ACC 关  上报间隔
-    u8      TriggerSDsatus;  //  传感器触发上报状态
+    u8      TriggerSDsatus;  //  传感器触发上报状态	
+    //-------- BD add-----------------
+    u8      BD_IC_main_IP[4];  //  IC卡认证主服务器IP 地址
+    u32     BD_IC_TCP_port;     //  IC 卡认证主服务器TCP 端口
+    u32     BD_IC_UDP_port;    //  IC 卡认证主服务器 UDP 端口
+    u8      BD_IC_Aux_IP[4];   //  IC 卡备用服务器IP 地址，端口同主的一样   	
+    u8      BD_IC_DNSR[50];    //  DNSR 1  域名解析
+    u8      BD_IC_DNSR_Aux[50]; //   DNSR2   域名解析     
+
 } SYS_CONF;
 
 
@@ -566,7 +696,9 @@ typedef struct  _JT808Config   //name:  jt808
     u8       ConfirmCode[20];       // 鉴权码
     u8       Regsiter_Status;        //  注册状态
     u8       LISTEN_Num[30];       //  监听号码
-    u32     Vech_Character_Value;   //  特征系数
+    u8       SMS_RXNum[15];        //  中心短息号码
+    u32      Vech_Character_Value;   //  特征系数 
+    u8       PositionSd_Stratage;    //  位置汇报策略  
 
     u8       FirstSetupDate[6];           //  初次安装时间
     u8       DeviceOnlyID[35];           //   行车记录仪的唯一ID
@@ -585,6 +717,27 @@ typedef struct  _JT808Config   //name:  jt808
     u8       concuss_step;    //------add by  xijing
     u8       password_flag;   //密码输入标志     
     u8       relay_flag;      // 继电器开关状态
+
+	
+    //-----------2013   BD add  -------------------------------------
+    u16     BD_CycleRadius_DoorValue;    //  电子围栏半径(非法移动阈值)，单位米
+    u16     BD_MaxSpd_preWarnValue;    //  超速报警预警差值，单位 1/10  Km/h
+    u16     BD_TiredDrv_preWarnValue;  // 疲劳驾驶预警差值，单位 秒
+    u16     BD_Collision_Setting;     // 碰撞参数报警设置    bit 7-bit 0   碰撞时间 单位 4ms   、 bit15-8 碰撞加速度 0.1g  0-79  默认10
+    u16     BD_Laydown_Setting;    // 侧翻报警参数设置     侧翻角度 单位 1 度 ，默认30度
+
+
+    
+    u16     BD_GNSS;
+
+    BD_EXTEND     BD_EXT;  //  北斗相关 CAN GNSS 设置
+
+    //------  摄像头 相关设置 ------------------------------
+    u32  BD_CameraTakeByTime_Settings;   // 摄像头定时拍照开关    0 不允许1 允许 表13
+    u32  BD_CameraTakeByDistance_Settings;  //  摄像头定距离拍照控制位
+
+    u8    Close_CommunicateFlag;   // 关闭通信标志位	
+
 
 	u8       Link_Frist_Mode;       //   首次连接模式        0  : dnsr first     1: mainlink  first 
     
@@ -764,56 +917,50 @@ typedef union TIPAddr
 } T_IP_Addr;
 
 
-//-------- 北斗 扩展  -------------
-typedef struct _BD_EXTEND
+
+//---------  CAN ---------------------------
+typedef struct _CAN_TRAN
 {
-   //  ----  车台设置相关 ----
-   u32     Termi_Type;    // 终端类型
-   u32     Software_Ver; //  软件版本
-   u32     GNSS_Attribute;   // BD  模块属性
-   u32     GSMmodule_Attribute; // GSM 模块属性
-   u32     Device_Attribute;   //  终端属性  
+    //-------  protocol variables
+     u32  can1_sample_dur;  // can1 采集间隔  ms
+     u32  can1_trans_dur;  // can1  上报间隔 s
+     u32  can1_enable_get;  // 使能接收
 
-  //    北斗设置
-     u32   BD_Mode;     //  北斗模块通信模式
-     u32   BD_Baud;     //  北斗模块 通信波特率
-     u32   BD_OutputFreq;  // 北斗模块输出更新率设置 
-     u32   BD_SampleFrea; //  北斗模块采集 NMEA  数据频率
 
-  //   CAN   相关设置
-     u32   CAN_1_Mode;    //  CAN  模式  01:还回模式  10  : 普通模式   11:  静默模式  
-     u32   CAN_1_ID;
-     u8    CAN_1_Type;	
-     u8    CAN_1_Duration;  //  单位秒
+     u32  can2_sample_dur;  // can2 采集间隔  ms
+     u32  can2_trans_dur;  // can2  上报间隔 s
      
-		 
-     u32   CAN_2_Mode;   //   CAN  模式
-     u32   CAN_2_ID;
-     u8     CAN_2_Type;    	 
-     u8     CAN_2_Duration;  // s	 
-     u32   Collision_Check;     //  bit 31 : 开启关闭碰撞  b7-b0  碰撞时间门限 b8-b15  碰撞加速度门限
+     
+      u8      canid_1[8];// 原始设置
+      u32    canid_1_Filter_ID;  // 接收判断用
+      u32    canid_2_NotGetID;  //   不采集ID   
+      u8      canid_1_Rxbuf[512]; // 接收buffer  
+      u32    canid_1_ID_RxBUF[128];  // 接收ID  
+      u8      canid_1_Sdbuf[512]; // 发送用buffer 
+      u32    canid_1_ID_SdBUF[128];  // 接收ID    
+      u16    canid_1_SdWr; // 写buffer下标
+      u16    canid_1_RxWr; // 写buffer下标
+      u8      canid_1_ext_state; // 扩展帧状态
+      u32    canid_1_sample_dur;  //该ID 的采集间隔
+      u8      canid_ID_enableGet;//   使能该ID 采集
 
-     u8     CloseAllcan;  
+      //------- system variables  
+      u16   canid_timer;  //定时器
+      u8     canid_0705_sdFlag;// 发送标志位	  
 
-  //   位置附加信息
-       // 1. 信号强度
-       u16  FJ_SignalValue;  //  信号强度   高字节 0 ；低字节  高4为 X2 gprs强度 ，低4位 卫星颗数
-      //  2. 自定义状态机模拟量上传  
-       u8    FJ_IO_1;
-	u8    FJ_IO_2;
-	u16  AD_0;  //  2 Byte
-	u16  AD_1; //   2 Byte
-
- //    围栏相关判断
-       u8    Close_CommunicateFlag;  //  进区域 关闭通信   
-       u8    Trans_GNSS_Flag;    //  进区域采集GNSS
-       //小小添加车辆信号状态
-      u8  Extent_IO_status;
-  
-} BD_EXTEND;
+ }CAN_TRAN;
 
 //------- 北斗扩展协议  ------------
 extern BD_EXTEND     BD_EXT;     //  北斗扩展协议
+extern DETACH_PKG   Detach_PKG; // 分包重传相关
+extern SET_QRY         Setting_Qry; //  终端参数查询
+extern u32         CMD_U32ID; 
+extern PRODUCT_ATTRIBUTE    ProductAttribute;// 终端属性
+extern HUMAN_CONFIRM_WARN   HumanConfirmWarn;// 人工确认报警 
+
+//-----  ISP    远程下载相关 -------
+extern ISP_BD  BD_ISP; //  BD   升级包     
+
 
 //===============================================================================================
 extern _Media_SD_state Photo_sdState;   //  图片发送状态
@@ -934,6 +1081,10 @@ extern u16         GPRS_infoWr_Tx;
 //------ phone
 extern u8       CallState; // 通话状态
 
+//   -------  CAN BD new  --------------
+extern CAN_TRAN     CAN_trans;
+
+
 
 extern  GPRMC_PRO GPRMC_Funs;
 
@@ -1010,6 +1161,11 @@ extern u8  wmv_sendstate;
 extern  u8		SIM_code[6];							   // 要发送的IMSI	号码
 extern  u8		IMSI_CODE[15];							//SIM 卡的IMSI 号码
 extern  u8		Warn_Status[4]; // 报警状态信息
+extern 	u8	    Warn_MaskWord[4];	//	报警屏蔽字	  
+extern  u8      Text_MaskWord[4];	 
+extern  u8      Key_MaskWord[4]; //   关键字屏蔽字    
+
+
 extern  u8		Car_Status[4];  // 车辆状态信息   
 extern T_GPS_Info_GPRS 	 Gps_Gprs;	 
 extern T_GPS_Info_GPRS	 Temp_Gps_Gprs;
@@ -1142,6 +1298,10 @@ extern u8    Stuff_CentreTakeACK_BD_0805H( void );
 extern u8    Stuff_DataTransTx_0900H(void);     
 extern u8    Stuff_DriverInfoSD_0702H(void);  
 extern u8    Stuff_Worklist_0701H(void); 
+extern u8    Stuff_ISP_Resualt_BD_0108H(void);
+extern u8    Stuff_BatchDataTrans_BD_0704H(void);     
+extern u8    Stuff_CANDataTrans_BD_0705H(void);
+extern u8    Sub_stuff_AppointedPram_0106(void);  
 
 extern u8    Stuff_DataTrans_0900_ISP_ACK(u8  AckType);  
 extern u8    Update_HardSoft_Version_Judge(u8 * instr);
@@ -1198,6 +1358,9 @@ extern void OutPrint_HEX(u8 * Descrip, u8 *instr, u16 inlen);
 extern void    DoorCameraInit(void);
 extern void    MSG_BroadCast_Read(void); 
 extern u8      Time_FastJudge(void);   
+extern void   CAN_struct_init(void);
+extern void   CAN_send_timer(void);
+extern void   redial(void);
 //extern u8  RecordSerial_output_Str(const char *fmt,...); 
 
 //==================================================================================================
