@@ -104,8 +104,8 @@ u8 CAR_SET_FLAG=0;
 //存储输入的相应信息
 u8 Menu_MainDns[20];
 u8 Menu_AuxDns[20];
-u8 Menu_MainIp[20];
-u8 Menu_AuxIp[20];
+u8 Menu_MainIp[20]={"   .   .   .   :    "};//000.000.000.000:0000   20位
+u8 Menu_AuxIp[20]={"   .   .   .   :    "};//000.000.000.000:0000   20位;
 u8 Menu_Apn[20];
 
 

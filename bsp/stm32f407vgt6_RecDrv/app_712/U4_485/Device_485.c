@@ -157,17 +157,17 @@ void  DwinLCD_Send(void)
 				                          //Data
 				   memset(send,0,sizeof((const char*)send));                 
 				    sprintf(send,"\r\nSocket: %d.%d.%d.%d : %d\r\n",RemoteIP_main[0],RemoteIP_main[1],RemoteIP_main[2],RemoteIP_main[3],RemotePort_main);
-				   memcpy(DwinLCD.Txinfo+6,send,strlen(send));	
-				   DwinLCD.TxInfolen=6+strlen(send);   
+				   memcpy(DwinLCD.Txinfo+6,send,strlen((const char*)send));	
+				   DwinLCD.TxInfolen=6+strlen((const char*)send);   
 
 				    memset(send,0,sizeof((const char*)send));      
 				   sprintf(send,"\r\nAPN:   %s\r\n",APN_String); 
-                               memcpy(DwinLCD.Txinfo+ DwinLCD.TxInfolen,send,strlen(send));  	 
-				   DwinLCD.TxInfolen+=strlen(send);      
+                               memcpy(DwinLCD.Txinfo+ DwinLCD.TxInfolen,send,strlen((const char*)send));  	 
+				   DwinLCD.TxInfolen+=strlen((const char*)send);      
 				    memset(send,0,sizeof((const char*)send));   
 				   sprintf(send,"\r\n³µÁ¾ÈëÍøID: "); 
-				   memcpy(DwinLCD.Txinfo+ DwinLCD.TxInfolen,send,strlen(send));
-				   DwinLCD.TxInfolen+=strlen(send);   
+				   memcpy(DwinLCD.Txinfo+ DwinLCD.TxInfolen,send,strlen((const char*)send));
+				   DwinLCD.TxInfolen+=strlen((const char*)send);   
 				   memcpy(DwinLCD.Txinfo+ DwinLCD.TxInfolen,SimID_12D,12);   //---- 
 				   DwinLCD.TxInfolen+=12;     
 				   memset(send,0,sizeof((const char*)send));   
@@ -973,8 +973,8 @@ struct rt_semaphore _485Rx_sem;
 void _485_thread_entry(void* parameter)  
 {
        rt_err_t  res=RT_EOK;
-	MSG_Q_TYPE  rec_485;
-	u8    rec_info[20];
+	//MSG_Q_TYPE  rec_485;
+	//u8    rec_info[20];
 		
          //  1.  Debug out   &  meset  	
 	rt_kprintf("\r\n ---> 485 thread start !\r\n"); 
@@ -1035,7 +1035,7 @@ void _485_startup(void)
 	result=rt_thread_init(&_485_thread, 
 		"485dev",
 		_485_thread_entry, RT_NULL,
-		&_485_thread_stack[0], sizeof(_485_thread_stack),  
+		&_485_thread_stack[0], sizeof(_485_thread_stack),   
 		Prio_485, 10);  
 
     if (result == RT_EOK)

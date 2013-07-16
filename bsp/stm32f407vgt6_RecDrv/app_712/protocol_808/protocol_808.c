@@ -423,7 +423,7 @@ u16  Protocol_808_Encode(u8 *Dest,u8 *Src, u16 srclen);
 void Protocol_808_Decode(void);  // 解析指定buffer :  UDP_HEX_Rx  
 void Photo_send_end(void);
 void Sound_send_end(void);
-void Video_send_end(void);  
+//void Video_send_end(void);  
 unsigned short int CRC16_file(unsigned short int num);  
 void Spd_ExpInit(void);
 void AvrgSpd_MintProcess(u8 hour,u8 min, u8 sec) ; 
@@ -7854,7 +7854,7 @@ void Media_RSdMode_Timer(void)
 	  if(2==MediaObj.RSD_State)
 	  {
           MediaObj.RSD_Timer++;		  
-		  if(MediaObj.RSD_Timer>120)   //   如果状态一直在等待且超过30s择清除状态 
+		  if(MediaObj.RSD_Timer>180)   //   如果状态一直在等待且超过30s择清除状态 
 		  { 
 		     switch (MediaObj.Media_Type)
 	         {
@@ -7866,7 +7866,7 @@ void Media_RSdMode_Timer(void)
 			         Sound_send_end();  
 			          break;
 			  case 2 : // 视频
-                               Video_send_end();
+                            //   Video_send_end();
 			          break;
 			  default:
 			  	      break;
@@ -7992,7 +7992,7 @@ u8  Sound_send_start(void)
                                            //    5   amr
      return true;  
 }
-
+#if 0
 u8  MP3_send_start(void) 
 {
    u8   mp3_name[13];
@@ -8016,7 +8016,7 @@ u8  MP3_send_start(void)
     Media_Start_Init(1,2); // 音频  wav 格式       
 	return true;
 }
-
+#endif
 u8  Video_send_start(void)
 {
    u8 video_name[13];
@@ -8066,6 +8066,7 @@ void Sound_send_end(void)
 	 VocREC.running=0;   // clear
 	 Media_Clear_State(); 
 } 
+#if 0
 
 void Video_send_end(void)  
 {
@@ -8078,6 +8079,7 @@ void Video_send_end(void)
 	 wmv_sendstate=0;
 	 Media_Clear_State(); 
 } 
+
 
 void Video_Timer(void)
 {
@@ -8099,6 +8101,7 @@ void Video_Timer(void)
 	  }   
   }
 }
+#endif
 
 void Sound_Timer(void)
 {
@@ -8159,7 +8162,7 @@ void Meida_Trans_Exception(void)
 		    resualt=2;		  
 	     	}
 	}
-	 else
+	/* else
         if(Video_sdState.photo_sending==enable)	 
         {
               if( Video_sdState.Exeption_timer++>50)
@@ -8168,7 +8171,7 @@ void Meida_Trans_Exception(void)
 		    resualt=2;		  
 	     	}
         }
-
+*/
 	if(resualt)
 		rt_kprintf("\r\n   Media  Trans  Timeout  resualt: %d\r\n", resualt);
 		
@@ -8184,8 +8187,8 @@ void Meida_Trans_Exception(void)
 	 else 
 	 if(Sound_sdState.photo_sending==enable)	 
 	  Sound_Timer(); 
-	 else
-	  Video_Timer(); 	
+	// else
+	 // Video_Timer(); 	
 	 
 	  Media_RSdMode_Timer();
    }   
@@ -8368,7 +8371,7 @@ void TCP_RX_Process( u8  LinkNum)  //  ---- 808  标准协议
 											      Media_Clear_State();
 												Photo_send_end();
 												Sound_send_end();
-												Video_send_end();
+												//Video_send_end();
                                                                                      rt_kprintf("\r\n  手动上报多媒体上传处理\r\n");
 											  }	
 											 rt_kprintf("\r\n  多媒体信息前的多媒体发送完毕 \r\n");  
@@ -9454,7 +9457,7 @@ void TCP_RX_Process( u8  LinkNum)  //  ---- 808  标准协议
 										  rt_kprintf("\r\n 音频传输结束! \r\n");
 								          break;
 								  case 2 : // 视频
-									      Video_send_end();
+									     // Video_send_end();
   								          rt_kprintf("\r\n 视频传输结束! \r\n");  
 								          break;
 								  default:
@@ -9589,7 +9592,7 @@ void TCP_RX_Process( u8  LinkNum)  //  ---- 808  标准协议
 									 rt_kprintf("\r\n   上传固有图片\r\n");    
 							       break;
 							case 1:  //  音频
-                                     MP3_send_start();
+                                    // MP3_send_start();
 									  rt_kprintf("\r\n  上传固有音频 \r\n"); 
 								   break;	  
 							case 2:  //  视频
@@ -11909,7 +11912,7 @@ void  redial(void)
 }
 FINSH_FUNCTION_EXPORT(redial, redial); 
 
-void  port(u8 *instr)
+void  port_main(u8 *instr)
 {
    		   sscanf(instr, "%d", (u32*)&RemotePort_main);  
 		   rt_kprintf("\r\n设置主端口=%d!",RemotePort_main);
@@ -11920,7 +11923,21 @@ void  port(u8 *instr)
 			DataLink_EndFlag=1; //AT_End();  
 
 }
-FINSH_FUNCTION_EXPORT(port, port); 
+FINSH_FUNCTION_EXPORT(port_main, port_main); 
+
+void  port_aux(u8 *instr)
+{
+   		   sscanf(instr, "%d", (u32*)&RemotePort_aux);  
+		   rt_kprintf("\r\n设置辅助端口=%d!",RemotePort_aux);
+		   SysConf_struct.Port_Aux=RemotePort_aux;
+		   Api_Config_write(config,ID_CONF_SYS,(u8*)&SysConf_struct,sizeof(SysConf_struct));
+		   
+		   DataLink_AuxSocket_set(RemoteIP_main,RemotePort_aux,1);
+		//	DataLink_EndFlag=1; //AT_End();  
+
+}
+FINSH_FUNCTION_EXPORT(port_aux, port_aux); 
+
 
 void dnsr_main(u8*instr)
 {
@@ -11943,5 +11960,28 @@ void dnsr_main(u8*instr)
 
 }
 FINSH_FUNCTION_EXPORT(dnsr_main, dnsr_main);  
+
+void dnsr_aux(u8*instr)
+{
+    u16  len=0;
+
+	len=strlen(instr);
+
+	if(len!=0)
+   {
+        memset(DomainNameStr_aux,0,sizeof(DomainNameStr_aux));					  
+		memset(SysConf_struct.DNSR_Aux,0,sizeof(DomainNameStr_aux));  
+		memcpy(DomainNameStr_aux,(char*)instr,len);
+		memcpy(SysConf_struct.DNSR_Aux,(char*)instr,len);
+		Api_Config_write(config,ID_CONF_SYS,(u8*)&SysConf_struct,sizeof(SysConf_struct));
+		//----- 传给 GSM 模块------
+		DataLink_DNSR2_Set(SysConf_struct.DNSR_Aux,1);  
+         //--------    清除鉴权码 -------------------
+	  //   idip("clear");		
+	}					 
+
+}
+FINSH_FUNCTION_EXPORT(dnsr_aux, dnsr_aux);  
+
 
 // C.  Module

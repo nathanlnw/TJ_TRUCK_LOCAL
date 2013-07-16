@@ -3,7 +3,7 @@
 #include  "App_moduleConfig.h"
 
 static u8  OneSectorReg[4096]; 
-u8	  reg_4096[4096];  
+//u8	  reg_4096[4096];  
 
 
 void SST25V_DBSY(void); 
@@ -487,7 +487,7 @@ u8  SST25V_OneSector_Write(u8 *p,  u32  addr,  u32 len)
       
 
          //---------------- add   for  debug----------------       
-	    WatchDog_Feed();
+	 /*   WatchDog_Feed();
 	    SST25V_BufferRead(reg_4096,SectorStartAddr,4096); 
 		DF_delay_ms(50);    
       
@@ -501,6 +501,7 @@ u8  SST25V_OneSector_Write(u8 *p,  u32  addr,  u32 len)
 	                break;
 		       	}
 		   }	   
+	 */ 
        //----------- debug --------------------------------------------------  
 					
 		   WatchDog_Feed();

@@ -348,7 +348,7 @@ else
 
 /* HMI  thread */
 ALIGN(RT_ALIGN_SIZE) 
-char HMI_thread_stack[4096]; 
+char HMI_thread_stack[5120]; // 4096
 struct rt_thread HMI_thread;
 
 static void HMI_thread_entry(void* parameter)  
@@ -444,7 +444,7 @@ static void HMI_thread_entry(void* parameter)
 		       pMenuItem->show();
 		}
 	 	//--------------------------------------------	   
-              rt_thread_delay(6);       
+              rt_thread_delay(8);        
      }  
 }
 

@@ -30,7 +30,7 @@
 /* Using Software Timer */
 #define RT_USING_TIMER_SOFT 
 #define RT_TIMER_THREAD_PRIO		4
-#define RT_TIMER_THREAD_STACK_SIZE	2048
+#define RT_TIMER_THREAD_STACK_SIZE	4096 //2048 
 #define RT_TIMER_TICK_PER_SECOND	10
 
 /* SECTION: IPC */
@@ -165,13 +165,20 @@
 
 //----  App_712  -------------------
 //#define  Prio_finsh         20              
-#define  Prio_Demo        18                                // Demo application thread
+/*#define  Prio_Demo         18                                // Demo application thread
 #define  Prio_GSM          13 
 #define  Prio_GPS          17
 #define  Prio_485          16      
 #define  Prio_App808        14
 #define  Prio_HMI           15 
+*/
 
+#define  Prio_Demo         18                                // Demo application thread
+#define  Prio_GSM          13 
+#define  Prio_GPS          14
+#define  Prio_485          17      
+#define  Prio_App808        15
+#define  Prio_HMI           16 
 
 //--------------------------------
 

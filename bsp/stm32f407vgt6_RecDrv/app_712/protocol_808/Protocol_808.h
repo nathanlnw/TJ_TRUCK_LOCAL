@@ -1361,6 +1361,11 @@ extern u8      Time_FastJudge(void);
 extern void   CAN_struct_init(void);
 extern void   CAN_send_timer(void);
 extern void   redial(void);
+extern void   dnsr_main(u8*instr);
+extern void   dnsr_aux(u8*instr);
+extern void   port_main(u8 *instr);
+extern void   port_aux(u8 *instr); 
+
 //extern u8  RecordSerial_output_Str(const char *fmt,...); 
 
 //==================================================================================================

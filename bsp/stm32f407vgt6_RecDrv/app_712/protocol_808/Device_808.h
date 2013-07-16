@@ -179,6 +179,8 @@ extern   u8       Api_CHK_ReadCycle_status(void);
  extern   u8     ISP_Format(u16 page_counter,u16 page_offset,u8 *p,u16 length);
 
  extern u8     TF_Card_Status(void);
+ extern  void Socket_aux_Set(u8* str);
+ extern  void Socket_main_Set(u8* str); 
  
 
 #endif

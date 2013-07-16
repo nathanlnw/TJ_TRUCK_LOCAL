@@ -608,6 +608,36 @@ void Socket_main_Set(u8* str)
 }
 FINSH_FUNCTION_EXPORT(Socket_main_Set,Set Socket main); 
 
+  void Socket_aux_Set(u8* str)
+  {
+	u8 i=0;
+	u8 reg_str[80];
+	
+	  if (strlen((const char*)str)==0){
+		  rt_kprintf("\r\n input error\r\n"); 
+		  return ;
+	  }
+	  else 
+	  { 	 
+		i = str2ipport((char*)str, RemoteIP_aux, &RemotePort_aux);
+		if (i <= 4) return ;;
+		 
+		memset(reg_str,0,sizeof(reg_str));
+		IP_Str((char*)reg_str, *( u32 * ) RemoteIP_aux);		 
+		strcat((char*)reg_str, " :");		
+		sprintf((char*)reg_str+strlen((const char*)reg_str), "%u\r\n", RemotePort_aux);  
+	    memcpy((char*)SysConf_struct.IP_Aux,RemoteIP_aux,4);
+		SysConf_struct.Port_Aux=RemotePort_aux;
+	    Api_Config_write(config,ID_CONF_SYS,(u8*)&SysConf_struct,sizeof(SysConf_struct));
+  
+		  DataLink_AuxSocket_set(RemoteIP_aux,RemotePort_aux,1);
+			  return ;
+	  }
+  
+  }
+  FINSH_FUNCTION_EXPORT(Socket_aux_Set,Set Aux main); 
+
+
   void  debug_relay(u8 *str) 
 {
  if (strlen(str)==0)

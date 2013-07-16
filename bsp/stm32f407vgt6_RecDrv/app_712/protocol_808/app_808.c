@@ -493,7 +493,7 @@ static void timeout_app(void *  parameter)
 				      Media_Clear_State();
 					Photo_send_end();
 					Sound_send_end();
-					Video_send_end();
+					//Video_send_end();
 	                                                     rt_kprintf("\r\n  手动上报多媒体上传处理\r\n");
 				  }	
 				 rt_kprintf("\r\n  多媒体信息前的多媒体发送完毕 \r\n");  
