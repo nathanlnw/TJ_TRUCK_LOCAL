@@ -95,10 +95,19 @@ u8 Menu_VechileType[10];  //  车辆类型
 u8 Menu_VecLogoColor[10]; // 车牌颜色
 u8 Menu_color_num=0;   // JT415    1  蓝 2 黄 3 黑 4 白 9其他
 u8 Menu_Vin_Code[17];
-
 u8 Menu_sim_Code[12];//扬州要求设置11位手机号码
 
 u8 menu_type_flag=0,menu_color_flag=0;
+
+u8 NET_SET_FLAG=0;
+u8 CAR_SET_FLAG=0;
+//存储输入的相应信息
+u8 Menu_MainDns[20];
+u8 Menu_AuxDns[20];
+u8 Menu_MainIp[20];
+u8 Menu_AuxIp[20];
+u8 Menu_Apn[20];
+
 
 ALIGN(RT_ALIGN_SIZE)  
 MENUITEM *pMenuItem;   

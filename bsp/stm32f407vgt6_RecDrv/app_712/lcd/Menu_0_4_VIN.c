@@ -1,7 +1,7 @@
 #include  <string.h>
 #include "Menu_Include.h"
 
-#define  Sim_width1  6
+#define  VIN_width1  6
 
 
 static u8 VIN_SetFlag=1;
@@ -21,13 +21,14 @@ DECL_BMP(8,5,select_vin);
 void VIN_Type_Sel( u8 par)
 {
 lcd_fill(0);
-lcd_text12(20,10,"0-9  A-M  N-Z",13,LCD_MODE_SET);
+lcd_text12(0,3,(char *)Menu_Vin_Code,VIN_SetFlag-1,LCD_MODE_SET);
+lcd_text12(20,18,"0-9  A-M  N-Z",13,LCD_MODE_SET);
 if(par==0)
-	lcd_text12(20,10,"0-9",3,LCD_MODE_INVERT);
+	lcd_text12(20,18,"0-9",3,LCD_MODE_INVERT);
 else if(par==1)
-	lcd_text12(20+5*6,10,"A-M",3,LCD_MODE_INVERT);
+	lcd_text12(20+5*6,18,"A-M",3,LCD_MODE_INVERT);
 else if(par==2)
-	lcd_text12(20+10*6,10,"N-Z",3,LCD_MODE_INVERT);
+	lcd_text12(20+10*6,18,"N-Z",3,LCD_MODE_INVERT);
 lcd_update_all();
 }
 void VIN_Set(u8 par,u8 type1_2)
@@ -37,17 +38,17 @@ void VIN_Set(u8 par,u8 type1_2)
 	
 	if(type1_2==1)
 		{
-		lcd_bitmap(par*Sim_width1, 14, &BMP_select_vin, LCD_MODE_SET);
+		lcd_bitmap(par*VIN_width1, 14, &BMP_select_vin, LCD_MODE_SET);
 		lcd_text12(0,19,"0123456789",10,LCD_MODE_SET);
 		}
 	else if(type1_2==2)
 		{
-		lcd_bitmap(par*Sim_width1, 14, &BMP_select_vin, LCD_MODE_SET);
+		lcd_bitmap(par*VIN_width1, 14, &BMP_select_vin, LCD_MODE_SET);
 		lcd_text12(0,19,"ABCDEFGHIJKLM",13,LCD_MODE_SET);
 		}
 	else if(type1_2==3)
 		{
-		lcd_bitmap(par*Sim_width1, 14, &BMP_select_vin, LCD_MODE_SET);
+		lcd_bitmap(par*VIN_width1, 14, &BMP_select_vin, LCD_MODE_SET);
 		lcd_text12(0,19,"NOPQRSTUVWXYZ",13,LCD_MODE_SET);
 		}
 	lcd_update_all();
@@ -247,16 +248,9 @@ static void keypress(unsigned int key)
 
 static void timetick(unsigned int systick)
 {
-	/*CounterBack++;
-	if(CounterBack!=MaxBankIdleTime*5)
-		return;
-	CounterBack=0;
-	pMenuItem=&Menu_0_loggingin;
-	pMenuItem->show();
 
-	VIN_SetFlag=1;
-	VIN_SetCounter=0;*/
 }
+
 
 ALIGN(RT_ALIGN_SIZE)
 MENUITEM	Menu_0_4_vin=

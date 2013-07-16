@@ -145,7 +145,8 @@ static void keypress(unsigned int key)
 				{
 				CarType_Type=3;
 				lcd_fill(0);
-				lcd_text12(12,10,"车辆类型选择完毕",16,LCD_MODE_SET);
+				lcd_text12(12,3,"车辆类型选择完毕",16,LCD_MODE_SET);
+				lcd_text12(6,18,"按确认键设置下一项",18,LCD_MODE_SET);
 				lcd_update_all();
 				
 				//写入车辆类型

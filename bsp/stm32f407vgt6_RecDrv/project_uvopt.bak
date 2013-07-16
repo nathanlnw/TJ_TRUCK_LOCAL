@@ -1490,7 +1490,7 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>1995</TopLine>
+      <TopLine>1992</TopLine>
       <CurrentLine>1993</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\app_712\gsm\Device_gsm.c</PathWithFileName>
@@ -3338,7 +3338,7 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>47</TopLine>
+      <TopLine>44</TopLine>
       <CurrentLine>45</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\app_712\lcd\Menu_0_5_Colour.c</PathWithFileName>

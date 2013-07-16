@@ -162,8 +162,16 @@ ALIGN(RT_ALIGN_SIZE)extern  MENUITEM	Menu_5_7_Version;
 ALIGN(RT_ALIGN_SIZE)extern  MENUITEM	Menu_5_8_Usb;
 ALIGN(RT_ALIGN_SIZE)extern  MENUITEM	Menu_5_other;
 
-ALIGN(RT_ALIGN_SIZE)extern  MENUITEM	Menu_6_RemoteUpdata;
+ALIGN(RT_ALIGN_SIZE)extern  MENUITEM	Menu_6_SetInfor;
 ALIGN(RT_ALIGN_SIZE)extern  MENUITEM	Menu_7_CentreTextDisplay;
+
+ALIGN(RT_ALIGN_SIZE)extern  MENUITEM    Menu_8_SetDNS;
+ALIGN(RT_ALIGN_SIZE)extern  MENUITEM	Menu_8_1_MainDnsPort;
+ALIGN(RT_ALIGN_SIZE)extern  MENUITEM	Menu_8_2_AuxDnsPort;
+ALIGN(RT_ALIGN_SIZE)extern  MENUITEM	Menu_8_3_MainIpPort;
+ALIGN(RT_ALIGN_SIZE)extern  MENUITEM	Menu_8_4_AuxIpPort;
+ALIGN(RT_ALIGN_SIZE)extern  MENUITEM	Menu_8_5_ProDnsIp;
+ALIGN(RT_ALIGN_SIZE)extern  MENUITEM	Menu_8_6_Apn;
 
 extern unsigned char SetVIN_NUM;//   1:设置车牌号码  2:设置VIN
 extern unsigned char OK_Counter;//记录在快捷菜单下ok键按下的次数
@@ -220,6 +228,14 @@ extern u8 Menu_sim_Code[12];
 extern u8 Menu_color_num; 
 extern u8 menu_type_flag,menu_color_flag;
 
+extern u8 NET_SET_FLAG;
+extern u8 CAR_SET_FLAG;
+//存储输入的相应信息
+extern u8 Menu_MainDns[20];
+extern u8 Menu_AuxDns[20];
+extern u8 Menu_MainIp[20];
+extern u8 Menu_AuxIp[20];
+extern u8 Menu_Apn[20];
 
 extern void Cent_To_Disp(void);
 extern void version_disp(void);

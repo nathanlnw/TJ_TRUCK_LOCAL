@@ -64,10 +64,10 @@ void CarSet_0_fun(u8 set_type)
     		lcd_text12(35,19,"SIM卡号输入",11,LCD_MODE_INVERT);
     		break;
     	case 4:
-		lcd_text12(35,19,"VIN输入",7,LCD_MODE_INVERT); 
-		break;
-	case 5:
-		lcd_text12(35,19,"车牌颜色输入",12,LCD_MODE_INVERT); 	
+		    lcd_text12(35,19,"VIN输入",7,LCD_MODE_INVERT); 
+		    break;
+	    case 5:
+		    lcd_text12(35,19,"车牌颜色输入",12,LCD_MODE_INVERT); 	
     		break;
     	}
 	lcd_update_all();

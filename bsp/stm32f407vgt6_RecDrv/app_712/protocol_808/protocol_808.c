@@ -8127,7 +8127,7 @@ void Photo_Timer(void)
 	   if((Photo_sdState.SD_packetNum<=Photo_sdState.Total_packetNum+1)&&(0==MediaObj.RSD_State))  
 	   	{  //  一下定时器在   在顺序发送过过程中   和   收到重传开始后有效 
 	        Photo_sdState.Data_SD_counter++;
-			if( Photo_sdState.Data_SD_counter>12)  //40   12     
+			if( Photo_sdState.Data_SD_counter>14)  //40   12     
 				{
 	               Photo_sdState.Data_SD_counter=0;
 				   Photo_sdState.Exeption_timer=0;			
