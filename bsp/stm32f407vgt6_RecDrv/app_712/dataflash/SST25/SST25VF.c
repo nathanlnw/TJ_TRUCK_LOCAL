@@ -3,7 +3,7 @@
 #include  "App_moduleConfig.h"
 
 static u8  OneSectorReg[4096]; 
-//u8	  reg_4096[4096];  
+u8	  reg_4096[4096];  
 
 
 void SST25V_DBSY(void); 
@@ -457,9 +457,9 @@ u8  SST25V_OneSector_Write(u8 *p,  u32  addr,  u32 len)
    u32   insector_offset=addr&0xFFF; // 取扇区内偏移地址 
 
 
-     rt_kprintf("\r\n addrin=0x%X  ,SectorAdd=0x%X \r\n",addr,SectorStartAddr);     
+    // rt_kprintf("\r\n addrin=0x%X  ,SectorAdd=0x%X \r\n",addr,SectorStartAddr);     
 
-	if(rt_mutex_take(DF_lock_mutex,150)==RT_EOK) 
+	//if(rt_mutex_take(DF_lock_mutex,150)==RT_EOK) 
 	{
 	  DF_LOCK=1;
       //  1.  get   4096 to buf
@@ -467,7 +467,7 @@ u8  SST25V_OneSector_Write(u8 *p,  u32  addr,  u32 len)
        SST25V_BufferRead(OneSectorReg,SectorStartAddr,4096);
        WatchDog_Feed();
 	   
-	   rt_kprintf("\r\n insector_offset=0x%X  \r\n",insector_offset);   
+	  // rt_kprintf("\r\n insector_offset=0x%X  \r\n",insector_offset);   
 	   //OutPrint_HEX("\r\n 读取前",OneSectorReg,4096);  
        delay_ms(35);
        WatchDog_Feed();
@@ -487,7 +487,7 @@ u8  SST25V_OneSector_Write(u8 *p,  u32  addr,  u32 len)
       
 
          //---------------- add   for  debug----------------       
-	 /*   WatchDog_Feed();
+	    WatchDog_Feed();
 	    SST25V_BufferRead(reg_4096,SectorStartAddr,4096); 
 		DF_delay_ms(50);    
       
@@ -501,18 +501,18 @@ u8  SST25V_OneSector_Write(u8 *p,  u32  addr,  u32 len)
 	                break;
 		       	}
 		   }	   
-	 */ 
+	 
        //----------- debug --------------------------------------------------  
 					
 		   WatchDog_Feed();
 	      delay_ms(5);
       DF_LOCK=0; 
 	  //--------------------------------
-      rt_mutex_release(DF_lock_mutex);    
+    //  rt_mutex_release(DF_lock_mutex);    
 	  return  true;
   	}	
-	else
-		  return false;
+	//else
+		//  return false;
 }
 void df_test(void)
 {

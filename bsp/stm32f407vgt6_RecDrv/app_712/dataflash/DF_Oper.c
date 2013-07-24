@@ -172,14 +172,14 @@ void DF_WriteFlashSector(u16 page_counter,u16 page_offset,u8 *p,u16 length) //51
     
     // 要擦除所在的sector(要求pagecounter 为所在sector的第一个page) ，然后该sector的第一个page写
 	SST25V_SectorErase_4KByte((8*((u32)page_counter/8))*PageSIZE);	
-	DF_delay_ms(5); 
+	DF_delay_ms(90); 
 	
 	for(i=0;i<length;i++)
 	{
 		SST25V_ByteWrite(*p,page_counter*512+i+page_offset);
 		p++;
 	}
-	DF_delay_ms(5); 
+	DF_delay_ms(50);  
 	
 }
 void DF_EraseAppFile_Area(void)
@@ -194,7 +194,7 @@ void DF_EraseAppFile_Area(void)
         */
 	
         SST25V_SectorErase_4KByte(0x0);
- 	 DF_delay_ms(5);   
+ 	 DF_delay_ms(50);   
 	 WatchDog_Feed();
        DF_ReadFlash(48,0,SST25Temp,PageSIZE);
 	//DF_delay_ms(1);	 

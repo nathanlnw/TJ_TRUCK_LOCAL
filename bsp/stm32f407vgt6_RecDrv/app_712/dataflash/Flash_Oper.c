@@ -47,7 +47,7 @@ u8 SaveCycleGPS(u32 cyclewr,u8 *content ,u16 saveLen)
      {
               WatchDog_Feed();
 		SST25V_SectorErase_4KByte((pageoffset+CycleStart_offset)*PageSIZE);      // erase Sector		
-		DF_delay_ms(20); 
+		DF_delay_ms(50); 
 	    rt_kprintf("\r\n Erase Cycle Sector : %d\r\n",(pageoffset>>3));       
 	 }
   //	   2. Filter write  area    
@@ -65,7 +65,7 @@ u8 SaveCycleGPS(u32 cyclewr,u8 *content ,u16 saveLen)
 		    	{
                             WatchDog_Feed();
 				SST25V_SectorErase_4KByte((pageoffset+CycleStart_offset)*PageSIZE);      // erase current Sector		
-				DF_delay_ms(20); 
+				DF_delay_ms(80); 
 			       rt_kprintf("\r\n write error exceed 3 ,Erase current Cycle Sector : %d\r\n",(pageoffset>>3));    
 				//----------------------------   
                            cycle_writeAbnormal_counter=0;  
@@ -178,7 +178,7 @@ u8 Save_DrvRecoder(u32 In_write,u8 *content ,u16 saveLen)
      if(((pageoffset%8)==0)&&(InPageoffset==0))  // 判断是否需要擦除Block  被移除到下一个Sector  1Sector=8 Page  
      {
         SST25V_SectorErase_4KByte((pageoffset+VehicleRecStart_offset)*PageSIZE);      // erase Sector	
-        DF_delay_ms(10);
+        DF_delay_ms(70);
 		// rt_kprintf("\r\n Erase Cycle Block : %d\r\n",(pageoffset>>6));   
 	 }
   //	   2. Filter write  area    
@@ -317,7 +317,7 @@ u8  Common_WriteContent(u32 In_write,u8 *content ,u16 saveLen, u8 Type)
 		if(((pageoffset%8)==0)&&(InPageoffset==0))  // 判断是否需要擦除Block  被移除到下一个Block	1Block=8Page  
 		{
         SST25V_SectorErase_4KByte((pageoffset+Start_offset)*PageSIZE);      // erase Sector	
-        DF_delay_ms(10);
+        DF_delay_ms(70);
 		//  rt_kprintf("\r\n Common --- Erase Cycle Block : %d\r\n",(pageoffset>>6));    
 		}
 	 // 	  2. Filter write  area    
@@ -587,7 +587,7 @@ u8 Save_PerMinContent(u32 In_wr,u8 *content ,u16 saveLen)
      if(((pageoffset%8)==0)&&(InPageoffset==0))  // 判断是否需要擦除Block  被移除到下一个Block  1Block=8Page  
      {
 	  SST25V_SectorErase_4KByte((pageoffset+AverageSpdStart_offset)*PageSIZE);	  // erase Sector 
-	  DF_delay_ms(10);
+	  DF_delay_ms(80);
 	  // rt_kprintf("\r\n Erase Cycle Block : %d\r\n",(pageoffset>>6));    
 	 }
   //	   2. Filter write  area    
@@ -797,7 +797,7 @@ u8 Save_MintPosition(u32 In_write,u8 *content ,u16 saveLen)
      if((pageoffset%8)==0)  // 判断是否需要擦除Block  被移除到下一个Block  1Block=8 Page  
      {
 	  SST25V_SectorErase_4KByte((pageoffset+AvrgMintPosit_offset)*PageSIZE);	  // erase Sector 
-	  DF_delay_ms(10);
+	  DF_delay_ms(50);
 	  // rt_kprintf("\r\n Erase Cycle Block : %d\r\n",(pageoffset>>6));   
 	 }
   //	   2. Filter write  area    

@@ -373,12 +373,6 @@ void  Voice_Dev_Rxprocess(void)
 	   	          break;  	   
   	}
   #endif
- /* 
-  rt_kprintf("\r\n RX content:");    
-  for(i=0;i<len+8;i++)
-     rt_kprintf(" %x",_485_content[i]); 
-  rt_kprintf("\r\n"); 
- */
 }
 									 
 void  Voice_Dev_Txprocess(void)

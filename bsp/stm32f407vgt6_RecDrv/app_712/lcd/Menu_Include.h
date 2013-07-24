@@ -86,6 +86,7 @@ unsigned char End[3];
 }DispMailBoxInfor;
 
 extern unsigned char XinhaoStatus[20];
+extern unsigned char XinhaoStatusBAK[20]; 
 
 extern unsigned int  tzxs_value;
 extern unsigned char send_data[10];
@@ -225,6 +226,7 @@ extern u8  Menu_VecLogoColor[10]; // 车牌颜色
 extern u8 Menu_color_num; 
 extern u8 Menu_Vin_Code[17];
 extern u8 Menu_sim_Code[12];
+extern u8 License_Not_SetEnable;//    1:车牌号未设置
 extern u8 Menu_color_num; 
 extern u8 menu_type_flag,menu_color_flag;
 

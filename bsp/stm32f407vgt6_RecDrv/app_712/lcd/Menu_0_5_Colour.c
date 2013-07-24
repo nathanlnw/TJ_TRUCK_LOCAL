@@ -78,9 +78,17 @@ u8 error=0;
 				col_screen=3;
 				comfirmation_flag=1;//保存设置信息标志
 				lcd_fill(0);
+				if(License_Not_SetEnable==1)
+					lcd_text12(0,0,"无牌照",6,LCD_MODE_SET);
+				else
 				lcd_text12(0,0,(char *)Menu_Car_license,8,LCD_MODE_SET);
 				lcd_text12(54,0,(char *)Menu_VechileType,6,LCD_MODE_SET);
-				lcd_text12(96,0,(char *)Menu_VecLogoColor,4,LCD_MODE_SET);
+				      //====  车牌号未设置=====
+                if(License_Not_SetEnable==1)
+					 lcd_text12(96,0,(char *)"0",1,LCD_MODE_SET); 
+			    else
+				     lcd_text12(96,0,(char *)Menu_VecLogoColor,4,LCD_MODE_SET);
+				
 				lcd_text12(0,12,"SIM卡号",7,LCD_MODE_SET);
 				lcd_text12(43,12,(char *)Menu_sim_Code,12,LCD_MODE_SET);
 				lcd_text12(24,23,"确定",4,LCD_MODE_INVERT);
@@ -128,7 +136,10 @@ u8 error=0;
                 //rt_kprintf("\r\n(保存3   )JT808Conf_struct.Vechicle_Info.Vech_Num=%s",JT808Conf_struct.Vechicle_Info.Vech_Num);
                                
 				// 车牌颜色
-				JT808Conf_struct.Vechicle_Info.Dev_Color=Menu_color_num;
+				if(License_Not_SetEnable==1) 
+                     JT808Conf_struct.Vechicle_Info.Dev_Color=0;
+				else
+				     JT808Conf_struct.Vechicle_Info.Dev_Color=Menu_color_num;
 				//车辆设置完成
 				JT808Conf_struct.password_flag=1; 
 				//  存储
@@ -179,7 +190,12 @@ u8 error=0;
 				lcd_fill(0);
 				lcd_text12(0,0,(char *)Menu_Car_license,8,LCD_MODE_SET);
 				lcd_text12(54,0,(char *)Menu_VechileType,6,LCD_MODE_SET);
-				lcd_text12(96,0,(char *)Menu_VecLogoColor,4,LCD_MODE_SET);
+				      //====  车牌号未设置=====
+                if(License_Not_SetEnable==1)
+					 lcd_text12(96,0,(char *)"0",1,LCD_MODE_SET); 
+			    else
+				     lcd_text12(96,0,(char *)Menu_VecLogoColor,4,LCD_MODE_SET);
+				
 				lcd_text12(0,12,"SIM卡号",7,LCD_MODE_SET);
 				lcd_text12(43,12,(char *)Menu_sim_Code,12,LCD_MODE_SET);
 				lcd_text12(24,23,"确定",4,LCD_MODE_INVERT);
@@ -202,7 +218,12 @@ u8 error=0;
 				lcd_fill(0);
 				lcd_text12(0,0,(char *)Menu_Car_license,8,LCD_MODE_SET);
 				lcd_text12(54,0,(char *)Menu_VechileType,6,LCD_MODE_SET);
-				lcd_text12(96,0,(char *)Menu_VecLogoColor,4,LCD_MODE_SET);
+                //====  车牌号未设置=====
+                if(License_Not_SetEnable==1)
+					 lcd_text12(96,0,(char *)"0",1,LCD_MODE_SET); 
+			    else
+				     lcd_text12(96,0,(char *)Menu_VecLogoColor,4,LCD_MODE_SET);
+				
 				lcd_text12(0,12,"SIM卡号",7,LCD_MODE_SET);
 				lcd_text12(43,12,(char *)Menu_sim_Code,12,LCD_MODE_SET);
 				lcd_text12(24,23,"确定",4,LCD_MODE_SET);

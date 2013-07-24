@@ -9,7 +9,7 @@
 static u8 License_SetFlag=1;
 static u8 License_SetCounter_0=0,License_SetCounter_1=0,License_SetCounter_2=0,License_SetCounter_3=0;
 static u8 License_SetComp=0;//主域名设置完成1
-
+static u8 License_set_noeffect=0;
 static u8 License_Type_flag=0;//区分组的选择和组内选择
 static u8 License_Type_Counter=0;//  0: 数字    1:A-M         2:N-Z
 
@@ -65,15 +65,26 @@ void License_Set(u8 par,u8 type1_2)
 		}
 	else if(type1_2==4)
 		{
-		lcd_bitmap(par*width_hz, 14, &BMP_select_License, LCD_MODE_SET);
 		if((License_SetCounter_3>=0)&&(License_SetCounter_3<=9))
+			{
+			lcd_bitmap(3+par*width_hz, 14, &BMP_select_License, LCD_MODE_SET);
 	        lcd_text12(0,20,"冀京津沪渝豫云辽黑湘",20,LCD_MODE_SET);
+			}
 		else if((License_SetCounter_3>=10)&&(License_SetCounter_3<=19))
+			{
+			lcd_bitmap(3+(par-10)*width_hz, 14, &BMP_select_License, LCD_MODE_SET);
 	        lcd_text12(0,20,"皖鲁新苏浙赣鄂桂甘晋",20,LCD_MODE_SET);
+			}
 		else if((License_SetCounter_3>=20)&&(License_SetCounter_3<=29))
+			{
+			lcd_bitmap(3+(par-20)*width_hz, 14, &BMP_select_License, LCD_MODE_SET);
 	        lcd_text12(0,20,"蒙陕吉闽贵粤青藏川宁",20,LCD_MODE_SET);
+			}
 		else if(License_SetCounter_3==30)
+			{
+			lcd_bitmap(3+(par-30)*width_hz, 14, &BMP_select_License, LCD_MODE_SET);
 	        lcd_text12(0,20,"琼",2,LCD_MODE_SET);
+			}
 		}
 	lcd_update_all();
 }
@@ -84,12 +95,12 @@ static void msg( void *p)
 }
 static void show(void)
 {
-CounterBack=0;
-License_Type_Counter=0;
-License_Type_Sel(License_Type_Counter);
-License_Type_flag=1;
-rt_kprintf("\r\n选择要输入的类型");
+License_set_noeffect=1;
 
+lcd_fill(0);
+lcd_text12(0,3,"设置车牌号",10,LCD_MODE_INVERT);
+lcd_text12(0,18,"无牌照车辆",10,LCD_MODE_SET);
+lcd_update_all();
 }
 
 
@@ -109,13 +120,61 @@ static void keypress(unsigned int key)
 			License_Type_flag=0;//区分组的选择和组内选择
             License_Type_Counter=0;//  0: 数字    1:A-M         2:N-Z
 
-			
+			License_set_noeffect=0;
 			memset(Menu_Car_license,0,sizeof(Menu_Car_license));
             pMenuItem=&Menu_0_loggingin;
 			pMenuItem->show();
 			break;
 		case KeyValueOk:
-			if((License_Type_flag==1)&&(License_SetComp==0))
+			if((License_Type_flag==0)&&(License_SetComp==0))
+				{
+				if(License_set_noeffect==2)
+					{
+					License_SetFlag=1;
+		            License_SetCounter_0=0;
+					License_SetCounter_1=0;
+					License_SetCounter_2=0;
+					License_SetCounter_3=0;
+					License_SetComp=0;//主域名设置完成1
+
+					License_Type_flag=0;//区分组的选择和组内选择
+	                License_Type_Counter=0;//  0: 数字    1:A-M         2:N-Z
+	                License_set_noeffect=0;
+
+			        
+ 
+                    //==================================================== 
+                    //   没设置车牌号时为   1
+                    License_Not_SetEnable=1;
+
+
+					//===================================================
+					//写入车牌号是否设置标志
+		            DF_WriteFlashSector(DF_License_effect,0,&License_Not_SetEnable,1); 
+				    //设置下一项
+					CarSet_0_counter=2;//设置第2项
+					//rt_kprintf("\r\n设置下一项");
+					pMenuItem=&Menu_0_loggingin;
+					pMenuItem->show();
+					}
+				else if(License_set_noeffect==1)
+					{
+					License_set_noeffect=0;
+					
+					License_Not_SetEnable=0;
+					//写入车牌号是否设置标志
+		            DF_WriteFlashSector(DF_License_effect,0,&License_Not_SetEnable,1); 
+					
+					CounterBack=0;
+					License_Type_Counter=0;
+					License_Type_Sel(License_Type_Counter);
+					License_Type_flag=1;
+					//rt_kprintf("\r\n选择要输入的类型");
+				
+					}
+				
+				}
+			else if((License_Type_flag==1)&&(License_SetComp==0))
 				{
 				License_Type_flag=2;
 				if((License_SetFlag>=1)&&(License_SetFlag<=9))
@@ -128,7 +187,7 @@ static void keypress(unsigned int key)
 						License_Set(License_SetCounter_2,3);
 					else if(License_Type_Counter==3)
 						License_Set(License_SetCounter_3,4);
-					rt_kprintf("\r\n第%d组",License_Type_Counter);
+					//rt_kprintf("\r\n第%d组",License_Type_Counter);
 					}	
 				}
 			else if((License_Type_flag==2)&&(License_SetComp==0))
@@ -141,21 +200,21 @@ static void keypress(unsigned int key)
 						Menu_Car_license[License_SetFlag-1]=ABC_License_0_9[License_SetCounter_0][0];
 						License_SetFlag++;	
 						License_Set(License_SetCounter_0,1);
-						rt_kprintf("\r\n(0_9选择)=%d,%s",License_SetCounter_0,Menu_Car_license);
+						//rt_kprintf("\r\n(0_9选择)=%d,%s",License_SetCounter_0,Menu_Car_license);
 						}
 					else if(License_Type_Counter==1)
 						{
 						Menu_Car_license[License_SetFlag-1]=ABC_License_A_M[License_SetCounter_1][0];
 						License_SetFlag++;	
 						License_Set(License_SetCounter_1,2);
-					    rt_kprintf("\r\n(A_M选择)=%d,%s",License_SetCounter_1,Menu_Car_license);
+					    //rt_kprintf("\r\n(A_M选择)=%d,%s",License_SetCounter_1,Menu_Car_license);
 						}
 					else if(License_Type_Counter==2)
 						{
 						Menu_Car_license[License_SetFlag-1]=ABC_License_N_Z[License_SetCounter_2][0];
 						License_SetFlag++;
 						License_Set(License_SetCounter_2,3);
-						rt_kprintf("\r\n(N_Z选择)=%d,%s",License_SetCounter_2,Menu_Car_license);
+						//rt_kprintf("\r\n(N_Z选择)=%d,%s",License_SetCounter_2,Menu_Car_license);
 						}
 					else if(License_Type_Counter==3)
 						{
@@ -163,7 +222,7 @@ static void keypress(unsigned int key)
 						License_SetFlag++;
 						License_SetFlag++;
 						License_Set(License_SetCounter_3,4);
-						rt_kprintf("\r\n(汉字选择)=%d,%s",License_SetCounter_3,Menu_Car_license);
+						//rt_kprintf("\r\n(汉字选择)=%d,%s",License_SetCounter_3,Menu_Car_license);
 						}
 					if((License_Type_flag==3)&&(License_SetFlag<=8))
 						{
@@ -174,7 +233,7 @@ static void keypress(unsigned int key)
 						License_SetCounter_3=0;
 
 						License_Type_Sel(License_Type_Counter);
-						rt_kprintf("\r\n重新选组(1_2_3)=%d",License_Type_Counter);
+						//rt_kprintf("\r\n重新选组(1_2_3)=%d",License_Type_Counter);
 						}
 					}	
 				}
@@ -188,7 +247,7 @@ static void keypress(unsigned int key)
 				lcd_text12(18,3,"车牌号设置完成",14,LCD_MODE_SET);
 				lcd_text12(6,18,"按确认键设置下一项",18,LCD_MODE_SET);
 				lcd_update_all();
-				rt_kprintf("\r\n车牌号:%s",Menu_Car_license);
+				//rt_kprintf("\r\n车牌号:%s",Menu_Car_license);
                 //车牌号设置完成		
 				}
 			else if(License_SetComp==1)
@@ -202,22 +261,31 @@ static void keypress(unsigned int key)
 
 				License_Type_flag=0;//区分组的选择和组内选择
                 License_Type_Counter=0;//  0: 数字    1:A-M         2:N-Z
+                License_set_noeffect=0;
 
 				CarSet_0_counter=2;//设置第2项
-				rt_kprintf("\r\n设置下一项");
+				//rt_kprintf("\r\n设置下一项");
 				pMenuItem=&Menu_0_loggingin;
 				pMenuItem->show();
 				}				
 			break;
 		case KeyValueUP:
-			if(License_Type_flag==1)//选择是0-9  A-M  N-Z
+			if(License_Type_flag==0)
+				{
+				License_set_noeffect=1;
+				lcd_fill(0);
+				lcd_text12(0,3,"设置车牌号",10,LCD_MODE_INVERT);
+				lcd_text12(0,18,"无牌照车辆",10,LCD_MODE_SET);
+				lcd_update_all();
+				}
+			else if(License_Type_flag==1)//选择是0-9  A-M  N-Z
 				{//
 				if(License_Type_Counter==0)
 					License_Type_Counter=3;
 				else if(License_Type_Counter>=1)
 					License_Type_Counter--;
 				License_Type_Sel(License_Type_Counter);
-				rt_kprintf("\r\n(  up)License_Type_Counter=%d",License_Type_Counter);
+				//rt_kprintf("\r\n(  up)License_Type_Counter=%d",License_Type_Counter);
 
 				}
 			else if(License_Type_flag==2)//组内选择
@@ -264,13 +332,21 @@ static void keypress(unsigned int key)
 				}
 			break;
 		case KeyValueDown:
-			if(License_Type_flag==1)//选择是0-9  A-M  N-Z
+			if(License_Type_flag==0)
+				{
+				License_set_noeffect=2;
+				lcd_fill(0);
+				lcd_text12(0,3,"设置车牌号",10,LCD_MODE_SET);
+				lcd_text12(0,18,"无牌照车辆",10,LCD_MODE_INVERT);
+				lcd_update_all();
+				}
+			else if(License_Type_flag==1)//选择是0-9  A-M  N-Z
 				{
 				License_Type_Counter++;
 				if(License_Type_Counter>3)
 					License_Type_Counter=0;
 				License_Type_Sel(License_Type_Counter);
-				rt_kprintf("\r\n(down)License_Type_Counter=%d",License_Type_Counter);
+				//rt_kprintf("\r\n(down)License_Type_Counter=%d",License_Type_Counter);
 				}
 			else if(License_Type_flag==2)//组内选择
 				{

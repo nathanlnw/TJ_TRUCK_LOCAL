@@ -8,65 +8,49 @@ unsigned char CarSet_0=1;
 
 DECL_BMP(8,8,select_log); DECL_BMP(8,8,noselect_log); 
 
-void Selec_123(u8 par)
-{
-u8 i=0;
-if(par==1)
-	{
-	lcd_bitmap(35, 5, &BMP_select_log, LCD_MODE_SET);
-	for(i=0;i<4;i++)
-		lcd_bitmap(47+i*12, 5, &BMP_noselect_log ,LCD_MODE_SET);
-	}
-else if(par==2)
-	{
-	lcd_bitmap(35, 5, &BMP_noselect_log, LCD_MODE_SET);
-	lcd_bitmap(47, 5, &BMP_select_log, LCD_MODE_SET);
-	for(i=0;i<2;i++)
-    	lcd_bitmap(59+i*12, 5, &BMP_noselect_log, LCD_MODE_SET);
-	}
-else if(par==3)
-	{
-	for(i=0;i<2;i++)
-		lcd_bitmap(35+i*12, 5, &BMP_noselect_log, LCD_MODE_SET);
-	lcd_bitmap(59, 5, &BMP_select_log, LCD_MODE_SET);
-	for(i=0;i<2;i++)
-		lcd_bitmap(71+i*12, 5, &BMP_noselect_log, LCD_MODE_SET);
-	}
-else if(par==4)
-	{
-	for(i=0;i<3;i++)
-		lcd_bitmap(35+i*12, 5, &BMP_noselect_log, LCD_MODE_SET);
-	lcd_bitmap(71, 5, &BMP_select_log, LCD_MODE_SET);
-	lcd_bitmap(83, 5, &BMP_noselect_log, LCD_MODE_SET);
-	}
-else if(par==5)
-	{
-	for(i=0;i<4;i++)
-		lcd_bitmap(35+i*12, 5, &BMP_noselect_log, LCD_MODE_SET);
-	lcd_bitmap(83, 5, &BMP_select_log, LCD_MODE_SET);
-	}
-}
+
 void CarSet_0_fun(u8 set_type)
 {
+	u8 i=0;
+
     lcd_fill(0);
     lcd_text12( 0, 3,"注册",4,LCD_MODE_SET);
     lcd_text12( 0,17,"输入",4,LCD_MODE_SET);
-    Selec_123(CarSet_0_counter);
+  
     switch(set_type)
     	{
     	case 1:
+			lcd_bitmap(35, 5, &BMP_select_log, LCD_MODE_SET);
+			for(i=0;i<4;i++)
+				lcd_bitmap(47+i*12, 5, &BMP_noselect_log ,LCD_MODE_SET);
     		lcd_text12(35,19,"车牌号输入",10,LCD_MODE_INVERT);
     		break;
     	case 2:
+			lcd_bitmap(35, 5, &BMP_noselect_log, LCD_MODE_SET);
+			lcd_bitmap(47, 5, &BMP_select_log, LCD_MODE_SET);
+			for(i=0;i<2;i++)
+		    	lcd_bitmap(59+i*12, 5, &BMP_noselect_log, LCD_MODE_SET);
     		lcd_text12(35,19,"车辆类型选择",12,LCD_MODE_INVERT);		
     		break;
     	case 3:
+			for(i=0;i<2;i++)
+				lcd_bitmap(35+i*12, 5, &BMP_noselect_log, LCD_MODE_SET);
+			lcd_bitmap(59, 5, &BMP_select_log, LCD_MODE_SET);
+			for(i=0;i<2;i++)
+				lcd_bitmap(71+i*12, 5, &BMP_noselect_log, LCD_MODE_SET);
     		lcd_text12(35,19,"SIM卡号输入",11,LCD_MODE_INVERT);
     		break;
     	case 4:
+			for(i=0;i<3;i++)
+				lcd_bitmap(35+i*12, 5, &BMP_noselect_log, LCD_MODE_SET);
+			lcd_bitmap(71, 5, &BMP_select_log, LCD_MODE_SET);
+			lcd_bitmap(83, 5, &BMP_noselect_log, LCD_MODE_SET);
 		    lcd_text12(35,19,"VIN输入",7,LCD_MODE_INVERT); 
 		    break;
 	    case 5:
+			for(i=0;i<4;i++)
+				lcd_bitmap(35+i*12, 5, &BMP_noselect_log, LCD_MODE_SET);
+			lcd_bitmap(83, 5, &BMP_select_log, LCD_MODE_SET);
 		    lcd_text12(35,19,"车牌颜色输入",12,LCD_MODE_INVERT); 	
     		break;
     	}

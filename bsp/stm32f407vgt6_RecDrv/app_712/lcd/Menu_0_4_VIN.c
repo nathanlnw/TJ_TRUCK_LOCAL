@@ -65,7 +65,7 @@ CounterBack=0;
 VIN_Type_Counter=0;
 VIN_Type_Sel(VIN_Type_Counter);
 VIN_Type_flag=1;
-rt_kprintf("\r\n选择要输入的类型");
+//rt_kprintf("\r\n选择要输入的类型");
 }
 
 
@@ -95,13 +95,14 @@ static void keypress(unsigned int key)
 						VIN_Set(VIN_SetCounter_1,2);
 					else if(VIN_Type_Counter==2)
 						VIN_Set(VIN_SetCounter_2,3);
-					rt_kprintf("\r\n第%d组",VIN_Type_Counter);
+					//rt_kprintf("\r\n第%d组",VIN_Type_Counter);
 					}	
 				}
 			else if(VIN_Type_flag==2)
 				{
 				VIN_Type_flag=3;
-				if((VIN_SetFlag>=1)&&(VIN_SetFlag<=17))
+				   //---------------------------------------
+				   if((VIN_SetFlag>=1)&&(VIN_SetFlag<=17))
 					{
 					if(VIN_Type_Counter==0)
 						{
@@ -109,7 +110,7 @@ static void keypress(unsigned int key)
 						Menu_Vin_Code[VIN_SetFlag-1]=ABC_0_9[VIN_SetCounter_0][0];
 						VIN_SetFlag++;	
 						VIN_Set(VIN_SetCounter_0,1);
-						rt_kprintf("\r\n(0_9选择)=%d",VIN_SetCounter_0);
+						//rt_kprintf("\r\n(0_9选择)=%d",VIN_SetCounter_0);
 						}
 					else if(VIN_Type_Counter==1)
 						{
@@ -117,7 +118,7 @@ static void keypress(unsigned int key)
 						Menu_Vin_Code[VIN_SetFlag-1]=ABC_A_M[VIN_SetCounter_1][0];
 						VIN_SetFlag++;	
 						VIN_Set(VIN_SetCounter_1,2);
-						rt_kprintf("\r\n(A_M选择)=%d",VIN_SetCounter_1);
+						//rt_kprintf("\r\n(A_M选择)=%d",VIN_SetCounter_1);
 						}
 					else if(VIN_Type_Counter==2)
 						{
@@ -125,20 +126,22 @@ static void keypress(unsigned int key)
 						Menu_Vin_Code[VIN_SetFlag-1]=ABC_N_Z[VIN_SetCounter_2][0];
 						VIN_SetFlag++;	
 						VIN_Set(VIN_SetCounter_2,3);
-						rt_kprintf("\r\n(N_Z选择)=%d",VIN_SetCounter_2);
+						//rt_kprintf("\r\n(N_Z选择)=%d",VIN_SetCounter_2);   
 						}
 					}
-				}
-			else if(VIN_Type_flag==3)
-				{
-				VIN_Type_flag=1;
-				VIN_SetCounter_0=0;
-				VIN_SetCounter_1=0;
-				VIN_SetCounter_2=0;
+				   //------------------------------------
+					if(VIN_Type_flag==3)
+					{
+					VIN_Type_flag=1;
+					VIN_SetCounter_0=0;
+					VIN_SetCounter_1=0;
+					VIN_SetCounter_2=0;
 
-				VIN_Type_Sel(VIN_Type_Counter);
-				rt_kprintf("\r\n重新选组(1_2_3)=%d",VIN_Type_Counter);
+					VIN_Type_Sel(VIN_Type_Counter);
+					//rt_kprintf("\r\n重新选组(1_2_3)=%d",VIN_Type_Counter);  
+					}
 				}
+		
 			if(VIN_SetFlag==18)//设置完成
 				{
 				VIN_SetFlag=19;
@@ -164,7 +167,7 @@ static void keypress(unsigned int key)
 				else if(VIN_Type_Counter>=1)
 					VIN_Type_Counter--;
 				VIN_Type_Sel(VIN_Type_Counter);
-				rt_kprintf("\r\n(  up)VIN_Type_Counter=%d",VIN_Type_Counter);
+				//rt_kprintf("\r\n(  up)VIN_Type_Counter=%d",VIN_Type_Counter);
 
 				}
 			else if(VIN_Type_flag==2)//组内选择
@@ -208,7 +211,7 @@ static void keypress(unsigned int key)
 				if(VIN_Type_Counter>2)
 					VIN_Type_Counter=0;
 				VIN_Type_Sel(VIN_Type_Counter);
-				rt_kprintf("\r\n(down)VIN_Type_Counter=%d",VIN_Type_Counter);
+				//rt_kprintf("\r\n(down)VIN_Type_Counter=%d",VIN_Type_Counter);
 				}
 			else if(VIN_Type_flag==2)//组内选择
 				{

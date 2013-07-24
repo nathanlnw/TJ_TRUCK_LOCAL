@@ -23,6 +23,10 @@
  static rt_timer_t timer_app; 
 
 
+//------- change  on  2013 -7-24  --------
+rt_thread_t app_tid = RT_NULL; // app Ïß³Ì pid
+
+
 
 //----- app_thread   rx     gsm_thread  data  related ----- 	
 ALIGN(RT_ALIGN_SIZE)
@@ -31,7 +35,7 @@ static  struct rt_semaphore app_rx_gsmdata_sem;  //  app Ìá¹©Êý¾Ý ¸øgsm·¢ËÍÐÅºÅÁ
 
 
 // Dataflash  Operate   Mutex 
-rt_mutex_t DF_lock_mutex;  
+//rt_mutex_t DF_lock_mutex;  
 
 
 
@@ -48,9 +52,6 @@ rt_mutex_t DF_lock_mutex;
 //ALIGN(RT_ALIGN_SIZE)
 //static  MSG_Q_TYPE  app_rx_485_infoStruct;  // app   ½ÓÊÕ´Ógsm  À´µÄÊý¾Ý½á¹¹
 //static  struct rt_semaphore app_rx_485_sem;  //  app Ìá¹©Êý¾Ý ¸øgps·¢ËÍÐÅºÅÁ¿ 
-
-static  struct rt_semaphore SysRst_sem;  // system reset
-
 
 static u8  OneSec_cout=0;
 
@@ -73,6 +74,7 @@ u16   ADC_ConvertedValue=0; //µç³ØµçÑ¹ADÊýÖµ
 u16   AD_Volte=0;
 
 u8   OneSec_CounterApp=0;
+u32  app_thread_runCounter=0;  
 
 
 
@@ -89,6 +91,15 @@ void App_rxGsmData_SemRelease(u8* instr, u16 inlen,u8 link_num)
 	app_rx_gsm_infoStruct.link_num=link_num;  
 }
 
+void  App_thread_timer(void)
+{
+   app_thread_runCounter++;
+   if(app_thread_runCounter>400)   // 400* app_thread_delay(dur)
+    {
+       rt_kprintf("\r\n  App 808  thread  dead! \r\n"); 
+       reset();  
+   	}   
+}
 
 void Device_RegisterTimer(void)
 {
@@ -118,17 +129,25 @@ void Device_LoginTimer(void)
 		  	{
 		  	   DEV_Login.Sd_times=0;
 			   rt_kprintf("\r\n  ¼øÈ¨´ÎÊý·¢ËÍ³¬¹ý×î´ó£¬ÖØÐÂ×¢²á!\r\n");
-               DEV_regist.Enable_sd=1;   
+               DEV_regist.Enable_sd=1;   			   
 		  	}
 	 }
   }
 }
 
 //          System  reset  related  
-void  System_Reset(void)
+void  system_reset(void)
 {
-      rt_sem_release(&SysRst_sem);
+      Systerm_Reset_counter=Max_SystemCounter-3;
+	  rt_kprintf("\r\n handle reset \r\n");
 }
+FINSH_FUNCTION_EXPORT(system_reset, system_reset);  
+
+void query_reset(void)
+{
+		  rt_kprintf("\r\n Systerm_Reset_counter=%d     app_thread_runCounter=%d  \r\n",Systerm_Reset_counter,app_thread_runCounter); 
+}
+FINSH_FUNCTION_EXPORT(query_reset, query_reset);	
 
 void   Reset_Saveconfig(void)
 {
@@ -454,8 +473,10 @@ static void timeout_app(void *  parameter)
 		     SensorPlus_caculateSpeed();  	     
 		     Emergence_Warn_Process();   
 		     Meida_Trans_Exception();	 
-			   
-		            //³µÁ¾ÐÅºÅÏß×´Ì¬Ö¸Ê¾  //É²³µÏß//×ó×ª//ÓÒ×ª//À®°È//Ô¶¹âµÆ//ÓêË¢//³µÃÅ//null
+
+			 App_thread_timer();   
+
+			 //³µÁ¾ÐÅºÅÏß×´Ì¬Ö¸Ê¾  //É²³µÏß//×ó×ª//ÓÒ×ª//À®°È//Ô¶¹âµÆ//ÓêË¢//³µÃÅ//null
 		     
 			SensorFlag=0x80;
 			for(i=1;i<8;i++)  
@@ -463,7 +484,7 @@ static void timeout_app(void *  parameter)
 				  if(Vehicle_sensor&SensorFlag)   
 					    XinhaoStatus[i+10]=0x31;
 				   else
-					     XinhaoStatus[i+10]=0x30; 
+					    XinhaoStatus[i+10]=0x30; 
 				     SensorFlag=SensorFlag>>1;   
 			} 
 		       if(DispContent==3)
@@ -593,7 +614,7 @@ void  MainPower_Status_Check(void)
 }
 
  ALIGN(RT_ALIGN_SIZE)
-char app808_thread_stack[4096];      
+char app808_thread_stack[5120];      
 struct rt_thread app808_thread;
 
 static void App808_thread_entry(void* parameter) 
@@ -605,13 +626,7 @@ static void App808_thread_entry(void* parameter)
      //  finsh_init(&shell->parser);
 	  rt_kprintf("\r\n ---> app808 thread start !\r\n");  
 
-	  TIM2_Configuration();	  
-       //  step 1:  Init Dataflash
-         DF_init();
- 
-       //  step 2:   process config data   
-         SysConfiguration();    // system config   	    
-         Gsm_RegisterInit();   //  init register states    ,then  it  will  power on  the module  
+	    TIM2_Configuration();	  
        //  step 3:    usb host init	   	    	//  step  4:   TF card Init    
        //  	 spi_sd_init();	    
           usbh_init();    
@@ -619,19 +634,11 @@ static void App808_thread_entry(void* parameter)
           Init_ADC(); 
 		  
 		  SIMID_Convert_SIMCODE(); //   translate		   
-		  total_ergotic();
 		  
 		  CAN_struct_init();   
 		  
-       //  	 tf_open();      // open device  
-	// pos=dfs_mount("spi_sd","/sd","elm",0,0);	
-       //   if(pos)
-	//  	rt_kprintf("\r\n TF_result=%d\r\n",pos); 
-	//rt_kprintf("\r\n tf ok\r\n");  
-
-	   
         /* watch dog init */
-	WatchDogInit();                    
+	    WatchDogInit();                    
    
 	while (1)
 	{
@@ -682,14 +689,45 @@ static void App808_thread_entry(void* parameter)
 	   // 6.   ACC ×´Ì¬¼ì²â
                 ACC_status_Check();
 	   // 7.   ÏµÍ³ÑÓÊ±
-                rt_thread_delay(22);	
+        rt_thread_delay(38);	
 	   
 	   // 8.	 ÐÐ³µ¼ÇÂ¼ÒÇÏà¹ØµÄÊý¾Ý´æ´¢ 
 		JT808_Related_Save_Process(); 
+      //---------------------------------------- 
+	   app_thread_runCounter=0; 
 	   //--------------------------------------------------------
 	}
 }
 
+/*
+void app_create(void)
+{
+  
+  app_tid = rt_thread_create( "app_808", App808_thread_entry, RT_NULL,
+   sizeof(app808_thread_stack),    
+   Prio_App808, 10); 
+  
+  if( app_tid != RT_NULL )
+  {
+	  rt_thread_startup( app_tid );
+	  
+	  rt_kprintf("\r\n app808  thread initial sucess!--1\r\n"); 	// nathan add
+  }else
+  {
+	  rt_kprintf("\r\napp808  thread initial fail!--1\r\n");	// nathan add	  
+  }
+
+}
+FINSH_FUNCTION_EXPORT(app_create, app_create);   
+
+void app_del(void)
+{
+    rt_thread_delete(app_tid);
+	rt_kprintf("\r\napp808  thread delete!\r\n"); 
+}
+FINSH_FUNCTION_EXPORT(app_del, app_del);    
+
+*/
 
 
 /* init app808  */
@@ -698,9 +736,8 @@ void Protocol_app_init(void)
         rt_err_t result;
 
         
-		DF_lock_mutex=rt_mutex_create("dflock",RT_IPC_FLAG_FIFO);   	 
+	//	DF_lock_mutex=rt_mutex_create("dflock",RT_IPC_FLAG_FIFO);   	 
 		
-        rt_sem_init(&SysRst_sem,"SysRst",0,0);  
         rt_sem_init(&app_rx_gsmdata_sem, "appRxSem", 0, 0);   		
        //---------  timer_app ----------
 	         // 5.1. create  timer     100ms=Dur
@@ -711,11 +748,28 @@ void Protocol_app_init(void)
 
 
        //------------------------------------------------------
+    #if 0    
+	   app_tid = rt_thread_create( "app_808", App808_thread_entry, RT_NULL,
+		sizeof(app808_thread_stack),    
+		Prio_App808, 10); 
+	   
+	   if( app_tid != RT_NULL )
+	   {
+		   rt_thread_startup( app_tid );
+		   
+		   rt_kprintf("\r\n app808	thread initial sucess!--1\r\n");	 // nathan add
+	   }else
+	   {
+		   rt_kprintf("\r\napp808  thread initial fail!--1\r\n");    // nathan add	   
+	   }
+   #endif
+	   //-----------------------------------------------------
+
 	result=rt_thread_init(&app808_thread, 
 		"app808", 
 		App808_thread_entry, RT_NULL,
-		&app808_thread_stack[0], sizeof(app808_thread_stack),  
-		Prio_App808, 10); 
+		&app808_thread_stack[0], sizeof(app808_thread_stack),   
+		Prio_App808, 10);    
 
     if (result == RT_EOK)
     {

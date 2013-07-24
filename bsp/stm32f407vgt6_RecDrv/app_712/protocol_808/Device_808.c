@@ -26,8 +26,8 @@ void WatchDog_Feed(void)
 
 void  reset(void)
 {
-   //IWDG_SetReload(0);
-  // IWDG->KR = 0x00001;  //not regular
+   IWDG_SetReload(0);
+   IWDG->KR = 0x00001;  //not regular
   wdg_reset_flag=1; 
 } 
 FINSH_FUNCTION_EXPORT(reset, ststem reset);
@@ -36,7 +36,7 @@ void WatchDogInit(void)
   /* IWDG timeout equal to 250 ms (the timeout may varies due to LSI frequency
      dispersion) */
   /* Enable write access to IWDG_PR and IWDG_RLR registers */
-  IWDG_WriteAccessCmd(IWDG_WriteAccess_Enable);
+  IWDG_WriteAccessCmd(IWDG_WriteAccess_Enable); 
 
   /* IWDG counter clock: LSI/32 */
     /*   prescaler            min/ms    max/ms
@@ -687,7 +687,7 @@ FINSH_FUNCTION_EXPORT(debug_relay, Debug relay set) ;
   //  1 .  循环存储 
       u8       Api_cycle_write(u8 *buffer, u16 len) 
       {
-        if(rt_mutex_take(DF_lock_mutex,150)==RT_EOK) 
+       // if(rt_mutex_take(DF_lock_mutex,150)==RT_EOK) 
 	   {
 	          WatchDog_Feed();
 	          if( SaveCycleGPS(cycle_write,buffer,len))
@@ -698,18 +698,18 @@ FINSH_FUNCTION_EXPORT(debug_relay, Debug relay set) ;
 				DF_Write_RecordAdd(cycle_write,cycle_read,TYPE_CycleAdd);   
 				DF_delay_ms(20);  
 		        //-------------------------------	
-		        rt_mutex_release(DF_lock_mutex);  //  释放
+		       // rt_mutex_release(DF_lock_mutex);  //  释放
 		        return true;
 	            }  
 		    else
 		    {		         
 				 //-------------------------------	 
-				 rt_mutex_release(DF_lock_mutex);  //  释放
-			     return  false;  
+				// rt_mutex_release(DF_lock_mutex);  //  释放
+			    // return  false;  
 		    }	 
         }
-		else
-			 return false;
+	//	else
+		//	 return false;
   	}
 
       u8      Api_cycle_read(u8 *buffer, u16 len) 
@@ -790,7 +790,7 @@ FINSH_FUNCTION_EXPORT(debug_relay, Debug relay set) ;
  	{
            if(strcmp((const char*)name,jt808)==0)
                 {
-                     DF_WriteFlashSector(JT808Start_offset, 0, buffer, wr_len);
+                     DF_WriteFlashSector(JT808Start_offset, 0, buffer, wr_len); 
 			return true;		 
                 }
 	    if(strcmp((const char*)name,BD_ext_config)==0)

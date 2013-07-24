@@ -55,6 +55,7 @@ unsigned char USB_insertFlag=1;
 
 unsigned char XinhaoStatus[20]={"信号线状态:00000000"};
 
+
 unsigned char dayin_ErrorStatus=0;//打印机错误状态 1:过压 2:压轴开 3:缺纸 4:过热 5:没有取到有效数据
 unsigned char BuzzerFlag=0;//=1响1声  ＝11响2声
 

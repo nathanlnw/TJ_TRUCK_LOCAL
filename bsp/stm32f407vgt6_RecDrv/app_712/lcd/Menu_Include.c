@@ -5,6 +5,8 @@
 
 #include "stm32f4xx.h"
 unsigned char XinhaoStatus[20]={"信号线状态:00000000"};
+unsigned char XinhaoStatusBAK[20]={"信号线状态:00000000"};
+
 
 unsigned int  tzxs_value=6000;
 unsigned char send_data[10];
@@ -96,7 +98,7 @@ u8 Menu_VecLogoColor[10]; // 车牌颜色
 u8 Menu_color_num=0;   // JT415    1  蓝 2 黄 3 黑 4 白 9其他
 u8 Menu_Vin_Code[17];
 u8 Menu_sim_Code[12];//扬州要求设置11位手机号码
-
+u8 License_Not_SetEnable=1;//   1:车牌号未设置
 u8 menu_type_flag=0,menu_color_flag=0;
 
 u8 NET_SET_FLAG=0;

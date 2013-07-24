@@ -18,7 +18,10 @@ switch(drivercar)
 	case 1:
 	
 		//车牌号JT808Conf_struct.Vechicle_Info.Vech_Num
-		memcpy(vech_num+7,JT808Conf_struct.Vechicle_Info.Vech_Num,8); 
+		if(License_Not_SetEnable==1)
+			memcpy(vech_num+7,"无牌照  ",8); 
+		else
+		memcpy(vech_num+7,JT808Conf_struct.Vechicle_Info.Vech_Num,8);  
             //车辆颜色
                memset(color_disp,0,sizeof(color_disp));
                switch(JT808Conf_struct.Vechicle_Info.Dev_Color)
@@ -33,7 +36,12 @@ switch(drivercar)
 	      lcd_fill(0);
 	      lcd_text12(10,3,(char *)vech_num,15,LCD_MODE_SET);	   
 		lcd_text12(10,19,"车牌颜色:",9,LCD_MODE_SET);
-		lcd_text12(64,19,color_disp,4,LCD_MODE_SET); 
+
+      //====  车牌号未设置=====
+        if(License_Not_SetEnable==1)
+			 lcd_text12(64,19,(char *)"0",1,LCD_MODE_SET); 
+	    else
+		     lcd_text12(64,19,color_disp,4,LCD_MODE_SET); 
 		lcd_update_all();
 		break;
 

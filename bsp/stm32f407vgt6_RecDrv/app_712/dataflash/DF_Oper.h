@@ -34,7 +34,7 @@ Crystal: 3.6864Mhz
 
 #define    ConfigStart_offset                         8        //   Block   起始位置  Conifg  Struct Save      Sector 1 
 #define    JT808Start_offset                          16        //   Block   起始位置  Conifg  Struct Save    Sector 2
-#define    TiredCondifg_offset                       24        //   Block   起始位置  Conifg  Struct Save      Sector 3 
+#define    TiredCondifg_offset                        24        //   Block   起始位置  Conifg  Struct Save      Sector 3 
  
 
 
@@ -207,7 +207,7 @@ Crystal: 3.6864Mhz
 
 #define       DF_DeviceID_offset                      5400                 // Block 起始位置   车辆ID  12  位 BCD   
 #define       DF_SIMID_12D                            5408                 // Block  	起始位置  
-
+#define       DF_License_effect                       5416
 
 //  15 字库不在Dataflash 了可以用了
 

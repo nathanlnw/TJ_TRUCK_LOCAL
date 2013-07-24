@@ -10,9 +10,10 @@
 #include  <string.h>
 #include "App_moduleConfig.h"
 #include "Device_808.h"
+#include  "Vdr.h"
 
 
-#define   SYSID            0x2988  
+#define   SYSID            0xDEF2    
                                 /*        
                                                         0x0000   -----   0x00FF  生产和研发用
                                                         0x0100   -----   0x0FFF  产品出货用
@@ -286,7 +287,7 @@ u8  SysConfig_init(void)
 
 void SysConfig_Read(void)
 {
-            if( Api_Config_read(config,ID_CONF_SYS,(u8*)&SysConf_struct,sizeof(SysConf_struct)==false))   //读取系统配置信息
+        if( Api_Config_read(config,ID_CONF_SYS,(u8*)&SysConf_struct,sizeof(SysConf_struct)==false))   //读取系统配置信息
                       rt_kprintf("\r\nConfig_ Read Error\r\n");   
 
 			
@@ -1356,9 +1357,9 @@ void SetConfig(void)
                // Delete_exist_Directory();
 	     //  2.2  重新写入		 
            FirstRun_Config_Write();   // 里边更新了 SYSID           
-
-		   erase_vdr(); 
-	  	   rt_kprintf("\r\nSave Over!\r\n");
+           rt_kprintf("\r\nready--erase vdr!\r\n");
+		   vdr_erase(); 
+	  	   rt_kprintf("\r\nSave Over!\r\n");  
 	}
 	else			
 		   rt_kprintf("\r\n Config Already Exist!\r\n"); 
@@ -1385,7 +1386,10 @@ void SetConfig(void)
 			//---- 设备ID  --------	 
 		   memset(DeviceNumberID,0,sizeof(DeviceNumberID));
 		   DF_ReadFlash(DF_DeviceID_offset,0,(u8*)DeviceNumberID,12);  
-		   
+		   //读出车牌号是否设置标志
+		   DF_ReadFlash(DF_License_effect,0,&License_Not_SetEnable,1); 
+		   if(License_Not_SetEnable==1) 
+		   	rt_kprintf("\r\n无牌照\r\n");  
 		   //  ------ SIM ID  入网ID --------
 		   memset(SimID_12D,0,sizeof(SimID_12D));
 		   DF_ReadFlash(DF_SIMID_12D,0,(u8*)SimID_12D,12);  

@@ -97,7 +97,7 @@ void rtthread_startup(void)
  
 	 
     #endif 	 
-         rt_kprintf("\n\r   河北天地通 北斗车载终端  全国货运平台 TW703-BD--13-6-11 - Version 1.3 !\r\n ");    
+         rt_kprintf("\n\r   河北天地通 北斗车载终端  全国货运平台 TW703-BD--13-7-23 - Version 1.3 !\r\n ");     
 	/* show version */
 	rt_show_version();
 
@@ -128,9 +128,10 @@ void rtthread_startup(void)
 	finsh_set_device( FINSH_DEVICE_NAME ); // mount on
 #endif
 
- #ifdef  GSM_UART
-      _gsm_startup();
-#endif
+      #ifdef APP808
+       Protocol_app_init();
+      #endif
+ 
 
   #ifdef _485_DEVICE
       //_485_app_init();
@@ -141,7 +142,7 @@ void rtthread_startup(void)
   #ifdef GPS_UART
       // gps_app_init(); 
       // gps_set_device(GPS_DEVICE);  // mount on
-	gps_init();     
+	   gps_init();     
        mma8451_driver_init(); 
   #endif
 
@@ -157,14 +158,16 @@ void rtthread_startup(void)
   #ifdef HMI
         HMI_app_init();
   #endif
-  
 
+    
+   #ifdef  GSM_UART
+		_gsm_startup();
+  #endif
+  
 	/* init application_ demo */
 	rt_application_init();
 
-      #ifdef APP808
-       Protocol_app_init();
-      #endif
+
 // -------------------------------------------------------------------------
 
     /* init timer thread */

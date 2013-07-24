@@ -966,7 +966,7 @@ static void timeout_485(void *  parameter)
 
 /* 485 thread */
 ALIGN(RT_ALIGN_SIZE)
-static char _485_thread_stack[2048]; 
+static char _485_thread_stack[4096]; 
 struct rt_thread _485_thread;
 struct rt_semaphore _485Rx_sem;
 

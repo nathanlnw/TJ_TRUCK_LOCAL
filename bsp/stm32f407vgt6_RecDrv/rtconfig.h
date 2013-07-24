@@ -164,8 +164,8 @@
 
 
 //----  App_712  -------------------
-//#define  Prio_finsh         20              
-/*#define  Prio_Demo         18                                // Demo application thread
+/*
+#define  Prio_Demo         18                                // Demo application thread
 #define  Prio_GSM          13 
 #define  Prio_GPS          17
 #define  Prio_485          16      
@@ -173,12 +173,14 @@
 #define  Prio_HMI           15 
 */
 
-#define  Prio_Demo         18                                // Demo application thread
-#define  Prio_GSM          13 
-#define  Prio_GPS          14
-#define  Prio_485          17      
+
+
+#define  Prio_Demo          18                                // Demo application thread
+#define  Prio_GSM           13 
+#define  Prio_GPS           14
+#define  Prio_485           17      
 #define  Prio_App808        15
-#define  Prio_HMI           16 
+#define  Prio_HMI           16  
 
 //--------------------------------
 

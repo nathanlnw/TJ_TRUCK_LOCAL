@@ -39,7 +39,7 @@ unsigned char CurrentDisplen=0;
 		case KeyValueOk:
 			if(Menu_Text==0)
 				{
-				rt_kprintf("\r\n需要显示的内容:%s",TextInfo.TEXT_Content);
+				//rt_kprintf("\r\n需要显示的内容:%s",TextInfo.TEXT_Content);
 				TxtInfo_len=strlen((const char*)TextInfo.TEXT_Content);// 收到文本信息长度 
 				if(TxtInfo_len%40)					
 				  TxtScreenNum_Total=TxtInfo_len/40+1;

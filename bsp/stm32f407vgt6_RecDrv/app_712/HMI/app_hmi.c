@@ -154,6 +154,9 @@ if(dayin_par==1)
 			DaYin++;
 			break;
 		case 2://车牌号码 9
+		    if(License_Not_SetEnable==1)
+				printer("\r\n车牌号码:无牌照");
+			else
 			printer((const char *)dayin_chepaihaoma);
 			DaYin++;
 			break;
@@ -348,7 +351,7 @@ else
 
 /* HMI  thread */
 ALIGN(RT_ALIGN_SIZE) 
-char HMI_thread_stack[5120]; // 4096
+char HMI_thread_stack[5120]; // 4096 
 struct rt_thread HMI_thread;
 
 static void HMI_thread_entry(void* parameter)  
@@ -386,7 +389,7 @@ static void HMI_thread_entry(void* parameter)
 		if(print_rec_flag==1)
 			{
 			counter_printer++;
-			if(counter_printer>=20)//加电后1s开始打印，打印间隔必须>300ms
+			if(counter_printer>=10)//加电后1s开始打印，打印间隔必须>300ms
 				{
 				counter_printer=0;
 				if(TiredDrv_write>0)
@@ -416,7 +419,7 @@ static void HMI_thread_entry(void* parameter)
 		else if(print_rec_flag==2)
 			{
 			counter_printer++;
-			if(counter_printer>=7)//打印间隔必须>300ms      7 
+			if(counter_printer>=4)//打印间隔必须>300ms      7 
 				{
 				counter_printer=0;
 				if(ModuleStatus&Status_GPS)
@@ -444,7 +447,7 @@ static void HMI_thread_entry(void* parameter)
 		       pMenuItem->show();
 		}
 	 	//--------------------------------------------	   
-              rt_thread_delay(8);        
+              rt_thread_delay(10);        
      }  
 }
 

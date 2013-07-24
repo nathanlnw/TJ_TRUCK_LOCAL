@@ -90,9 +90,9 @@ void   DialLink_TimeOut_Process(void)
 	   {
 					  DataDial.start_dial_counter++; 
 					   //-------- add  on  2013 4-8  -----------
-					  if( DataDial.start_dial_counter==293)
+					  if( DataDial.start_dial_counter==593)
 					  	    DataLink_EndFlag=1;
-					  if(DataDial.start_dial_counter>300)   	 
+					  if(DataDial.start_dial_counter>600)   	 
 					  {
 						 DataDial.start_dial_counter=0; 
 						 //----------  ´æ´¢ÐÝÃß¶¨Ê±Æ÷ -----------
@@ -318,6 +318,16 @@ static void gsm_thread_entry(void* parameter)
 	rt_kprintf("\r\n ---> gsm thread start !\r\n");
 	 //	  	 
 	 
+	 //  step 1:  Init Dataflash
+	   DF_init(); 
+	 //  step 2:   process config data	 
+	   SysConfiguration();	  // system config				 
+	   
+	   total_ergotic();
+
+	   
+	   Gsm_RegisterInit();	 //  init register states	 ,then	it	will  power on	the module	 
+	 //--------------------------------------  
 	while (1)
 	{
 	
@@ -361,7 +371,7 @@ static void gsm_thread_entry(void* parameter)
 			 SMS_Process();
 				
              
-	         rt_thread_delay(20);  	     
+	         rt_thread_delay(30);  	      
 			   
 	}
 }
@@ -393,7 +403,7 @@ static void timeout_gsm(void *  parameter)
     SMS_timer();
  #endif
  //    RTC get 
-    time_now=Get_RTC();  
+    time_now=Get_RTC();     
 }   
 
 
@@ -421,7 +431,7 @@ void _gsm_startup(void)
 	result=rt_thread_init(&gsm_thread,
 		"GsmThrd",
 		gsm_thread_entry, RT_NULL,
-		&gsm_thread_stack[0], sizeof(gsm_thread_stack),   
+		&gsm_thread_stack[0], sizeof(gsm_thread_stack),    
 		Prio_GSM, 10);  
 
     if (result == RT_EOK)

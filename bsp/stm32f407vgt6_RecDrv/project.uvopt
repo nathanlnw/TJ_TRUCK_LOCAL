@@ -1217,10 +1217,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>30</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>84</TopLine>
-      <CurrentLine>85</CurrentLine>
+      <TopLine>720</TopLine>
+      <CurrentLine>620</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\components\finsh\cmd.c</PathWithFileName>
       <FilenameWithoutPath>cmd.c</FilenameWithoutPath>
@@ -1609,10 +1609,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>36</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>158</TopLine>
-      <CurrentLine>169</CurrentLine>
+      <TopLine>1</TopLine>
+      <CurrentLine>1</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\app_712\U4_485\Device_485.c</PathWithFileName>
       <FilenameWithoutPath>Device_485.c</FilenameWithoutPath>
@@ -1713,10 +1713,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>9</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>1</TopLine>
-      <CurrentLine>1</CurrentLine>
+      <TopLine>701</TopLine>
+      <CurrentLine>710</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\app_712\protocol_808\Device_808.c</PathWithFileName>
       <FilenameWithoutPath>Device_808.c</FilenameWithoutPath>
@@ -2671,7 +2671,7 @@
 
   <Group>
     <GroupName>Lcd</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -2779,8 +2779,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <TopLine>1</TopLine>
+      <CurrentLine>1</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\app_712\lcd\Menu_1_Idle.c</PathWithFileName>
       <FilenameWithoutPath>Menu_1_Idle.c</FilenameWithoutPath>
@@ -3193,9 +3193,9 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>10</ColumnNumber>
+      <ColumnNumber>15</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>49</TopLine>
+      <TopLine>55</TopLine>
       <CurrentLine>56</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\app_712\lcd\Menu_5_5_Can.c</PathWithFileName>
@@ -3403,8 +3403,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <TopLine>132</TopLine>
+      <CurrentLine>133</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\app_712\lcd\Menu_8_2_AuxDnsPort.c</PathWithFileName>
       <FilenameWithoutPath>Menu_8_2_AuxDnsPort.c</FilenameWithoutPath>
@@ -3449,10 +3449,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>20</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>23</TopLine>
-      <CurrentLine>37</CurrentLine>
+      <TopLine>37</TopLine>
+      <CurrentLine>38</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\app_712\lcd\Menu_8_5_ProDnsIp.c</PathWithFileName>
       <FilenameWithoutPath>Menu_8_5_ProDnsIp.c</FilenameWithoutPath>

@@ -1133,7 +1133,7 @@ void Speed_pro(u8 *tmpinfo,u8 Invalue,u8 Point)
 
 
 
-            // Speed_gps=800;  //  假的为了测试 
+           // Speed_gps=800;  //  假的为了测试  
 
 
 			 
@@ -1993,9 +1993,12 @@ u8  Stuff_RegisterPacket_0100H(u8  LinkNum)
     memcpy(Original_info+Original_info_Wr,DeviceNumberID+5,7);     // 这个就是终端ID 的后7 位    
     Original_info_Wr+=7;  
 	//  车牌颜色  
-	Original_info[Original_info_Wr++]=2; //JT808Conf_struct.Vechicle_Info.Dev_Color;
+	if(License_Not_SetEnable==1)       
+	   Original_info[Original_info_Wr++]=0; //JT808Conf_struct.Vechicle_Info.Dev_Color;
+	else
+	   Original_info[Original_info_Wr++]=2; //JT808Conf_struct.Vechicle_Info.Dev_Color;
 	
-	if(JT808Conf_struct.Vechicle_Info.Dev_Color!=0)
+	if(License_Not_SetEnable==0) //  0  设置车牌号  
 	{
 		//  车牌
 		memcpy(Original_info+Original_info_Wr,JT808Conf_struct.Vechicle_Info.Vech_Num,strlen((const char*)(JT808Conf_struct.Vechicle_Info.Vech_Num)));//13);  
@@ -4729,18 +4732,18 @@ u8  Stuff_RecoderACK_0700H( u8 PaketType )  //   行车记录仪数据上传
 			Original_info[Original_info_Wr++]	= chushilicheng[2];
 			Original_info[Original_info_Wr++]	= chushilicheng[3];
 
-			Original_info[Original_info_Wr++]	= leijilicheng[0];
+			/*Original_info[Original_info_Wr++]	= leijilicheng[0];
 			Original_info[Original_info_Wr++]	= leijilicheng[1];
 			Original_info[Original_info_Wr++]	= leijilicheng[2];
-			Original_info[Original_info_Wr++]	= leijilicheng[3]; 
+			Original_info[Original_info_Wr++]	= leijilicheng[3]; */
 			// -- 累积里程 3个字节 单位0.1km    6位
-			/*regdis								= JT808Conf_struct.Distance_m_u32 / 100; //单位0.1km
+			regdis								= JT808Conf_struct.Distance_m_u32 / 100; //单位0.1km
 			reg2								= regdis / 100000;
 			Original_info[Original_info_Wr++]	= 0x00;
 			Original_info[Original_info_Wr++]	= ( reg2 << 4 ) + ( regdis % 100000 / 10000 );
 			Original_info[Original_info_Wr++]	= ( ( regdis % 10000 / 1000 ) << 4 ) + ( regdis % 1000 / 100 );
 			Original_info[Original_info_Wr++]	= ( ( regdis % 100 / 10 ) << 4 ) + ( regdis % 10 );
-			*/
+			
 			break;
 
 		case 0x04:                                                                  // 04  采集记录仪脉冲系数
@@ -7423,7 +7426,7 @@ URL 地址；拨号名称；拨号用户名；拨号密码；地址；TCP端口；UDP端口；制造商ID; 硬件
 void CenterSet_subService_8701H(u8 cmd,  u8*Instr)
 {  
    TDateTime now;
-   u32  reg_dis=0; 
+   u32  reg_dis=0,regdis=0,reg2=0; 
   
   switch(cmd)
    {
@@ -7502,12 +7505,12 @@ void CenterSet_subService_8701H(u8 cmd,  u8*Instr)
 			Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
 			     // instr     + 12      设置初始里程的位置   BCD
 			     
-			/*reg_dis=(Instr[12]>>4)*10000000+(Instr[12]&0x0F)*1000000+(Instr[13]>>4)*100000+(Instr[13]&0x0F)*10000 \
+			reg_dis=(Instr[12]>>4)*10000000+(Instr[12]&0x0F)*1000000+(Instr[13]>>4)*100000+(Instr[13]&0x0F)*10000 \
 			       +(Instr[14]>>4)*1000+(Instr[14]&0x0F)*100+(Instr[15]>>4)*10+(Instr[15]&0x0F);  
 
 			JT808Conf_struct.Distance_m_u32=reg_dis*100;  
-			Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct)); */
-		/*	//--- 初始里程
+			Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct)); 
+			//--- 初始里程
 			Original_info[Original_info_Wr++]	= 0x00;
 			Original_info[Original_info_Wr++]	= 0x00;
 			Original_info[Original_info_Wr++]	= 0x00;
@@ -7519,8 +7522,9 @@ void CenterSet_subService_8701H(u8 cmd,  u8*Instr)
 			Original_info[Original_info_Wr++]	= ( reg2 << 4 ) + ( regdis % 100000 / 10000 );
 			Original_info[Original_info_Wr++]	= ( ( regdis % 10000 / 1000 ) << 4 ) + ( regdis % 1000 / 100 );
 			Original_info[Original_info_Wr++]	= ( ( regdis % 100 / 10 ) << 4 ) + ( regdis % 10 );
-			*/
-			chushilicheng[0]	=Instr[12];
+			
+			
+		/*	chushilicheng[0]	=Instr[12];
 			chushilicheng[1]	=Instr[13];
 			chushilicheng[2]    =Instr[14];
 			chushilicheng[3]	= Instr[15];  
@@ -7528,7 +7532,7 @@ void CenterSet_subService_8701H(u8 cmd,  u8*Instr)
 			leijilicheng[0]	=Instr[16];
 			leijilicheng[1]	=Instr[17];
 			leijilicheng[2] =Instr[18];
-			leijilicheng[3]	= Instr[19];
+			leijilicheng[3]	= Instr[19];*/
 	              
 	             break;
 	 default:
@@ -8639,29 +8643,32 @@ void TCP_RX_Process( u8  LinkNum)  //  ---- 808  标准协议
 						 if((TextInfo.TEXT_FLAG&0x04)||(TextInfo.TEXT_FLAG&0x01))  // 检测是否给终端显示器
 						 {   
 						     //    1. 短信设置命令
-						     if( strncmp( (char*)UDP_HEX_Rx+14, "TW703#", 6 ) == 0 )                                                //短信修改UDP的IP和端口
+						       if( strncmp( (char*)UDP_HEX_Rx+14, "TW703#", 6 ) == 0 )                                                //短信修改UDP的IP和端口
 								{
 									//-----------  自定义 短息设置修改 协议 ----------------------------------
 									SMS_protocol( (UDP_HEX_Rx+14)+ 5,(infolen-1)- 5 ,SMS_ACK_none);  
-								}    
-						     //     2. 正常短信
-							memset( TextInfo.TEXT_Content,0,sizeof(TextInfo.TEXT_Content));
-							memcpy(TextInfo.TEXT_Content,UDP_HEX_Rx+14,infolen-1);
-							TextInfo.TEXT_SD_FLAG=1;	// 置发送给显示屏标志位  // ||||||||||||||||||||||||||||||||||
+								}   
+							   else
+							   	{
+								     //     2. 正常短信
+									memset( TextInfo.TEXT_Content,0,sizeof(TextInfo.TEXT_Content));
+									memcpy(TextInfo.TEXT_Content,UDP_HEX_Rx+14,infolen-1);
+									TextInfo.TEXT_SD_FLAG=1;	// 置发送给显示屏标志位  // ||||||||||||||||||||||||||||||||||
 
-							//========================================
-							TextInforCounter++;
-							rt_kprintf("\r\n写入收到的第 %d 条信息,消息长度=%d,消息:%s",TextInforCounter,infolen-1,TextInfo.TEXT_Content);
-							TEXTMSG_Write(TextInforCounter,1,infolen-1,TextInfo.TEXT_Content);				
+									//========================================
+									TextInforCounter++;
+									rt_kprintf("\r\n写入收到的第 %d 条信息,消息长度=%d,消息:%s",TextInforCounter,infolen-1,TextInfo.TEXT_Content);
+									TEXTMSG_Write(TextInforCounter,1,infolen-1,TextInfo.TEXT_Content);	
+							   	}
 							//========================================
 						 } 
 
 						  #ifdef LCD_5inch
 						           //======  信息都在屏幕上显示  
-                                                	  DwinLCD.Type=LCD_SDTXT;
-							  memset(DwinLCD.TXT_content,0,sizeof(DwinLCD.TXT_content)); 
-                                                   DwinLCD.TXT_contentLen=AsciiToGb(DwinLCD.TXT_content,infolen-1,UDP_HEX_Rx+14);  						  
-   						#endif    
+                                   DwinLCD.Type=LCD_SDTXT;
+							       memset(DwinLCD.TXT_content,0,sizeof(DwinLCD.TXT_content)); 
+                                   DwinLCD.TXT_contentLen=AsciiToGb(DwinLCD.TXT_content,infolen-1,UDP_HEX_Rx+14);  						  
+   						  #endif    
 
                           //------- 返回 ----
 						 //  if(SD_ACKflag.f_CentreCMDack_0001H==0)
@@ -11693,7 +11700,8 @@ void  JT808_Related_Save_Process(void)
          if(VdrData.H_08_saveFlag==1)
          {   
              WatchDog_Feed(); 
-             OutPrint_HEX("08H save",VdrData.H_08_BAK,126); 			 
+             //OutPrint_HEX("08H save",VdrData.H_08_BAK,126); 		
+             rt_kprintf("\r\n 08H save  %d \r\n",Vdr_Wr_Rd_Offset.V_08H_Write);
              vdr_creat_08h(Vdr_Wr_Rd_Offset.V_08H_Write,VdrData.H_08_BAK,126); 		  
 			 Vdr_Wr_Rd_Offset.V_08H_Write++; //  写完之后累加，就不用遍历了
              VdrData.H_08_saveFlag=0;  
@@ -11703,7 +11711,8 @@ void  JT808_Related_Save_Process(void)
 	     if(VdrData.H_09_saveFlag==1)
          {    
              WatchDog_Feed(); 
-             OutPrint_HEX("09H save",VdrData.H_09,666);  
+            // OutPrint_HEX("09H save",VdrData.H_09,666);  
+             rt_kprintf("\r\n 09H save  %d\r\n",Vdr_Wr_Rd_Offset.V_09H_Write);
              vdr_creat_09h(Vdr_Wr_Rd_Offset.V_09H_Write,VdrData.H_09,666); 	
 			 Vdr_Wr_Rd_Offset.V_09H_Write++; // //  写完之后累加，就不用遍历了 
              VdrData.H_09_saveFlag=0;    
@@ -11713,7 +11722,8 @@ void  JT808_Related_Save_Process(void)
          if(VdrData.H_10_saveFlag==1)
          {   
              WatchDog_Feed(); 
-             OutPrint_HEX("10H save",VdrData.H_10,234);   
+            // OutPrint_HEX("10H save",VdrData.H_10,234);   
+             rt_kprintf("\r\n 10H save  %d\r\n",Vdr_Wr_Rd_Offset.V_10H_Write); 
              vdr_creat_10h(Vdr_Wr_Rd_Offset.V_10H_Write,VdrData.H_10,234); 	
 			 Vdr_Wr_Rd_Offset.V_10H_Write++; // //  写完之后累加，就不用遍历了 
              VdrData.H_10_saveFlag=0;
@@ -11723,7 +11733,8 @@ void  JT808_Related_Save_Process(void)
           if(VdrData.H_11_saveFlag==1)
          {   
              WatchDog_Feed(); 
-             OutPrint_HEX("11H save",VdrData.H_11,50);   
+            // OutPrint_HEX("11H save",VdrData.H_11,50);   
+             rt_kprintf("\r\n 11H save   %d \r\n",Vdr_Wr_Rd_Offset.V_11H_Write);
              vdr_creat_11h(Vdr_Wr_Rd_Offset.V_11H_Write,VdrData.H_11,50); 	
 			 Vdr_Wr_Rd_Offset.V_11H_Write++; // //  写完之后累加，就不用遍历了 
              VdrData.H_11_saveFlag=0;
@@ -11733,7 +11744,8 @@ void  JT808_Related_Save_Process(void)
           if(VdrData.H_12_saveFlag==1)
          {   
              WatchDog_Feed(); 
-             OutPrint_HEX("12H save",VdrData.H_12,25);  
+             //OutPrint_HEX("12H save",VdrData.H_12,25);  
+             rt_kprintf("\r\n 12H save  %d \r\n",Vdr_Wr_Rd_Offset.V_12H_Write);
              vdr_creat_12h(Vdr_Wr_Rd_Offset.V_12H_Write,VdrData.H_12,25); 	
 			 Vdr_Wr_Rd_Offset.V_12H_Write++; // //  写完之后累加，就不用遍历了 
              VdrData.H_12_saveFlag=0;
@@ -11745,7 +11757,8 @@ void  JT808_Related_Save_Process(void)
           if(VdrData.H_13_saveFlag==1)
          {  
              WatchDog_Feed(); 
-             OutPrint_HEX("13H save",VdrData.H_13,7);  
+            // OutPrint_HEX("13H save",VdrData.H_13,7);  
+             rt_kprintf("\r\n 13H save %d \r\n",Vdr_Wr_Rd_Offset.V_13H_Write);
              vdr_creat_13h(Vdr_Wr_Rd_Offset.V_13H_Write,VdrData.H_13,7); 	
 			 Vdr_Wr_Rd_Offset.V_13H_Write++; // //  写完之后累加，就不用遍历了 
              VdrData.H_13_saveFlag=0;
@@ -11755,7 +11768,8 @@ void  JT808_Related_Save_Process(void)
           if(VdrData.H_14_saveFlag==1)
          {    
               WatchDog_Feed(); 
-              OutPrint_HEX("14H save",VdrData.H_14,7);  
+              //OutPrint_HEX("14H save",VdrData.H_14,7);  
+             rt_kprintf("\r\n 14H save  %d\r\n",Vdr_Wr_Rd_Offset.V_14H_Write);    
              vdr_creat_14h(Vdr_Wr_Rd_Offset.V_14H_Write,VdrData.H_14,7); 	
 			 Vdr_Wr_Rd_Offset.V_14H_Write++; // //  写完之后累加，就不用遍历了 
              VdrData.H_14_saveFlag=0;
@@ -11770,7 +11784,7 @@ void  JT808_Related_Save_Process(void)
 			Save_AvrgSpdPerMin();
 			Avrgspd_Mint.saveFlag=0; 
 			return;
-		}							  	  
+		}					  	  
 
 		//-----------------  存储疲劳驾驶记录 ---------------			
 		if( TiredConf_struct.Tired_drive.Tireddrv_status==2)   

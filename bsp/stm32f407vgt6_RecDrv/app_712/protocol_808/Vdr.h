@@ -87,7 +87,7 @@ extern  VDR_TRIG_STATUS  VDR_TrigStatus;
 //==================================================================================================
 
 extern void total_ergotic(void);    
-extern void erase_vdr(void);     
+extern void  vdr_erase(void);     
 
 extern u16   stuff_drvData(u8 type,u16 Start_recNum,u16 REC_nums,u8 *dest);
 

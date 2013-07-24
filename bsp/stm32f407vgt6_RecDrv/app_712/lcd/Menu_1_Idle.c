@@ -153,6 +153,8 @@ void  Disp_Idle(void)
    u16  disp_spd=0;
    u8  Date[3],Time[3];
 
+	time_now=Get_RTC(); 
+
 	Date[0]= time_now.year;
 	Date[1]= time_now.month;
 	Date[2]= time_now.day;
@@ -318,10 +320,10 @@ else
 		}
 	//循环显示待机界面
 	tickcount++;
-	if(tickcount>=16) 
+	if(tickcount>=5) 
 		{
-		tickcount=0;
-	    Disp_Idle();
+		  tickcount=0;
+	      Disp_Idle();
 		}
 	}
     

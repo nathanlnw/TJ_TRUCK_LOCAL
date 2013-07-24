@@ -35,9 +35,10 @@ extern   u8  Udisk_filename[30];
 extern   int  udisk_fd;   
 extern   u16   AD_Volte;
 // Dataflash  Operate Semaphore  
-extern   rt_mutex_t DF_lock_mutex;    
+//extern   rt_mutex_t DF_lock_mutex;    
 
-
+//------- change  on  2013 -7-24  --------
+extern 	rt_thread_t app_tid; // app Ïß³Ì pid
 
 
 extern u8      Udisk_Find(void);
@@ -47,7 +48,7 @@ extern void  SensorPlus_caculateSpeed (void);
 extern void  App_rxGsmData_SemRelease(u8* instr, u16 inlen,u8 link_num);
 
 //          System  reset  related  
-extern void  System_Reset(void);
+extern void  system_reset(void);
 extern  void  reset(void);  
 
 extern void Udisk_write_buffer(u8 *Inbuf,u16 inlen);
