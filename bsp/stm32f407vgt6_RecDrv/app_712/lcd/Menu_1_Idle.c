@@ -280,6 +280,13 @@ static void keypress(unsigned int key)
             reset_firstset=0;
 			//打印开电
 			GPIO_SetBits(GPIOB,GPIO_Pin_7);
+
+            //------------------------------------------------------
+		    gps_onoff(0);  //关掉GPS 模块的点
+			print_workingFlag=1;  // 打印状态进行中
+			Power_485CH1_OFF;     // 关闭485
+			Speak_OFF;      //  关闭音频功放           
+			//----------------------------------------------------
 			if(print_rec_flag==0)
 				print_rec_flag=1;//打印标志
 
@@ -296,8 +303,8 @@ if(reset_firstset==6)
 	{
 	reset_firstset++;
 	//----------------------------------------------------------------------------------	
-		JT808Conf_struct.password_flag=0;     // clear  first flag		
-		Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));    
+		Vechicle_Info.loginpassword_flag=0;     // clear  first flag		
+		DF_WriteFlashSector(DF_Vehicle_Struct_offset,0,(u8*)&Vechicle_Info,sizeof(Vechicle_Info));      
 	//----------------------------------------------------------------------------------
 	}
 else if(reset_firstset>=7)//50ms一次,,60s

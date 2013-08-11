@@ -187,7 +187,7 @@ void usbhost_app_init(void)
 		"usbhost",
 		usbhost_thread_entry, RT_NULL,
 		&usbhost_thread_stack[0], sizeof(usbhost_thread_stack),   
-		6, 10); 
+		6, 8); 
 
     if (result == RT_EOK)
     {

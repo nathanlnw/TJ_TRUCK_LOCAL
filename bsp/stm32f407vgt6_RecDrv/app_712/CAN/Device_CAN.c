@@ -443,7 +443,7 @@ u8 CANRXStr(void)
 
 
 
-
+#if 0
 void CAN_SD(char* instr)
 {
  
@@ -467,8 +467,8 @@ void CAN_SD(char* instr)
 	}
 }
 
-FINSH_FUNCTION_EXPORT(CAN_SD, Send CAN Data) ;
-
+//FINSH_FUNCTION_EXPORT(CAN_SD, Send CAN Data) ;
+#endif
 
 
 

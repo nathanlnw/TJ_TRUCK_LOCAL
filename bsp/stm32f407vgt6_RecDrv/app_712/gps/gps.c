@@ -177,7 +177,7 @@ void  GPS_Abnormal_process(void)
 				   	{
                                         Gps_Exception.GPS_Rst_counter=0; 
 				   	}
-				} 
+				}  
 				else
 				{
 					if(Gps_Exception.current_datacou-Gps_Exception.last_datacou<100) 
@@ -689,7 +689,7 @@ void gps_baud( int baud )
 	USART_Init( UART5, &USART_InitStructure );
 }
 
-FINSH_FUNCTION_EXPORT( gps_baud, config gsp_baud );
+//FINSH_FUNCTION_EXPORT( gps_baud, config gsp_baud );
 
 /*初始化*/
 static rt_err_t dev_gps_init( rt_device_t dev )
@@ -736,7 +736,7 @@ static rt_err_t dev_gps_init( rt_device_t dev )
 	USART_Cmd( UART5, ENABLE );
 	USART_ITConfig( UART5, USART_IT_RXNE, ENABLE );
 
-	GPIO_SetBits( GPIOD, GPIO_Pin_10 );
+	GPIO_ResetBits( GPIOD, GPIO_Pin_10 );
 
 	return RT_EOK;
 }
@@ -874,7 +874,7 @@ static void rt_thread_entry_gps( void* parameter )
 				}
 			}
 		}
-		rt_thread_delay( RT_TICK_PER_SECOND / 10 );
+		rt_thread_delay(25);  
 	}
 }
 
@@ -1175,8 +1175,8 @@ void thread_gps_upgrade_udisk( void* parameter )
 	dev_gps_write( &dev_gps, 0, "\x40\x10\xC0\x00\x10\x00\x01\xC2\x84\x0D\x0A", 11 );
 	while( 1 )
 	{
-	       rt_thread_delay(RT_TICK_PER_SECOND/10);
-		res = rt_mq_recv( &mq_gps, (void*)&uart_buf, 124, 5 );
+	    rt_thread_delay(RT_TICK_PER_SECOND/10);
+		res = rt_mq_recv( &mq_gps, (void*)&uart_buf, 124, 50 );
 		if( res == RT_EOK )                                             //收到一包数据
 		{
 		       count=0;  // clear
@@ -1409,7 +1409,7 @@ rt_err_t gps_upgrade( char *src )
 	}
 }
 
-FINSH_FUNCTION_EXPORT( gps_upgrade, upgrade bd_gps );
+//FINSH_FUNCTION_EXPORT( gps_upgrade, upgrade bd_gps );
 
 
 /***********************************************************
@@ -1426,7 +1426,7 @@ rt_size_t gps_write( uint8_t *p, uint8_t len )
 	return dev_gps_write( &dev_gps, 0, p, len );
 }
 
-FINSH_FUNCTION_EXPORT( gps_write, write to gps );
+//FINSH_FUNCTION_EXPORT( gps_write, write to gps );
 
 
 

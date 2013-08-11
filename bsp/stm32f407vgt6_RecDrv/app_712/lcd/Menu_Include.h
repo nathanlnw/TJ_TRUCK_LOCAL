@@ -217,6 +217,7 @@ extern unsigned char ISP_Updata_Flag; //Ô¶³ÌÉı¼¶Ö÷»ú³ÌĞò½ø¶ÈÏÔÊ¾±êÖ¾   1:¿ªÊ¼Éı¼
 
 extern unsigned char BD_upgrad_contr;
 extern unsigned char print_rec_flag;
+extern u8 print_workingFlag;  // ´òÓ¡½øĞĞÖĞ¡£¡£ 
 
 
 //------------ Ê¹ÓÃÇ°Ëø¶¨Ïà¹Ø ------------------

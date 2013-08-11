@@ -21,10 +21,10 @@ switch(drivercar)
 		if(License_Not_SetEnable==1)
 			memcpy(vech_num+7,"无牌照  ",8); 
 		else
-		memcpy(vech_num+7,JT808Conf_struct.Vechicle_Info.Vech_Num,8);  
+		memcpy(vech_num+7,Vechicle_Info.Vech_Num,8);  
             //车辆颜色
                memset(color_disp,0,sizeof(color_disp));
-               switch(JT808Conf_struct.Vechicle_Info.Dev_Color)
+               switch(Vechicle_Info.Dev_Color)
                	{
                	    case 1: memcpy(color_disp,"蓝色",4);break;
                          case 2:memcpy(color_disp,"黄色",4);break;
@@ -47,7 +47,7 @@ switch(drivercar)
 
 	case 2://车辆ID Vechicle_Info.DevicePhone
 		lcd_fill(0);
-              memcpy(vech_type+9,JT808Conf_struct.Vechicle_Info.Vech_Type,6);
+              memcpy(vech_type+9,Vechicle_Info.Vech_Type,6);
 		lcd_text12(0,3,(char *)vech_type,19,LCD_MODE_SET);		
 		//读取设备速度取得是GPS速度还是速度线速度
 		//读取设备速度取得是GPS速度还是速度线速度
@@ -61,7 +61,7 @@ switch(drivercar)
         lcd_fill(0);
         memcpy(vech_ID+7,SimID_12D,12); 
         lcd_text12(0,3,(char *)vech_ID,19,LCD_MODE_SET);
-        memcpy(vech_VIN+3,JT808Conf_struct.Vechicle_Info.Vech_VIN,17); //车辆VIN
+        memcpy(vech_VIN+3,Vechicle_Info.Vech_VIN,17); //车辆VIN
         lcd_text12(0,19,(char *)vech_VIN,20,LCD_MODE_SET);
         lcd_update_all();   
 		 break;

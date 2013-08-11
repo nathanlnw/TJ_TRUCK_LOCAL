@@ -152,7 +152,7 @@ typedef struct
      
 } VOC_REC;
 
-#define  GSM_TYPEBUF_SIZE  1500
+#define  GSM_TYPEBUF_SIZE  1500 
 typedef __packed struct
 {
 	u16	       gsm_wr;

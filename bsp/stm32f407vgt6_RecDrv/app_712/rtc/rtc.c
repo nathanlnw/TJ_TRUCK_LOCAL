@@ -220,7 +220,7 @@ u8  rt_hw_rtc_init(void)
 
     rt_device_register(&rtc, "rtc", RT_DEVICE_FLAG_RDWR);
 #ifdef RT_USING_FINSH
-	//RTC_TimeShow(); 
+	RTC_TimeShow(); 
 #endif
 
     return  Resualt;
@@ -296,7 +296,9 @@ u8  Device_RTC_set(TDateTime now)
     {
         rt_rtc_control(device, RT_DEVICE_CTRL_RTC_SET_DATE, &RTC_DateStructure);   
 	 	
-	 rt_rtc_control(device, RT_DEVICE_CTRL_RTC_SET_TIME, &RTC_TimeStructure);   	
+	    rt_rtc_control(device, RT_DEVICE_CTRL_RTC_SET_TIME, &RTC_TimeStructure);   	
+
+		return 1;   
 		
     }
 		
@@ -366,182 +368,6 @@ void  RTC_Demo_init(void)
 	 Device_RTC_set(now);   
 
 }
-
-	
-
-/*****************************************************串口时间设置****************************************************/
-// void RTC_TimeRegulate(void)
-// {
-//   uint32_t tmp_hh = 0xFF, tmp_mm = 0xFF, tmp_ss = 0xFF;
-//   /*uint32_t tmp_yy=0xFF,  tmp_month = 0xFF, tmp_date = 0xFF;*/
-//   rt_kprintf("\n\r==============Time Settings=====================================\n\r");
-//   RTC_TimeStructure.RTC_H12     = RTC_H12_AM;
-//   rt_kprintf("  Please Set Hours:\n\r");
-//   while (tmp_hh == 0xFF)
-//   {
-//     tmp_hh = USART_Scanf(23);
-//     RTC_TimeStructure.RTC_Hours = tmp_hh;
-//   }
-//   rt_kprintf("  %0.2d\n\r", tmp_hh);
-//   
-//   rt_kprintf("  Please Set Minutes:\n\r");
-//   while (tmp_mm == 0xFF)
-//   {
-//     tmp_mm = USART_Scanf(59);
-//     RTC_TimeStructure.RTC_Minutes = tmp_mm;
-//   }
-//   rt_kprintf("  %0.2d\n\r", tmp_mm);
-//   
-//   rt_kprintf("  Please Set Seconds:\n\r");
-//   while (tmp_ss == 0xFF)
-//   {
-//     tmp_ss = USART_Scanf(59);
-//     RTC_TimeStructure.RTC_Seconds = tmp_ss;
-// 		Temp_second = tmp_ss;
-//   }
-//   rt_kprintf("  %0.2d\n\r", tmp_ss);
-
-//   /* Configure the RTC time register */
-//   if(RTC_SetTime(RTC_Format_BIN, &RTC_TimeStructure) == ERROR)
-//   {
-//     rt_kprintf("\n\r>> !! RTC Set Time failed. !! <<\n\r");
-//   } 
-//   else
-//   {
-//     rt_kprintf("\n\r>> !! RTC Set Time success. !! <<\n\r");
-//     RTC_TimeShow();
-//     /* Indicator for the RTC configuration */
-//     RTC_WriteBackupRegister(RTC_BKP_DR0, 0x32F2);
-//   }
-
-// // 	/***************************************************xiao日期****************************************/
-// // 	  rt_kprintf("\n\r==============Date Settings=====================================\n\r");
-// //   //RTC_TimeStructure.RTC_H12     = RTC_H12_AM;
-// //   rt_kprintf("  Please Set yy:\n\r");
-// //   while (tmp_yy == 0xFF)
-// //   {
-// //     tmp_yy = USART_Scanf(99);
-// //     RTC_DateStructure.RTC_Year = tmp_yy;
-// //   }
-// //   rt_kprintf("  %0.2d\n\r", tmp_yy);
-// //   
-// //   rt_kprintf("  Please Set Month:\n\r");
-// //   while (tmp_month == 0xFF)
-// //   {
-// //     tmp_month = USART_Scanf(12);
-// //     RTC_DateStructure.RTC_Month = tmp_month;
-// //   }
-// //   rt_kprintf("  %0.2d\n\r", tmp_month);
-// //   
-// //   rt_kprintf("  Please Set Date:\n\r");
-// //   while (tmp_date == 0xFF)
-// //   {
-// //     tmp_date = USART_Scanf(31);
-// //     RTC_DateStructure.RTC_Date = tmp_date;
-// // 		//Temp_second = tmp_ss;
-// //   }
-// //   rt_kprintf("  %0.2d\n\r", tmp_date);
-
-// //   /* Configure the RTC time register */
-// //   if(RTC_SetDate(RTC_Format_BIN, &RTC_DateStructure) == ERROR)
-// //   {
-// //     rt_kprintf("\n\r>> !! RTC Set Date failed. !! <<\n\r");
-// //   } 
-// //   else
-// //   {
-// //     rt_kprintf("\n\r>> !! RTC Set Date success. !! <<\n\r");
-// //     RTC_TimeShow();
-// //     /* Indicator for the RTC configuration */
-// //     RTC_WriteBackupRegister(RTC_BKP_DR0, 0x32F2);
-// //   }
-// // /***************************************************xiao日期****************************************/
-
-// }
-// /********************************************rtc显示相关********************************************************************/
-// /* #ifdef RT_USING_FINSH
-// #include <finsh.h>
-// #include <time.h>
-// time_t time(time_t* t)
-// {
-//     rt_device_t device;
-//     time_t time;
-
-//     device = rt_device_find("rtc");
-//     if (device != RT_NULL)
-//     {
-//         rt_device_control(device, RT_DEVICE_CTRL_RTC_GET_TIME, &time);
-//         if (t != RT_NULL) *t = time;
-//     }
-
-//     return time;
-// }
-
-// void set_date(rt_uint32_t year, rt_uint32_t month, rt_uint32_t day)
-// {
-//     time_t now;
-//     struct tm* ti;
-//     rt_device_t device;
-
-//     ti = RT_NULL;
-//     // get current time 
-//     time(&now);
-
-//     ti = localtime(&now);
-//     if (ti != RT_NULL)
-//     {
-//         ti->tm_year = year - 1900;
-//         ti->tm_mon 	= month - 1; // ti->tm_mon 	= month; 0~11 
-//         ti->tm_mday = day;
-//     }
-
-//     now = mktime(ti);
-
-//     device = rt_device_find("rtc");
-//     if (device != RT_NULL)
-//     {
-//         rt_rtc_control(device, RT_DEVICE_CTRL_RTC_SET_TIME, &now);
-//     }
-// }
-// FINSH_FUNCTION_EXPORT(set_date, set date. e.g: set_date(2010,2,28))
-
-// void set_time(rt_uint32_t hour, rt_uint32_t minute, rt_uint32_t second)
-// {
-//     time_t now;
-//     struct tm* ti;
-//     rt_device_t device;
-
-//     ti = RT_NULL;
-//    
-//     time(&now);
-
-//     ti = localtime(&now);
-//     if (ti != RT_NULL)
-//     {
-//         ti->tm_hour = hour;
-//         ti->tm_min 	= minute;
-//         ti->tm_sec 	= second;
-//     }
-
-//     now = mktime(ti);
-//     device = rt_device_find("rtc");
-//     if (device != RT_NULL)
-//     {
-//         rt_rtc_control(device, RT_DEVICE_CTRL_RTC_SET_TIME, &now);
-//     }
-// }
-// FINSH_FUNCTION_EXPORT(set_time, set time. e.g: set_time(23,59,59))
-
-// void list_date(void)
-// {
-//     time_t now;
-
-//     time(&now);
-//     rt_kprintf("%s\n", ctime(&now));
-// }
-// FINSH_FUNCTION_EXPORT(list_date, show date and time.)
-// #endif */
-
-
 
 
 

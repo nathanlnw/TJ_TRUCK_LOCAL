@@ -96,7 +96,7 @@ void uart1_baud(int buad)
 	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
 	USART_Init(USART1, &USART_InitStructure);
 }
-FINSH_FUNCTION_EXPORT( uart1_baud, uart1 baud );
+//FINSH_FUNCTION_EXPORT( uart1_baud, uart1 baud );
 
 
 /*初始化串口1*/
@@ -122,7 +122,7 @@ static rt_err_t dev_vuart_init( rt_device_t dev )
 /*NVIC 设置*/
 	NVIC_InitStructure.NVIC_IRQChannel						= USART1_IRQn;
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	= 1;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority			= 0;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority			= 3;
 	NVIC_InitStructure.NVIC_IRQChannelCmd					= ENABLE;
 	NVIC_Init( &NVIC_InitStructure );
 
@@ -131,7 +131,7 @@ static rt_err_t dev_vuart_init( rt_device_t dev )
 	USART_Cmd( USART1, ENABLE );
 	USART_ITConfig( USART1, USART_IT_RXNE, ENABLE );
 
-	return RT_EOK;
+	return RT_EOK; 
 }
 
 /***********************************************************

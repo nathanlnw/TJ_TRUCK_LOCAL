@@ -107,19 +107,19 @@ u8 error=0;
 
                             //车牌号
                 //rt_kprintf("\r\n(保存信息)Menu_Car_license=%s",Menu_Car_license);
-				memset(JT808Conf_struct.Vechicle_Info.Vech_Num,0,sizeof(JT808Conf_struct.Vechicle_Info.Vech_Num));
-				memcpy(JT808Conf_struct.Vechicle_Info.Vech_Num,Menu_Car_license,strlen(Menu_Car_license));
-                //rt_kprintf("\r\n(保存信息)JT808Conf_struct.Vechicle_Info.Vech_Num=%s",JT808Conf_struct.Vechicle_Info.Vech_Num);
+				memset(Vechicle_Info.Vech_Num,0,sizeof(Vechicle_Info.Vech_Num));
+				memcpy(Vechicle_Info.Vech_Num,Menu_Car_license,strlen(Menu_Car_license));
+                //rt_kprintf("\r\n(保存信息)Vechicle_Info.Vech_Num=%s",Vechicle_Info.Vech_Num);
 				// 车辆类型
-				memset(JT808Conf_struct.Vechicle_Info.Vech_Type,0,sizeof(JT808Conf_struct.Vechicle_Info.Vech_Type));
-				memcpy(JT808Conf_struct.Vechicle_Info.Vech_Type,Menu_VechileType,10);
-                //rt_kprintf("\r\n(保存1   )JT808Conf_struct.Vechicle_Info.Vech_Num=%s",JT808Conf_struct.Vechicle_Info.Vech_Num);
+				memset(Vechicle_Info.Vech_Type,0,sizeof(Vechicle_Info.Vech_Type));
+				memcpy(Vechicle_Info.Vech_Type,Menu_VechileType,10);
+                //rt_kprintf("\r\n(保存1   )Vechicle_Info.Vech_Num=%s",Vechicle_Info.Vech_Num);
                                 
 ///////
 				 //车辆VIN
-				memset(JT808Conf_struct.Vechicle_Info.Vech_VIN,0,sizeof(JT808Conf_struct.Vechicle_Info.Vech_VIN));
-				memcpy(JT808Conf_struct.Vechicle_Info.Vech_VIN,Menu_Vin_Code,17);
-				//rt_kprintf("\r\n(保存2   )JT808Conf_struct.Vechicle_Info.Vech_Num=%s",JT808Conf_struct.Vechicle_Info.Vech_Num);
+				memset(Vechicle_Info.Vech_VIN,0,sizeof(Vechicle_Info.Vech_VIN));
+				memcpy(Vechicle_Info.Vech_VIN,Menu_Vin_Code,17);
+				//rt_kprintf("\r\n(保存2   )Vechicle_Info.Vech_Num=%s",Vechicle_Info.Vech_Num);
                  
 				// SIM卡号码
 				//memset(JT808Conf_struct.Vech_sim,0,sizeof(JT808Conf_struct.Vech_sim));
@@ -133,24 +133,22 @@ u8 error=0;
 							  DF_ReadFlash(DF_SIMID_12D,0,SimID_12D,13); 
 							  SIMID_Convert_SIMCODE();  // 转换  
 		              //----------------------------------------------------------------------------
-                //rt_kprintf("\r\n(保存3   )JT808Conf_struct.Vechicle_Info.Vech_Num=%s",JT808Conf_struct.Vechicle_Info.Vech_Num);
+                //rt_kprintf("\r\n(保存3   )Vechicle_Info.Vech_Num=%s",Vechicle_Info.Vech_Num);
                                
 				// 车牌颜色
 				if(License_Not_SetEnable==1) 
-                     JT808Conf_struct.Vechicle_Info.Dev_Color=0;
+                     Vechicle_Info.Dev_Color=0;
 				else
-				     JT808Conf_struct.Vechicle_Info.Dev_Color=Menu_color_num;
+				     Vechicle_Info.Dev_Color=Menu_color_num;
 				//车辆设置完成
-				JT808Conf_struct.password_flag=1; 
+				Vechicle_Info.loginpassword_flag=1; 
 				//  存储
-				//rt_kprintf("\r\n(保存4   )JT808Conf_struct.Vechicle_Info.Vech_Num=%s",JT808Conf_struct.Vechicle_Info.Vech_Num);
-				        
-				error=Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
+				//rt_kprintf("\r\n(保存4   )Vechicle_Info.Vech_Num=%s",Vechicle_Info.Vech_Num);
+				DF_WriteFlashSector(DF_Vehicle_Struct_offset,0,(u8*)&Vechicle_Info,sizeof(Vechicle_Info));         
+				//error=Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
 				//rt_kprintf("\r\n write  error=%d",error);
 				delay_ms(3);
-				error=Api_Config_read(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));   //  读取JT808   配置信息
-                //rt_kprintf("\r\n read   error=%d",error);
-                //rt_kprintf("\r\n(read    )JT808Conf_struct.Vechicle_Info.Vech_Num=%s",JT808Conf_struct.Vechicle_Info.Vech_Num);
+				DF_ReadFlash(DF_Vehicle_Struct_offset,0,(u8*)&Vechicle_Info,sizeof(Vechicle_Info));  
 				
 				}
 			else if(comfirmation_flag==2)

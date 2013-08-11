@@ -516,6 +516,7 @@ GPIO_Init(GPIOC, &gpio_init);
 
 
 //==========================================================
+#if 0
 void  sys_status(void)
 {
      rt_kprintf("\r\n 状态查询: "); 	     
@@ -561,6 +562,7 @@ void  sys_status(void)
  
 }
 FINSH_FUNCTION_EXPORT(sys_status, Status);
+#endif
 void dispdata(char* instr)
 {
      if (strlen(instr)==0)
@@ -576,7 +578,7 @@ void dispdata(char* instr)
 	  return;  
 	}
 }
-FINSH_FUNCTION_EXPORT(dispdata, Debug disp set) ;
+//FINSH_FUNCTION_EXPORT(dispdata, Debug disp set) ;
 
 void Socket_main_Set(u8* str)
 {
@@ -635,7 +637,7 @@ FINSH_FUNCTION_EXPORT(Socket_main_Set,Set Socket main);
 	  }
   
   }
-  FINSH_FUNCTION_EXPORT(Socket_aux_Set,Set Aux main); 
+//  FINSH_FUNCTION_EXPORT(Socket_aux_Set,Set Aux main); 
 
 
   void  debug_relay(u8 *str) 
@@ -664,7 +666,7 @@ else
  Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct)); 
  rt_kprintf("\r\n(debug_relay)状态信息,[0]=%X  [1]=%X  [2]=%X  [3]=%X",Car_Status[0],Car_Status[1],Car_Status[2],Car_Status[3]);	
  }
-FINSH_FUNCTION_EXPORT(debug_relay, Debug relay set) ;
+//FINSH_FUNCTION_EXPORT(debug_relay, Debug relay set) ;
 
 //==========================================================
  
@@ -753,17 +755,18 @@ FINSH_FUNCTION_EXPORT(debug_relay, Debug relay set) ;
  	}
        u8      Api_Config_read(u8 *name,u16 ID,u8* buffer, u16 Rd_len)    //  读取Media area ID 是报数
        {
-               if(strcmp((const char*)name,config)==0)
+            if(strcmp((const char*)name,config)==0)
            	{
                      DF_ReadFlash(ConfigStart_offset, 0, buffer, Rd_len); 
-			DF_delay_ms(10); 	// large content delay	
-			return true;		
+					 DF_delay_ms(80); 	// large content delay	
+					 return true;		
            	}
               if(strcmp((const char*)name,jt808)==0) 
-             	{
+             	{   
+             	     WatchDog_Feed(); 
                      DF_ReadFlash(JT808Start_offset, 0, buffer, Rd_len); 
-			DF_delay_ms(10); // large content delay
-			return true;	
+			         DF_delay_ms(100); // large content delay
+			         return true;	
              	}
 		   if(strcmp((const char*)name,tired_config)==0)
                 {
@@ -781,17 +784,15 @@ FINSH_FUNCTION_EXPORT(debug_relay, Debug relay set) ;
 			
        }
  
-         u8    Api_Config_Recwrite(u8 *name,u16 ID,u8* buffer, u16 wr_len)  // 更新最新记录  
- 	{
-         return 1;
- 	}
-
-         u8    Api_Config_Recwrite_Large(u8 *name,u16 ID,u8* buffer, u16 wr_len)  // 更新最新记录  
+       u8    Api_Config_Recwrite_Large(u8 *name,u16 ID,u8* buffer, u16 wr_len)  // 更新最新记录  
  	{
            if(strcmp((const char*)name,jt808)==0)
                 {
-                     DF_WriteFlashSector(JT808Start_offset, 0, buffer, wr_len); 
-			return true;		 
+                     WatchDog_Feed();
+                     DF_WriteFlashSector(JT808Start_offset, 0, buffer, wr_len);  // formal  use
+                     WatchDog_Feed(); 
+					 DF_WriteFlashSector(JT808_BakSetting_offset,0,buffer,wr_len); // bak  setting   					 
+			         return true;		 
                 }
 	    if(strcmp((const char*)name,BD_ext_config)==0)
 	    	{
@@ -1391,47 +1392,6 @@ FINSH_FUNCTION_EXPORT(debug_relay, Debug relay set) ;
 
 
     	}
-
-//---------------------------------------------------
-  u8    ISP_Read( u32  Addr, u8*  Instr, u16 len)
-{
-       DF_ReadFlash(Addr,0,Instr,len);   
-       return 1;	
-}
-
-
-u8     ISP_Write( u32  Addr, u8*  Instr, u16 len)
-{         
-      DF_WriteFlash(Addr,0,Instr,len);
-	    return 1;
-}
-
-u8   ISP_Format(u16 page_counter,u16 page_offset,u8 *p,u16 length)
-{
-      u16 i=0;
-    if(51==page_counter) 
-    {
-          DF_LOCK=enable;
-       /*
-           1.先擦除0扇区   
-           2.读出page48内容并将其写到第0扇区的page 0 
-           3.读出page49内容并将其写到第0扇区的page 0
-           4.擦除 6-38扇区 即 48page 到 304 page
-           5.以后有数据过来就直接写入，不需要再擦除了 
-        */
-	  DF_EraseAppFile_Area();  
-    
-	for(i=0;i<length;i++)
-	{
-		SST25V_ByteWrite(*p,(u32)page_counter*PageSIZE+(u32)(page_offset+i));
-		p++;
-	}
-	//DF_delay_ms(5);
-	  DF_LOCK=disable;
-     }	
-		 return 1;
-}
-
 
 
 //----------   TF 卡检查状态

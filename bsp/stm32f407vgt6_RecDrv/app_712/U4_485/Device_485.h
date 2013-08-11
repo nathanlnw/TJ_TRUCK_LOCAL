@@ -75,6 +75,7 @@ extern u8   Fectch_photo[10];   //----- 报警取图命令
 
  extern u8 	 _485_content[600];
  extern u16	 _485_content_wr;
+ extern u8    _485_CameraData_Enable;// 有图片数据过来	1: data come  0:   no data 
 
  extern  _485REC_Struct 	 _485_RXstatus;	  
 

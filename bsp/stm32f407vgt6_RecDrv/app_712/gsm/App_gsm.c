@@ -98,7 +98,7 @@ void   DialLink_TimeOut_Process(void)
 						 //----------  存储休眠定时器 -----------
 						 rt_kprintf( "\r\n 拨号限时使能了\r\n" );	
 						 RstWrite_ACConoff_counter();
-						 rt_thread_delay(8); 			  
+						 delay_ms(18); 			  
 						 reset();  //  system  reset
 					  }		    
 	   }
@@ -315,11 +315,12 @@ static void gsm_thread_entry(void* parameter)
     u8 atd_str[25];
     rt_size_t  res=RT_ERROR;
         //     finsh_init(&shell->parser);
-	rt_kprintf("\r\n ---> gsm thread start !\r\n");
 	 //	  	 
 	 
 	 //  step 1:  Init Dataflash
 	   DF_init(); 
+	   rt_kprintf("\r\n ---> gsm thread start !\r\n");
+	 	
 	 //  step 2:   process config data	 
 	   SysConfiguration();	  // system config				 
 	   
@@ -371,7 +372,7 @@ static void gsm_thread_entry(void* parameter)
 			 SMS_Process();
 				
              
-	         rt_thread_delay(30);  	      
+	         rt_thread_delay(35);  	      
 			   
 	}
 }
@@ -451,7 +452,7 @@ void _gsm_startup(void)
 	Device_GSM.control =Device_GSM_control; 
 
 	rt_device_register( &Device_GSM, "GsmDev", RT_DEVICE_FLAG_RDWR | RT_DEVICE_FLAG_STANDALONE );
-	rt_device_init( &Device_GSM ); 
+	rt_device_init( &Device_GSM );  
 
 }
 

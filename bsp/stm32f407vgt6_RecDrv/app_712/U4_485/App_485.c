@@ -64,10 +64,13 @@ void End_Camera(void)
    #ifdef LCD_5inch
   DwinLCD_work_Enable();//  使能5 寸屏
   #endif
+
+  //--------  Dataflash Lock  recover  ----------	  
+   DF_LOCK=0; 	
 }
 u8 Start_Camera(u8  CameraNum)
 {
-    if(1==ISP_running_Status())    // 远程更新过程中不许拍照
+    if(1==BD_ISP.ISP_running)    // 远程更新过程中不许拍照
 		return false;
 		
         //----------------------------------------------------
@@ -96,7 +99,8 @@ u8 Start_Camera(u8  CameraNum)
 				    CameraState.status=other; 
 					return false;
 				  }
-				  
+			//--------  Dataflash Lock  Enable  ----------	  
+			 DF_LOCK=enable; 	  
 }
 
 void  MultiTake_Exception(void)
@@ -221,7 +225,7 @@ void  Camra_Take_Exception(void)
 							  delay_ms(500);  // end--duration--new start	 
 							  WatchDog_Feed();
 							  Power_485CH1_ON;  // 第一路485的电		   开	电工作      
-							  delay_ms(1000);  // end--duration--new start	     
+							  delay_ms(1500);  // end--duration--new start	     
 							  WatchDog_Feed();   
 			                            //------------  Multi Take Process  ------------  
 					                  if(1==MultiTake.Taking)

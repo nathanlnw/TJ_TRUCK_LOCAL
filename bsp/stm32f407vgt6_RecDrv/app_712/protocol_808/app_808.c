@@ -31,7 +31,7 @@ rt_thread_t app_tid = RT_NULL; // app 线程 pid
 //----- app_thread   rx     gsm_thread  data  related ----- 	
 ALIGN(RT_ALIGN_SIZE)
 static MSG_Q_TYPE  app_rx_gsm_infoStruct;  // app   接收从gsm  来的数据结构
-static  struct rt_semaphore app_rx_gsmdata_sem;  //  app 提供数据 给gsm发送信号量
+//static  struct rt_semaphore app_rx_gsmdata_sem;  //  app 提供数据 给gsm发送信号量
 
 
 // Dataflash  Operate   Mutex 
@@ -75,6 +75,7 @@ u16   AD_Volte=0;
 
 u8   OneSec_CounterApp=0;
 u32  app_thread_runCounter=0;  
+u8   value_thread=0;  //  检测线程运行状态
 
 
 
@@ -136,6 +137,7 @@ void Device_LoginTimer(void)
 }
 
 //          System  reset  related  
+#if 0
 void  system_reset(void)
 {
       Systerm_Reset_counter=Max_SystemCounter-3;
@@ -148,32 +150,9 @@ void query_reset(void)
 		  rt_kprintf("\r\n Systerm_Reset_counter=%d     app_thread_runCounter=%d  \r\n",Systerm_Reset_counter,app_thread_runCounter); 
 }
 FINSH_FUNCTION_EXPORT(query_reset, query_reset);	
-
+#endif
 void   Reset_Saveconfig(void)
 {
-     #if  0
-               //---------  重启前存储单位小时 每分钟 平均度  --------
-            
-	        DF_WriteFlashSector(DF_FlowNum_Page,0,(u8*)&Flowing_ID,2);
-	        delay_ms(2);
-			Save_AvrgSpdPerMin(AvrgSpdPerMin_write);
-			AvrgSpdPerMin_write++;
-			if(AvrgSpdPerMin_write>=Max_SPDSperMin)
-			   AvrgSpdPerMin_write=0;					
-			DF_Write_RecordAdd(AvrgSpdPerMin_write,AvrgSpdPerMin_Read,TYPE_AvrgSpdAdd); 
-	  //-------存储单位分钟 每秒钟平均速度-------			
-			Save_SpdPerSecond(AvrgSpdPerSec_write);
-			AvrgSpdPerSec_write++;
-			if(AvrgSpdPerSec_write>=Max_SPDerSec)
-			   AvrgSpdPerSec_write=0;					
-			DF_Write_RecordAdd(AvrgSpdPerSec_write,AvrgSpdPerSec_Read,TYPE_AvrgSpdSecAdd);
-	   //   里程
-	   DF_WriteFlashSector(DF_Distance_Page,0,(u8*)&Distance_m_u32,4); 	   
-	   DF_Write_RecordAdd(Distance_m_u32,DayStartDistance_32,TYPE_DayDistancAdd); 
-	   //------------------------------------------------------	
-	   if(ISP_resetFlag==1)
-		  	ISP_resetFlag=2;
-   #endif
 
 }
 	
@@ -323,8 +302,8 @@ void  SensorPlus_caculateSpeed (void)
 	 	rt_kprintf("\r\n    尚未自动校准校准!");
 	 
 	   rt_kprintf("\r\n GPS速度=%d  , 传感器速度=%d  上报速度: %d \r\n",Speed_gps,Speed_cacu,GPS_speed);  
-	   rt_kprintf("\r\n GPS实际速度=%d km/h , 传感器实际速度=%d km/h 上报实际速度: %d km/h\r\n",Speed_gps/10,Speed_cacu/10,GPS_speed/10);  
-	   rt_kprintf("\r\n TIM2->CNT=%d  \r\n",plus_reg); 
+	  // rt_kprintf("\r\n GPS实际速度=%d km/h , 传感器实际速度=%d km/h 上报实际速度: %d km/h\r\n",Speed_gps/10,Speed_cacu/10,GPS_speed/10);  
+	  // rt_kprintf("\r\n TIM2->CNT=%d  \r\n",plus_reg); 
 	 } 
 #endif
 
@@ -463,6 +442,7 @@ static void timeout_app(void *  parameter)
      if(OneSec_CounterApp>=10)	 
 	{
 	    OneSec_CounterApp=0;
+		//RTC_TimeShow();
 	     //---------------------------------- 	
 	        if(DataLink_Status())
 		    {
@@ -515,7 +495,7 @@ static void timeout_app(void *  parameter)
 					Photo_send_end();
 					Sound_send_end();
 					//Video_send_end();
-	                                                     rt_kprintf("\r\n  手动上报多媒体上传处理\r\n");
+	                   rt_kprintf("\r\n  手动上报多媒体上传处理\r\n");
 				  }	
 				 rt_kprintf("\r\n  多媒体信息前的多媒体发送完毕 \r\n");  
 		   	  }	
@@ -527,7 +507,15 @@ static void timeout_app(void *  parameter)
 				  MediaObj.SD_media_Flag=0; 
 	         }		 
 	         //-----------------------------------------------------------  
-	   }	
+	         //   from 485
+	          OpenDoor_TakePhoto();	 
+	          Camra_Take_Exception();	   
+
+			  //------ add later  -----------	 
+	         CAN_send_timer();  	
+       }	   
+       DwinLCD_Timer();
+	   DwinLCD_DispTrigger();	
 	 
          //   Media 
            if(OneSec_CounterApp>>1)   //  除以2 为1	   
@@ -537,41 +525,6 @@ static void timeout_app(void *  parameter)
            	}
 	   //----------------------------------	
 
-}
-
-u8    Udisk_Find(void)
-{
-       rt_err_t res;
-
-	if(  USB_Disk_RunStatus()==USB_CONNECT_NOTFIND)
-	{
-              Udisk_dev=rt_device_find("udisk");
-	        if (Udisk_dev != RT_NULL)	    
-		{     
-		      rt_kprintf("\r\n  Udiskopen");                       
-		      res=rt_device_open(Udisk_dev, RT_DEVICE_OFLAG_RDWR); 	
-		      if(res==RT_EOK)
-			 {
-                      
-	                   Udisk_Test_workState=1;
-			     USB_DeviceFind();	
-				rt_kprintf("\r\n Udisk Find ok\r\n");  	 
-			      return       USB_FIND;		   
-			 }	
-			  return false;
-		}  
-	       else
-		 { 
-                      Udisk_Test_workState=0;
-			 return  false;		  
-	        }
-	}
-	else
-	if( USB_Disk_RunStatus()==USB_FIND)	
-		return  USB_FIND;
-	else
-		Udisk_Test_workState=0;
-	return false; 
 }
 
  void   MainPower_cut_process(void)
@@ -605,16 +558,15 @@ u8    Udisk_Find(void)
 	Power_485CH1_ON;  // 第一路485的电 		  开电工作
 }
 
-void  MainPower_Status_Check(void)
-{
-    
+ void flag(void)
+ {
+    rt_kprintf(" \r\n value_thread=%d   app_thread_runCounter=%d\r\n",value_thread,app_thread_runCounter); 
+ }
+ FINSH_FUNCTION_EXPORT(flag, flag); 
 
-
-
-}
 
  ALIGN(RT_ALIGN_SIZE)
-char app808_thread_stack[5120];      
+char app808_thread_stack[4096];       
 struct rt_thread app808_thread;
 
 static void App808_thread_entry(void* parameter) 
@@ -629,6 +581,9 @@ static void App808_thread_entry(void* parameter)
 	    TIM2_Configuration();	  
        //  step 3:    usb host init	   	    	//  step  4:   TF card Init    
        //  	 spi_sd_init();	    
+         #ifdef HMI
+           HMI_app_init();
+         #endif
           usbh_init();    
 	      APP_IOpinInit();
           Init_ADC(); 
@@ -638,46 +593,35 @@ static void App808_thread_entry(void* parameter)
 		  CAN_struct_init();   
 		  
         /* watch dog init */
-	    WatchDogInit();                    
+	    WatchDogInit();       
+
+			Init_Camera();  
+       DoorCameraInit();
    
 	while (1)
 	{
 
 		//   1.   处理相关接收到的   808 数据
-       #if 0
-               if (rt_sem_take(&app_rx_gsmdata_sem, 2) == RT_EOK) 
-               {
-                       memcpy( UDP_HEX_Rx,app_rx_gsm_infoStruct.info,app_rx_gsm_infoStruct.len);
-			  UDP_hexRx_len=app_rx_gsm_infoStruct.len;	 
-			  if(app_rx_gsm_infoStruct.link_num)
-			  	   rt_kprintf("\r\n Linik 2 info \r\n");   
-                       TCP_RX_Process(app_rx_gsm_infoStruct.link_num);      
-                }	
-	#else
-                if(Receive_DataFlag==1)
+		value_thread=1;
+            if(Receive_DataFlag==1)
 		   {
-                        memcpy( UDP_HEX_Rx,app_rx_gsm_infoStruct.info,app_rx_gsm_infoStruct.len);
+              memcpy( UDP_HEX_Rx,app_rx_gsm_infoStruct.info,app_rx_gsm_infoStruct.len);
 			  UDP_hexRx_len=app_rx_gsm_infoStruct.len;	 
 			  if(app_rx_gsm_infoStruct.link_num)
 			  	   rt_kprintf("\r\n Linik 2 info \r\n");    
-                       TCP_RX_Process(app_rx_gsm_infoStruct.link_num);        
+               TCP_RX_Process(app_rx_gsm_infoStruct.link_num);        
 			  Receive_DataFlag=0;	 	   
-                }	
-             
-	#endif 
+          }	
 			     
-       // 2.    远程下载相关        ISP  service  
-           ISP_Process();  
-
 	   // 3.    检查顺序存储 gps  标准信息的状态 
 		   Api_CHK_ReadCycle_status();//   循环存储状态检测		
-		   
+		value_thread=2;   
 	   // 4.    808   Send data   		
-            if(DataLink_Status()&&(CallState==CallState_Idle))   
-		   {   
-		        Do_SendGPSReport_GPRS();   
-		   } 
-
+        if(DataLink_Status()&&(CallState==CallState_Idle)&&(print_workingFlag==0))   
+	   {   
+	        Do_SendGPSReport_GPRS();    
+	   } 
+       value_thread=3;
        // 5. ---------------  顺序存储 GPS  -------------------		    
 		if(GPS_getfirst)	 //------必须搜索到经纬度
 		{
@@ -687,48 +631,36 @@ static void App808_thread_entry(void* parameter)
 			    }
 		} 		 	   
 	   // 6.   ACC 状态检测
-                ACC_status_Check();
+             ACC_status_Check();
 	   // 7.   系统延时
-        rt_thread_delay(38);	
-	   
+      //  rt_thread_delay(15);	
+	   value_thread=4;
 	   // 8.	 行车记录仪相关的数据存储 
-		JT808_Related_Save_Process(); 
+	   if(BD_ISP.ISP_running==0)
+		    JT808_Related_Save_Process();  
+      value_thread=5;
+      // 9.  485  Related  ---------
+		           //  Dwin  RxProcess
+		       DwinLCD_Data_Process();
+				
+			   //--------------------- 拍照数据处理-----	
+			   if(_485_CameraData_Enable)	   
+			   {
+		                  Pic_Data_Process();
+		                _485_CameraData_Enable=0;
+			   }	
+	   value_thread=6; 
+			   
+			    rt_thread_delay(25); 	  		
+			    //-------     485  TX ------------------------
+		        Send_const485(TX_485const_Enable);  
+	  //    485   related  over   	 	   
+	   value_thread=7; 
       //---------------------------------------- 
 	   app_thread_runCounter=0; 
 	   //--------------------------------------------------------
 	}
 }
-
-/*
-void app_create(void)
-{
-  
-  app_tid = rt_thread_create( "app_808", App808_thread_entry, RT_NULL,
-   sizeof(app808_thread_stack),    
-   Prio_App808, 10); 
-  
-  if( app_tid != RT_NULL )
-  {
-	  rt_thread_startup( app_tid );
-	  
-	  rt_kprintf("\r\n app808  thread initial sucess!--1\r\n"); 	// nathan add
-  }else
-  {
-	  rt_kprintf("\r\napp808  thread initial fail!--1\r\n");	// nathan add	  
-  }
-
-}
-FINSH_FUNCTION_EXPORT(app_create, app_create);   
-
-void app_del(void)
-{
-    rt_thread_delete(app_tid);
-	rt_kprintf("\r\napp808  thread delete!\r\n"); 
-}
-FINSH_FUNCTION_EXPORT(app_del, app_del);    
-
-*/
-
 
 /* init app808  */
 void Protocol_app_init(void)
@@ -736,22 +668,18 @@ void Protocol_app_init(void)
         rt_err_t result;
 
         
-	//	DF_lock_mutex=rt_mutex_create("dflock",RT_IPC_FLAG_FIFO);   	 
-		
-        rt_sem_init(&app_rx_gsmdata_sem, "appRxSem", 0, 0);   		
        //---------  timer_app ----------
 	         // 5.1. create  timer     100ms=Dur
-	      timer_app=rt_timer_create("tim_app",timeout_app,RT_NULL,10,RT_TIMER_FLAG_PERIODIC); 
+	   timer_app=rt_timer_create("tim_app",timeout_app,RT_NULL,10,RT_TIMER_FLAG_PERIODIC); 
 	        //  5.2. start timer
-	      if(timer_app!=RT_NULL)
+	   if(timer_app!=RT_NULL)
 	           rt_timer_start(timer_app);      
 
 
-       //------------------------------------------------------
-    #if 0    
+       //------------------------------------------------------       
 	   app_tid = rt_thread_create( "app_808", App808_thread_entry, RT_NULL,
 		sizeof(app808_thread_stack),    
-		Prio_App808, 10); 
+		Prio_App808, 10);  
 	   
 	   if( app_tid != RT_NULL )
 	   {
@@ -762,14 +690,13 @@ void Protocol_app_init(void)
 	   {
 		   rt_kprintf("\r\napp808  thread initial fail!--1\r\n");    // nathan add	   
 	   }
-   #endif
 	   //-----------------------------------------------------
-
+#if 0
 	result=rt_thread_init(&app808_thread, 
 		"app808", 
 		App808_thread_entry, RT_NULL,
 		&app808_thread_stack[0], sizeof(app808_thread_stack),   
-		Prio_App808, 10);    
+		Prio_App808,15);      
 
     if (result == RT_EOK)
     {
@@ -777,7 +704,8 @@ void Protocol_app_init(void)
    	    rt_kprintf("\r\n app808  thread initial sucess!\r\n");    // nathan add
     	}
     else
-	    rt_kprintf("\r\napp808  thread initial fail!\r\n");    // nathan add	   
+	    rt_kprintf("\r\napp808  thread initial fail!\r\n");    // nathan add	
+ #endif	
 }
 
 

@@ -578,7 +578,7 @@ void EXTILine5_Config( void )
 
 	/* Enable and set EXTI Line0 Interrupt to the lowest priority */
 	NVIC_InitStructure.NVIC_IRQChannel						= EXTI9_5_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	= 0x01;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	= 0x02;
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority			= 0x01;
 	NVIC_InitStructure.NVIC_IRQChannelCmd					= ENABLE;
 	NVIC_Init( &NVIC_InitStructure );
@@ -872,7 +872,7 @@ lbl_mma8451_config_err:
 	return res;
 }
 
-FINSH_FUNCTION_EXPORT(mma8451_config ,setup sensor);
+//FINSH_FUNCTION_EXPORT(mma8451_config ,setup sensor);
 
 
 

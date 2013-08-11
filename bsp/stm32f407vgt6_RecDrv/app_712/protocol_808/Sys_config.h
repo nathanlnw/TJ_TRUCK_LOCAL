@@ -210,6 +210,7 @@
 
 extern ALIGN(RT_ALIGN_SIZE)  SYS_CONF        SysConf_struct;   //  系统配置
 extern ALIGN(RT_ALIGN_SIZE)  JT808_CONF      JT808Conf_struct;   //  JT 808   相关配置 
+extern  ALIGN(RT_ALIGN_SIZE) JT808_CONF		 JT808_struct_Bak;	  //  JT808 相关模式设置备份 
 extern ALIGN(RT_ALIGN_SIZE)  TIRED_CONF      TiredConf_struct;    //  疲劳驾驶相关配置 
 
 

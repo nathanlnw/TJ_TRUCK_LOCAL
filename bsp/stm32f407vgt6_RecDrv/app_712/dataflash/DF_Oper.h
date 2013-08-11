@@ -32,21 +32,27 @@ Crystal: 3.6864Mhz
  /*  0. Page 0~9     Producet Info */
  #define DF_ProInfo_Page      0
 
-#define    ConfigStart_offset                         8        //   Block   ÆğÊ¼Î»ÖÃ  Conifg  Struct Save      Sector 1 
-#define    JT808Start_offset                          16        //   Block   ÆğÊ¼Î»ÖÃ  Conifg  Struct Save    Sector 2
-#define    TiredCondifg_offset                        24        //   Block   ÆğÊ¼Î»ÖÃ  Conifg  Struct Save      Sector 3 
+  /*  1. page 10 -903	  ISP	*/
+#define ISP_StartArea                                 0x1000        // ÆğÊ¼µØÖ· 
+#define DF_APP1_PageNo		                          8             /*
+                                                                                                                        start :   0x1000---- ºÍBoot ³ÌĞò¶ÔÓ¦  8 page
+                                                                                                                        size        60 sector     480 page
+                                                                                                                        
+                                                                                                                         DF_APP_flah run PageNo:   50  ~ 903  page        */
+																					/* 512K  -->1072 Page */ 
+
+
+//   2.     config   information
+#define    ConfigStart_offset                         808        //   Block   ÆğÊ¼Î»ÖÃ  Conifg  Struct Save      Sector 1 
+#define    TiredCondifg_offset                        864        //   Block   ÆğÊ¼Î»ÖÃ  Conifg  Struct Save      Sector 3  
+#define    JT808_BakSetting_offset                    960        //   Block   ÆğÊ¼Î»Ö
+#define    JT808Start_offset                          1000        //   Block   ÆğÊ¼Î»ÖÃ  Conifg  Struct Save    Sector 2 
  
 
 
- /*  1. page 10 -903     ISP   */
-  
-#define DF_BL_PageNo		                 40             /*DF_BL_RAM run PageNo:   10  ~ 49  page */
-#define DF_APP1_PageNo		                 50             /*DF_APP_flah run PageNo:   50  ~ 903  page*/
-                                                                                   /* 512K  -->1072 Page */ 
                                                                                           
 
  /*  2. Page  904 - 912           ×´Ì¬ĞÅÏ¢    */
- #define DF_Format_Page 	                     1072     // 904~911    Sector  114    (x8)=912
 
 
  /*  3. Page  920 - 943        	GPSÓ¦ÓÃ ×î»ù±¾ÅäÖÃ    */   //¿ìËÙ¶ÁĞ´  
@@ -57,7 +63,7 @@ Crystal: 3.6864Mhz
  #define  DF_TCP_sd_Dur_Page                     1094     // TCP ·¢ËÍ¼ä¸ô
  #define  DF_TrigSDStatus_Page                   1095     // ´«¸ĞÆ÷´¥·¢ÉÏ±¨×´Ì¬
  #define  DF_CycleAdd_Page                       1096     // Block ÆğÊ¼-- ¼ÇÂ¼Ñ­»·´æ´¢¶ÁĞ´Æ«ÒÆµØÖ·µÄpage
- #define  DF_PhotoAdd_Page                      1104     // Block ÆğÊ¼--¼ÇÂ¼ÕÕÆ¬´æ´¢¶ÁĞ´Æ«ÒÆµØÖ·µÄpage
+ #define  DF_PhotoAdd_Page                       1104     // Block ÆğÊ¼--¼ÇÂ¼ÕÕÆ¬´æ´¢¶ÁĞ´Æ«ÒÆµØÖ·µÄpage 
 
 
  /*  4. ²»Í¬¿Í»§²úÆ·Ó¦ÓÃÌØÓĞ¹¦ÄÜ²ÎÊı           */
@@ -206,8 +212,10 @@ Crystal: 3.6864Mhz
 
 
 #define       DF_DeviceID_offset                      5400                 // Block ÆğÊ¼Î»ÖÃ   ³µÁ¾ID  12  Î» BCD   
-#define       DF_SIMID_12D                            5408                 // Block  	ÆğÊ¼Î»ÖÃ  
 #define       DF_License_effect                       5416
+#define       DF_Vehicle_Struct_offset                5424                 // block ÆğÊ¼Î»ÖÃ   
+#define       DF_SIMID_12D                            6000                 // Block  	ÆğÊ¼Î»ÖÃ     
+
 
 //  15 ×Ö¿â²»ÔÚDataflash ÁË¿ÉÒÔÓÃÁË
 
@@ -262,9 +270,7 @@ extern void DF_ReadFlash(u16 page_counter,u16 page_offset,u8 *p,u16 length);
 extern void DF_WriteFlashSector(u16 page_counter,u16 page_offset,u8 *p,u16 length);//512bytes Ö±½Ó´æ´¢
 extern void DF_WriteFlashRemote(u16 page_counter,u16 page_offset,u8 *p,u16 length);//512bytes Ö±½Ó´æ´¢
 extern void DF_WriteFlashDirect(u16 page_counter,u16 page_offset,u8 *p,u16 length);
-extern void DF_Read_zk(u32 address,u8 *p,u16 length);//480 bytes Ö±½Ó¶ÁÈ¡
-extern void DF_EraseAppFile_Area(void);
-extern void DF_ClearUpdate_Area(void);    // Çå³ıÔ¶³ÌÉı¼¶Éı¼¶ÇøÓò 
+extern void DF_Erase(void);
 extern void DF_init(void); 
 
 #endif

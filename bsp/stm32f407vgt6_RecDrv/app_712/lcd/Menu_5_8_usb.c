@@ -29,8 +29,8 @@ void thread_usbout_udisk( void* parameter )
 	//车辆信息（  VIN 17 +  车牌号12  +  车牌分类 12 ）
 	memcpy(write_da,SimID_12D,12);
 	memcpy(write_da+12,"00000",5);//17位vin
-	memcpy(write_da+17,JT808Conf_struct.Vechicle_Info.Vech_Num,12);//车牌号12
-	memcpy(write_da+29,JT808Conf_struct.Vechicle_Info.Vech_Type,12);//车牌分类12
+	memcpy(write_da+17,Vechicle_Info.Vech_Num,12);//车牌号12
+	memcpy(write_da+29,Vechicle_Info.Vech_Type,12);//车牌分类12
 	//驾驶员信息 （  驾驶员代码 3 +驾驶证号码 18）
 	memcpy(write_da+41,JT808Conf_struct.Driver_Info.DriveCode,3);//  驾驶员代码3
 	memcpy(write_da+44,JT808Conf_struct.Driver_Info.DriverCard_ID,18);//驾驶证号码18

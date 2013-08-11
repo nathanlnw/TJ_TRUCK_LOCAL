@@ -110,6 +110,7 @@ ALIGN(RT_ALIGN_SIZE)
  u8     GSM_rx[GSMRX_SIZE];       
 u16     GSM_rx_Wr=0;
 u16     info_len=0;  
+static u8  former_byte=0; 
 
 static GSM_typeBUF GSM_INT_BUFF;
 static GSM_typeBUF GSM_RX_BUFF;
@@ -395,7 +396,7 @@ void  VOC_REC_filedel(void)
 		}
      	}			 
  }
-FINSH_FUNCTION_EXPORT(VOC_REC_Start, voice recrod);
+//FINSH_FUNCTION_EXPORT(VOC_REC_Start, voice recrod);
 //=========================================================================
 //    TTS  realated
 u8    TTS_Get_Data(u8 *Instr,u16 LEN)     //  return   0   : OK     return   1 : busy
@@ -794,15 +795,15 @@ void Dial_Stage(T_Dial_Stage  Stage)
 }
 void  GSM_RxHandler(u8 data)
 {
-    static u8  former_byte=0;
-   		if( ( data == 0x0a ) && ( former_byte == 0x0d ) ) /*遇到0d 0a 表明结束*/
+   		if( ( data==0x0a)&&(former_byte==0x0d ) ) /*遇到0d 0a 表明结束*/
 		{
 			GSM_INT_BUFF.gsm_content[GSM_INT_BUFF.gsm_wr++] = data;
 			if( GSM_INT_BUFF.gsm_wr < 1400 )
-			{
-				rt_mq_send( &mq_GSM, (void*)&GSM_INT_BUFF, GSM_INT_BUFF.gsm_wr+ 2 );
-			}
-			GSM_INT_BUFF.gsm_wr = 0;
+			{			     
+			  	rt_mq_send( &mq_GSM, (void*)&GSM_INT_BUFF, GSM_INT_BUFF.gsm_wr+ 2 );				
+			} 			
+			
+			GSM_INT_BUFF.gsm_wr = 0; 
 		}else
 		{
 			GSM_INT_BUFF.gsm_content[GSM_INT_BUFF.gsm_wr++] = data;    
@@ -810,13 +811,12 @@ void  GSM_RxHandler(u8 data)
 			{
 				GSM_INT_BUFF.gsm_wr = 0;
 			}
-			GSM_INT_BUFF.gsm_content[GSM_INT_BUFF.gsm_wr ]=0;  
+			GSM_INT_BUFF.gsm_content[GSM_INT_BUFF.gsm_wr]=0;  
 		}
-		former_byte = data;
-
-  
+		former_byte = data;   
 	  
 }
+
 
 void  GSM_Buffer_Read_Process(void)
 {
@@ -1047,31 +1047,18 @@ void End_Datalink(void)
 
 void  ISP_Timer(void)
 {
-            //--------- Timer  ------------- 
-   if((TCP2_ready_dial==1)&&DataLink_Status())     
-       {
-                 Ready_dial_counter2++;  
-		   if(Ready_dial_counter2>5)  
-                	{
-                         Ready_dial_counter2=0;
-			    //DataDial.Dial_step=Dial_ISP;    
-					     DataDial.Dial_ON=enable;
-				
-                       //  Dial_Stage(Dial_ISP);
-		       }  
-       } 
+    if((BD_ISP.ISP_running==1)&&DataLink_Status())     
+    {
+       BD_ISP.ISP_runTimer++; 
+	   if(BD_ISP.ISP_runTimer>300)  
+	   	{
+            BD_ISP.ISP_runTimer=0;
+			BD_ISP.ISP_running=0;//  clear
+			SD_ACKflag.f_BD_ISPResualt_0108H=2;   
+		    rt_kprintf("\r\n 升级下发超时，升级失败\r\n");    
 
-                  //---------   ISP 心跳包发送 - ----
-              if(TCP2_Connect==1)
-             {
-                   TCP2_Coutner++;
-                    if(TCP2_Coutner>=TCP2_sdDuration)
-                    	{
-                           TCP2_Coutner=0; 
-			      TCP2_sdFlag=1;     
-                    	}
-
-             }	 
+		}
+    } 
 
 }
  
@@ -1085,33 +1072,6 @@ u8  GPRS_GSM_PowerON(void)
 			  return 1;
 	
          GSM_PWR.GSM_powerCounter+=50;   
-		 #if 0
-     			if((GSM_PWR.GSM_powerCounter>=10)&&(GSM_PWR.GSM_powerCounter<500))
-			 {
-			    GPIO_ResetBits(GPIOD,GPRS_GSM_Power);    //  关电
-			    GPIO_SetBits(GPIOD,GPRS_GSM_PWKEY);    //  PWK 低 
-			    rt_kprintf(" step 1\r\n");   
-			 }	
-			 if((GSM_PWR.GSM_powerCounter>=500)&&(GSM_PWR.GSM_powerCounter<600))
-			 {	GPIO_SetBits(GPIOD, GPIO_Pin_10);   // Gps module Power on   GPS 模块开电   
-
-
-			        GPIO_SetBits(GPIOD,GPRS_GSM_Power);    //  开电
-			        GPIO_ResetBits(GPIOD,GPRS_GSM_PWKEY);    //  PWK 高  
-				  rt_kprintf(" step 2\r\n");   
-			 }			
-			 if(GSM_PWR.GSM_powerCounter>=1000)            
-			 {   
-				rt_kprintf("         %s","--GPRS Power over\r\n ");        
-				GSM_PWR.GSM_PowerEnable=0; 
-				GSM_PWR.GSM_powerCounter=0;
-				GSM_PWR.GSM_power_over=1;   
-				//GPIO_SetBits(GPIOD, GPIO_Pin_10);   // Gps module Power on   GPS 模块开电   
-				   //-------add for reg  
-			 }	 
-           
-          #endif
-	
                	if((GSM_PWR.GSM_powerCounter>=10)&&(GSM_PWR.GSM_powerCounter<300))
 			 {
 			    GPIO_ResetBits(GPIOD,GPRS_GSM_Power);    // 关电
@@ -1150,47 +1110,7 @@ u8  GPRS_GSM_PowerON(void)
 				   //-------add for re g 
 			 }	   
         
-		 
-		 #if 0
-			if((GSM_PWR.GSM_powerCounter>=10)&&(GSM_PWR.GSM_powerCounter<300))
-			 {
-			    GPIO_ResetBits(GPIOD,GPRS_GSM_Power);    // 关电
-			    GPIO_SetBits(GPIOD,GPRS_GSM_PWKEY);      //  PWK 低
-			    rt_kprintf(" step 1\r\n");   
-			 }	
-			 if((GSM_PWR.GSM_powerCounter>=300)&&(GSM_PWR.GSM_powerCounter<400))
-			 {
-			        GPIO_SetBits(GPIOD,GPRS_GSM_Power);    //  开电
-			        GPIO_SetBits(GPIOD,GPRS_GSM_PWKEY);   //  PWK低
-				  rt_kprintf(" step 2\r\n");   
-				   GPIO_SetBits(GPIOD, GPIO_Pin_10);   // Gps module Power on   GPS 模块开电   
-			 }	
-			 if((GSM_PWR.GSM_powerCounter>=400)&&(GSM_PWR.GSM_powerCounter<700)) 
-			 {
-			   GPIO_SetBits(GPIOD,GPRS_GSM_Power);    //  开电
-			   GPIO_ResetBits(GPIOD,GPRS_GSM_PWKEY);    //  PWK 高
-			    rt_kprintf(" step 3\r\n");   
-			 }	
-			 if((GSM_PWR.GSM_powerCounter>=700)&&(GSM_PWR.GSM_powerCounter<750))   
-			 {
-				GPIO_SetBits(GPIOD,GPRS_GSM_PWKEY);   //  PWK低
-				 rt_kprintf(" step 4\r\n");   
-			 }	 
-			 if((GSM_PWR.GSM_powerCounter>=760)&&(GSM_PWR.GSM_powerCounter<900))      
-			 {
-			    GPIO_ResetBits(GPIOD,GPRS_GSM_PWKEY);      //  PWK 高 
-				 rt_kprintf(" step 5\r\n");    
-			 }	
-			 if(GSM_PWR.GSM_powerCounter>=900)     
-			 {
-				rt_kprintf("         %s","--GPRS Power over\r\n ");     
-				GSM_PWR.GSM_PowerEnable=0; 
-				GSM_PWR.GSM_powerCounter=0;
-				GSM_PWR.GSM_power_over=1;  
-				   //-------add for re g 
-			 }	 
-		#endif
-		
+	
 	 return   0;	    
 }
 
@@ -1355,7 +1275,7 @@ void  Get_GSM_HexData(u8*  Src_str,u16 Src_infolen,u8 link_num)
      //  1.  Check wether   Instr   is  need   to  convert     Exam:  ASCII_2_HEX	 
                 GSM_HEX_len= GSM_AsciitoHEX_Convert(Src_str,Src_infolen,GSM_HEX); 
      //  2 .  Realse   sem
-		App_rxGsmData_SemRelease(GSM_HEX, GSM_HEX_len,link_num); 
+		App_rxGsmData_SemRelease(GSM_HEX,GSM_HEX_len,link_num); 
 } 
 
 void DataLink_Process(void)
@@ -1570,11 +1490,11 @@ static void GSM_Process(u8 *instr, u16 len)
   // if(DispContent==2)	 
    memset(GSM_rx,0,sizeof((const char*)GSM_rx));
    memcpy(GSM_rx,instr,len);
-   if((ISP_running_state==0)) 
+   if(BD_ISP.ISP_running==0)     
    {
        rt_kprintf("\r\n");      
         for(i=0;i<len;i++)  
-		 rt_kprintf("%c",GSM_rx[i]);     	
+		 rt_kprintf("%c",GSM_rx[i]);      	
    }
 
    //------------------------------------------------------------------------------------------------------------------- 
@@ -1592,7 +1512,7 @@ static void GSM_Process(u8 *instr, u16 len)
 	 if(strncmp((char*)GSM_rx,"%RECFGET: ",9)==0)  //%RECFGET: 6624,"0E360C764009
       	{
       	   //   rt_kprintf("\r\n  RECFGET len=%d\r\n",len);
-      	      memcpy(VocREC.ASCII_in,GSM_rx,len); 
+      	      memcpy(VocREC.ASCII_in,GSM_rx,len);  
              VOC_REC_dataGet(VocREC.ASCII_in);    
 	      goto RXOVER; 	 		
       	} 
@@ -1622,9 +1542,12 @@ static void GSM_Process(u8 *instr, u16 len)
 					break;
 			} 
 		  info_len=len-i-5;  	  
-		//  rt_kprintf("\r\n  IPDATA 1 len=%d\r\n",info_len);   
-		  WatchDog_Feed();
-	         Get_GSM_HexData(GSM_rx+i+1,info_len,0);       
+		
+		//sscanf(GSM_rx+10, "%d", (u32*)&info_len); 	
+		//info_len=(info_len<<1);
+	   // rt_kprintf("\r\n rxlen=%d,caculen=%d \r\n",info_len,len-i-5);    
+		WatchDog_Feed();
+	    Get_GSM_HexData(GSM_rx+i+1,info_len,0);         
 	         goto RXOVER; 	 
 	 }     
 	if(strncmp((char*)GSM_rx,"%RECSTOP:",9)==0)  //%RECSTOP: 10,6824
@@ -1783,7 +1706,7 @@ static void GSM_Process(u8 *instr, u16 len)
 		 {	
 		    rt_hw_gsm_output("ATH\r\n"); 		
 			DataLink_EndFlag=1; 
-			//DEV_Login.Operate_enable=1;//重新鉴权
+			DEV_Login.Operate_enable=1;//重新鉴权
 		 }
 		 
 	}	
@@ -1820,20 +1743,6 @@ static void GSM_Process(u8 *instr, u16 len)
 			//联通卡	   +COPS: 0,0,"CHN-CUGSM"
 			//移动卡	   +COPS: 0,0,"CHINA  MOBILE"
 			//注销的卡	  +COPS: 0
-	  /*	if(strcmp((char*)GSM_rx, "+COPS: 0,0,\"CHN-CUGSM\"")==0)  
-			{
-				//联通的
-				//memset((char *)Dialinit_APN,0,sizeof(Dialinit_APN));
-				//strcat((char*)Dialinit_APN, "AT+CGDCONT=1,\"IP\",\"UNINET\"\r\n");  
-			}
-		  else
-		  if(strcmp((char*)GSM_rx, "+COPS: 0,0,\"CHINA  MOBILE\"")==0)	
-			{
-			   // 移动的
-				//memset(Dialinit_APN,0,sizeof(Dialinit_APN));
-				//strcat(Dialinit_APN, "AT+CGDCONT=1,\"IP\",\"CMNET\"\r\n");
-			} 
-	  */
 	  	if(strncmp((char*)GSM_rx+12, "CHINA UNICOM",12)==0)
 	  	    {
 			memcpy(APN_String,"UNINET",6);
@@ -2169,8 +2078,10 @@ RXOVER:
 								                rt_kprintf("\r\n Aux 连接成功TCP---\r\n");
 								   //     1.   登陆成功后相关操作	 
 								    // <--  注册状态
-								        if(1==JT808Conf_struct.Regsiter_Status)  
-								                 DEV_Login.Operate_enable=1;   			 						
+								    if(1==JT808Conf_struct.Regsiter_Status)  
+								             DEV_Login.Operate_enable=1;  
+									else
+										 JT808Conf_struct.Regsiter_Status=0;     
 									 
 								   // connect = true;
 								         //  -----  Data  Dial Related ------
@@ -2178,7 +2089,7 @@ RXOVER:
 									    	{
 							                   Dial_Stage(Dial_Idle);
 										       DataDial.Dial_step_Retry=0;
-										       DataDial.Dial_step_RetryTimer=0;  			
+										       DataDial.Dial_step_RetryTimer=0;   			
 									    	}
 							              //-----------------------------------
 							           //   DataDial.Dial_ON=0; 
@@ -2209,7 +2120,6 @@ RXOVER:
 									TCP2_ready_dial=0;  
 									rt_kprintf("\r\n TCP 连接成功-ISP!\r\n");     
 									 DataDial.Dial_ON=0;  // 
-									  ISP_running_state=0;
 								}							 
 								break;		 						
 		default 			:	 Dial_Stage(Dial_Idle);
@@ -2222,7 +2132,7 @@ RXOVER:
 void  IMSIcode_Get(void)
 {
 
-              if((GSM_PWR.GSM_power_over==1) &&(JT808Conf_struct.password_flag ==1) )
+              if((GSM_PWR.GSM_power_over==1) &&(Vechicle_Info.loginpassword_flag==1))
 		{
                    IMSIGet.Checkcounter++;
 		       if(IMSIGet.Checkcounter>30)     //  15*30=450ms      
@@ -2242,7 +2152,7 @@ void  IMSIcode_Get(void)
 		}  
 }
 
- 
+#if 0 
  void Rx_in(u8* instr)
  {
 	 u16  inlen=0;
@@ -2262,6 +2172,7 @@ void  IMSIcode_Get(void)
  
  }
  FINSH_FUNCTION_EXPORT(Rx_in, Rx_in);
+ #endif
 
 void AT(char *str)
 {
@@ -2298,14 +2209,14 @@ void  rt_hw_gsm_init(void)
        GPIO_InitStructure.GPIO_Pin = GSM_TX_PIN| GSM_RX_PIN;
 	GPIO_Init( GPIOC, &GPIO_InitStructure );
 
-       GPIO_PinAFConfig(GPIOC, GPIO_PinSource10, GPIO_AF_UART4);
-       GPIO_PinAFConfig(GPIOC, GPIO_PinSource11, GPIO_AF_UART4);   
+    GPIO_PinAFConfig(GPIOC, GPIO_PinSource10, GPIO_AF_UART4);
+    GPIO_PinAFConfig(GPIOC, GPIO_PinSource11, GPIO_AF_UART4);   
 
 	
 
 	NVIC_InitStructure.NVIC_IRQChannel = UART4_IRQn;
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 4;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority =0; 
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_Init(&NVIC_InitStructure);
 

@@ -142,9 +142,9 @@ void Dayin_Fun(u8 dayin_par)
 {
 if(dayin_par==1)
 	{
-	memcpy(dayin_chepaihaoma+11,JT808Conf_struct.Vechicle_Info.Vech_Num,8);    //  2
-	memcpy(dayin_chepaifenlei+11,JT808Conf_struct.Vechicle_Info.Vech_Type,6);  //  3
-	memcpy(dayin_cheliangVIN+10,JT808Conf_struct.Vechicle_Info.Vech_VIN,17);   //  4
+	memcpy(dayin_chepaihaoma+11,Vechicle_Info.Vech_Num,8);    //  2
+	memcpy(dayin_chepaifenlei+11,Vechicle_Info.Vech_Type,6);  //  3
+	memcpy(dayin_cheliangVIN+10,Vechicle_Info.Vech_VIN,17);   //  4
 	memcpy(dayin_driver_NUM+13,JT808Conf_struct.Driver_Info.DriveName,21);    //5
 	memcpy(dayin_driver_card+13,JT808Conf_struct.Driver_Info.DriverCard_ID,18);//6
 	memcpy((char *)dayin_data_time+11,(char *)Dis_date,20);  //7
@@ -308,6 +308,13 @@ if(dayin_par==1)
 			DaYin=0;
 			print_rec_flag=0;
 			GPIO_ResetBits(GPIOB,GPIO_Pin_7);//打印关电
+
+			//----------------------------------------------------- 
+			gps_onoff(1);  //开启GPS 模块的点
+			print_workingFlag=0;  // 打印状态进行中
+			Power_485CH1_ON;     // 开启485
+			Speak_ON;      //  开启音频功放     
+			//-----------------------------------------------------
 			
 			rt_kprintf("\r\n----------打印完毕");
 			break;
@@ -342,6 +349,14 @@ else
 			DaYin=0;
 			print_rec_flag=0;
 			GPIO_ResetBits(GPIOB,GPIO_Pin_7);//打印关电
+
+              //----------------------------------------------------- 
+			gps_onoff(1);  //开启GPS 模块的点
+			print_workingFlag=0;  // 打印状态进行中
+			Power_485CH1_ON;     // 开启485
+			Speak_ON;      //  开启音频功放     
+			//-----------------------------------------------------
+			
 			break;
 	   	}
 	}
@@ -351,7 +366,7 @@ else
 
 /* HMI  thread */
 ALIGN(RT_ALIGN_SIZE) 
-char HMI_thread_stack[5120]; // 4096 
+char HMI_thread_stack[2048]; // 4096   
 struct rt_thread HMI_thread;
 
 static void HMI_thread_entry(void* parameter)  
@@ -368,8 +383,8 @@ static void HMI_thread_entry(void* parameter)
 	   Init_4442(); 
 
 
-	rt_kprintf("\r\nJT808Conf_struct.password_flag=%d\r\n",JT808Conf_struct.password_flag);
-    if(JT808Conf_struct.password_flag==0)
+	rt_kprintf("\r\nVechicle_Info.loginpassword_flag=%d\r\n",Vechicle_Info.loginpassword_flag);
+    if(Vechicle_Info.loginpassword_flag==0)
     	{
     	    JT808Conf_struct.Regsiter_Status=0;   //需要重新注册
             pMenuItem=&Menu_0_0_password;
@@ -408,9 +423,16 @@ static void HMI_thread_entry(void* parameter)
 					DaYin=1;//开始打印
 					}
 				else
-				      {
+				    {
 				        DaYin=0;
-					 print_rec_flag=0;
+					    print_rec_flag=0;
+					 
+					 	//----------------------------------------------------- 
+						gps_onoff(1);  //开启GPS 模块的点
+						print_workingFlag=0;  // 打印状态进行中
+						Power_485CH1_ON;     // 开启485
+						Speak_ON;      //  开启音频功放     
+						//-----------------------------------------------------
 					}
 				WatchDog_Feed();
 				rt_kprintf("\r\n----------开始打印");
@@ -427,7 +449,7 @@ static void HMI_thread_entry(void* parameter)
 				else	 
 					Dayin_Fun(0);
 				}
-			}
+			} 
 		 //---------- IC card  insert --------------------------
 		// if(GSM_PWR.GSM_power_over==1) 
 		     CheckICInsert(); 
@@ -447,7 +469,7 @@ static void HMI_thread_entry(void* parameter)
 		       pMenuItem->show();
 		}
 	 	//--------------------------------------------	   
-              rt_thread_delay(10);        
+              rt_thread_delay(8);         
      }  
 }
 
@@ -462,7 +484,7 @@ void HMI_app_init(void)
 	result=rt_thread_init(&HMI_thread, "HMI", 
 		HMI_thread_entry, RT_NULL,
 		&HMI_thread_stack[0], sizeof(HMI_thread_stack),    
-		Prio_HMI, 10); 
+		Prio_HMI, 6); 
 
     if (result == RT_EOK)
     {

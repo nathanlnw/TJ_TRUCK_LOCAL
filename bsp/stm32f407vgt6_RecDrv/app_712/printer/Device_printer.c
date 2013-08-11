@@ -871,7 +871,7 @@ void printer( const char *str )
 	printer_write( &dev_printer, 0, str, strlen( str ) );
 }
 
-FINSH_FUNCTION_EXPORT( printer, print string test );
+//FINSH_FUNCTION_EXPORT( printer, print string test );
 
 
 /***********************************************************
@@ -918,7 +918,7 @@ void step( const int count, const int delay )
 	GPIO_ResetBits( PRINTER_POWER_PORT_5V, PRINTER_POWER_PIN_5V );
 }
 
-FINSH_FUNCTION_EXPORT( step, print step test );
+//FINSH_FUNCTION_EXPORT( step, print step test );
 
 /************************************** The End Of File **************************************/
 

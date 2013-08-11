@@ -220,7 +220,7 @@ void   SMS_protocol (u8 *instr,u16 len, u8  ACKstate)   //  ACKstate
 	//SYSID		///修改该值，保存flash
 	///应答短信包头部分
 	memset(SMS_Service.SMS_sd_Content,0,sizeof(SMS_Service.SMS_sd_Content));
-	strcpy(SMS_Service.SMS_sd_Content,JT808Conf_struct.Vechicle_Info.Vech_Num);
+	strcpy(SMS_Service.SMS_sd_Content,Vechicle_Info.Vech_Num);
 	strcat(SMS_Service.SMS_sd_Content,"#");// Debug
 	strcat(SMS_Service.SMS_sd_Content,SimID_12D);// Debug
 	/*************************处理信息****************************/
@@ -445,7 +445,7 @@ void   SMS_protocol (u8 *instr,u16 len, u8  ACKstate)   //  ACKstate
 						}
 					}
 				}
-			else if(strncmp(pstrTemp,"MODE",4)==0)			///6. 设置定位模式
+			  if(strncmp(pstrTemp,"MODE",4)==0)			///6. 设置定位模式
 				{
 				        if(strncmp(sms_content,"BD",2)==0)
 				        {
@@ -541,9 +541,9 @@ void   SMS_protocol (u8 *instr,u16 len, u8  ACKstate)   //  ACKstate
 			else if(strncmp(pstrTemp,"PLATENUM",8)==0)
 				{
 				    rt_kprintf("Vech_Num is %s", sms_content);
-					memset((u8*)&JT808Conf_struct.Vechicle_Info.Vech_Num,0,sizeof(JT808Conf_struct.Vechicle_Info.Vech_Num));	//clear	
-				    rt_memcpy(JT808Conf_struct.Vechicle_Info.Vech_Num,sms_content,strlen(sms_content));
-					Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
+					memset((u8*)&Vechicle_Info.Vech_Num,0,sizeof(Vechicle_Info.Vech_Num));	//clear	
+				    rt_memcpy(Vechicle_Info.Vech_Num,sms_content,strlen(sms_content));
+					DF_WriteFlashSector(DF_Vehicle_Struct_offset,0,(u8*)&Vechicle_Info,sizeof(Vechicle_Info));      
 					Add_SMS_Ack_Content(sms_ack_data,ACKstate);
 
 					 //--------    清除鉴权码 -------------------
@@ -555,9 +555,9 @@ void   SMS_protocol (u8 *instr,u16 len, u8  ACKstate)   //  ACKstate
 					if(j)
 					{
 						
-					JT808Conf_struct.Vechicle_Info.Dev_Color=u16Temp; 
-	        		rt_kprintf("\r\n 车辆颜色: %s ,%d \r\n",sms_content,JT808Conf_struct.Vechicle_Info.Dev_Color);          
-	        		Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
+					Vechicle_Info.Dev_Color=u16Temp; 
+	        		rt_kprintf("\r\n 车辆颜色: %s ,%d \r\n",sms_content,Vechicle_Info.Dev_Color);          
+	        		DF_WriteFlashSector(DF_Vehicle_Struct_offset,0,(u8*)&Vechicle_Info,sizeof(Vechicle_Info));      
 				  	Add_SMS_Ack_Content(sms_ack_data,ACKstate);
 					}
 				}
@@ -582,6 +582,16 @@ void   SMS_protocol (u8 *instr,u16 len, u8  ACKstate)   //  ACKstate
                      DEV_regist.Enable_sd=1; // set 发送注册标志位
 			         DataLink_EndFlag=1; 
            	    }
+		   //  20
+	        else if(strncmp(pstrTemp,"PASSWORD",8)==0)  //设置密码通过
+       	    {
+                  j=sscanf(sms_content,"%d",&u16Temp);
+				if((j==0)||(j==1))
+				{
+				  Vechicle_Info.loginpassword_flag=j;	   // clear  first flag 	 
+				  DF_WriteFlashSector(DF_Vehicle_Struct_offset,0,(u8*)&Vechicle_Info,sizeof(Vechicle_Info));    
+				} 
+       	    } 
 			else												
 				{
 				;
@@ -738,7 +748,7 @@ u8 SMS_Tx_Text(char *strDestNum,char *s)
 	pstrTemp=RT_NULL; 
 	return 1;
 }
-FINSH_FUNCTION_EXPORT(SMS_Tx_Text, SMS_Tx_Text);
+//FINSH_FUNCTION_EXPORT(SMS_Tx_Text, SMS_Tx_Text);
 
 
 
@@ -782,7 +792,7 @@ u8 SMS_Tx_PDU(char *strDestNum,char *s)
 	pstrTemp=RT_NULL;
 	return 1;
 }
-FINSH_FUNCTION_EXPORT(SMS_Tx_PDU, SMS_Tx_PDU);
+//FINSH_FUNCTION_EXPORT(SMS_Tx_PDU, SMS_Tx_PDU);
 
 
 /*********************************************************************************
@@ -814,7 +824,7 @@ void SMS_Test(char * s)
 {
 	SMS_protocol(s,strlen(s),SMS_ACK_none);
 }
-FINSH_FUNCTION_EXPORT(SMS_Test, SMS_Test);
+//FINSH_FUNCTION_EXPORT(SMS_Test, SMS_Test);
 
 ///测试函数，测试PDU数据包的接收解析功能
 void SMS_PDU(char *s)
@@ -832,4 +842,4 @@ void SMS_PDU(char *s)
 	rt_free( pstrTemp );
 	pstrTemp = RT_NULL;
 }
-FINSH_FUNCTION_EXPORT(SMS_PDU, SMS_PDU);
+//FINSH_FUNCTION_EXPORT(SMS_PDU, SMS_PDU);

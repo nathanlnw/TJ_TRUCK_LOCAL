@@ -1,22 +1,5 @@
----- License_Not_SetEnable Matches (18 in 8 files) ----
-App_hmi.c (bsp\stm32f407vgt6_recdrv\app_712\hmi):		    if(License_Not_SetEnable==1)
-Menu_0_1_License.c (bsp\stm32f407vgt6_recdrv\app_712\lcd):                    License_Not_SetEnable=1;
-Menu_0_1_License.c (bsp\stm32f407vgt6_recdrv\app_712\lcd):		            DF_WriteFlashSector(DF_License_effect,0,&License_Not_SetEnable,1); 
-Menu_0_1_License.c (bsp\stm32f407vgt6_recdrv\app_712\lcd):					License_Not_SetEnable=0;
-Menu_0_1_License.c (bsp\stm32f407vgt6_recdrv\app_712\lcd):		            DF_WriteFlashSector(DF_License_effect,0,&License_Not_SetEnable,1); 
-Menu_0_5_Colour.c (bsp\stm32f407vgt6_recdrv\app_712\lcd):				if(License_Not_SetEnable==1)
-Menu_0_5_Colour.c (bsp\stm32f407vgt6_recdrv\app_712\lcd):                if(License_Not_SetEnable==1)
-Menu_0_5_Colour.c (bsp\stm32f407vgt6_recdrv\app_712\lcd):				if(License_Not_SetEnable==1) 
-Menu_0_5_Colour.c (bsp\stm32f407vgt6_recdrv\app_712\lcd):                if(License_Not_SetEnable==1)
-Menu_0_5_Colour.c (bsp\stm32f407vgt6_recdrv\app_712\lcd):                if(License_Not_SetEnable==1)
-Menu_2_4_CarInfor.c (bsp\stm32f407vgt6_recdrv\app_712\lcd):		if(License_Not_SetEnable==1)
-Menu_2_4_CarInfor.c (bsp\stm32f407vgt6_recdrv\app_712\lcd):        if(License_Not_SetEnable==1)
-Menu_Include.c (bsp\stm32f407vgt6_recdrv\app_712\lcd):u8 License_Not_SetEnable=1;//   1:车牌号未设置
-Menu_Include.h (bsp\stm32f407vgt6_recdrv\app_712\lcd):extern u8 License_Not_SetEnable;//    1:车牌号未设置
-Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):	if(License_Not_SetEnable==1)       
-Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):	if(License_Not_SetEnable==0) //  0  设置车牌号  
-Sys_config.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):		   DF_ReadFlash(DF_License_effect,0,&License_Not_SetEnable,1); 
-Sys_config.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):		   if(License_Not_SetEnable==1) 
----- License_Not_SetEnable Search Errors Encountered (1) ----
-The following 1 files could not be processed:
-D:\TW703_FormalUSE\HEBEI\HEBEI_TW703_gghypt\HBgghypt_Demo_eraseOK\bsp\stm32f407vgt6_RecDrv\JLinkLog.txt : File could not be opened.
+---- FINSH_THREAD_PRIORITY Matches (4 in 3 files) ----
+Rtconfig.h (bsp\stm32f407vgt6_recdrv):// FINISH   有限级别是这个    11   #define FINSH_THREAD_PRIORITY    11
+Shell.c (components\finsh):		FINSH_THREAD_PRIORITY, 10);
+Shell.h (components\finsh):#ifndef FINSH_THREAD_PRIORITY
+Shell.h (components\finsh):#define FINSH_THREAD_PRIORITY    11 //20

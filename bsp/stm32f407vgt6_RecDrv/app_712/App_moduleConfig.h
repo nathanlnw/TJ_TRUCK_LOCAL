@@ -96,7 +96,7 @@
 #include "SMS.h"
 #include "SLE4442.h"
 #include "IC_card.h"
-//#include "CRC.h"  
+#include "CRC.h"  
 
 
 

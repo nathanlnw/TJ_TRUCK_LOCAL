@@ -99,17 +99,6 @@ u16  Protocol_808_Decode_Good(u8 *Instr ,u8* Outstr,u16  in_len)  // Ω‚Œˆ÷∏∂®buf
 
 void CAN2_RxHandler(unsigned char rx_data)
 {
-   /*
-if(rx_data&0x01)
-	dayin_ErrorStatus=1;
-else if(rx_data&0x02)
-	dayin_ErrorStatus=2;
-else if(rx_data&0x04)
-	dayin_ErrorStatus=3;
-else if(rx_data&0x08)
-	dayin_ErrorStatus=4;
-	*/
-    //      rt_kprintf("%c",rx_data);   
     if(U3_flag)
     	{
            U3_Rx[U3_rxCounter++]=rx_data;

@@ -10,7 +10,6 @@
 #define  DFBakSize   150//50
  
 u8 SectorBuf_save[8][DFBakSize];//512bytes 一个单位              只用来存储补报信息 
-static u8 SST25Temp[PageSIZE];// 
 u8   DF_LOCK=0;    //Dataflash  Lock      
 
 
@@ -28,7 +27,6 @@ void DF_init(void)
      SST25V_CS_LOW();
 
     //-----erase chip-------------------
-    //	SST25V_ChipErase();  
     //	DF_delay_ms(350);      
     //--------------------------------	
 	
@@ -113,16 +111,6 @@ u8 DF_Spi_Tranbyte(u8 BYTE)
 }
 
 
-void DF_Read_zk(u32 address,u8 *p,u16 length)//480 bytes 直接读取
-{
-    u16 i=0;
-    
-	for(i=0;i<length;i++)
-	{
-		*p=SST25V_ByteRead(address+i);
-		p++;
-	} 
-}
  
 void DF_ReadFlash(u16 page_counter,u16 page_offset,u8 *p,u16 length)
 {   
@@ -172,55 +160,48 @@ void DF_WriteFlashSector(u16 page_counter,u16 page_offset,u8 *p,u16 length) //51
     
     // 要擦除所在的sector(要求pagecounter 为所在sector的第一个page) ，然后该sector的第一个page写
 	SST25V_SectorErase_4KByte((8*((u32)page_counter/8))*PageSIZE);	
-	DF_delay_ms(90); 
+	DF_delay_ms(200); 
 	
 	for(i=0;i<length;i++)
 	{
 		SST25V_ByteWrite(*p,page_counter*512+i+page_offset);
 		p++;
 	}
-	DF_delay_ms(50);  
+	DF_delay_ms(30);  
 	
 }
-void DF_EraseAppFile_Area(void)
+void DF_Erase(void)
 {
     u16 i=0;
       /*
-           1.先擦除0扇区   
-           2.读出page48内容并将其写到第0扇区的page 0 
-           3.读出page49内容并将其写到第0扇区的page 0
-           4.擦除 6-38扇区 即 48page 到 304 page
-           5.以后有数据过来就直接写入，不需要再擦除了 
+           1. 从0x1000    4K  开始擦除28K     7 sector
+           2.擦除56个扇区   7 个32k block     
         */
-	
-        SST25V_SectorErase_4KByte(0x0);
- 	 DF_delay_ms(50);   
-	 WatchDog_Feed();
-       DF_ReadFlash(48,0,SST25Temp,PageSIZE);
-	//DF_delay_ms(1);	 
-        DF_WriteFlashDirect(0,0,SST25Temp,PageSIZE);
-	 DF_delay_ms(1);	
-	 WatchDog_Feed();
-        DF_ReadFlash(49,0,SST25Temp,PageSIZE);
-        DF_WriteFlashDirect(1,0,SST25Temp,PageSIZE);
-	 DF_delay_ms(1);		
-        for(i=6;i<134;i++)    // 要求是512K -> 128  erase sector 6-134      128K ->  32   
+
+	  DF_LOCK=enable;
+        rt_kprintf("\r\n  ISP erase start\r\n");
+        //  -----erase        28 K   area  -------------
+         for(i=0;i<7;i++)   // 7  secotor
         {
             WatchDog_Feed();
-            SST25V_SectorErase_4KByte(((u32)i*4096));
-	     DF_delay_ms(5); 
-	     WatchDog_Feed();		
+            SST25V_SectorErase_4KByte(ISP_StartArea+i*0x1000);
+	        DF_delay_ms(100); 
+	        WatchDog_Feed();		
         }
-        DF_ReadFlash(0,0,SST25Temp,PageSIZE);
-        DF_WriteFlashDirect(48,0,SST25Temp,PageSIZE); 
-	 WatchDog_Feed();	
-	 DF_delay_ms(1);		
-        DF_ReadFlash(1,0,SST25Temp,PageSIZE);
-	 WatchDog_Feed(); 	
-        DF_WriteFlashDirect(49,0,SST25Temp,PageSIZE);
-        rt_kprintf("\r\nSST25Ready\r\n"); 
+      //----------- erase  32k     
+        for(i=0;i<7;i++)    // 56sector
+        {
+        WatchDog_Feed();	
+            SST25V_BlockErase_32KByte(0x8000+i*0x8000);
+			DF_delay_ms(700); 
+			WatchDog_Feed();	
+        }	   
 
+       rt_kprintf("\r\n  ISP erase OK SST25Ready\r\n"); 
+     DF_LOCK=disable;   
 }
+FINSH_FUNCTION_EXPORT(DF_Erase, DF_Erase);      
+
 
 void DF_WriteFlashRemote(u16 page_counter,u16 page_offset,u8 *p,u16 length)//512bytes 直接存储
 {
@@ -234,7 +215,7 @@ void DF_WriteFlashRemote(u16 page_counter,u16 page_offset,u8 *p,u16 length)//512
            4.擦除 6-38扇区 即 48page 到 304 page
            5.以后有数据过来就直接写入，不需要再擦除了 
         */
-	   DF_EraseAppFile_Area(); 
+	   DF_Erase(); 
     }
 	for(i=0;i<length;i++)
 	{
@@ -246,8 +227,7 @@ void DF_WriteFlashRemote(u16 page_counter,u16 page_offset,u8 *p,u16 length)//512
 void DF_WriteFlashDirect(u16 page_counter,u16 page_offset,u8 *p,u16 length)//512bytes 直接存储
 {
     u16 i=0;
-  
-    
+      
 	for(i=0;i<length;i++)
 	{
 		SST25V_ByteWrite(*p,(u32)page_counter*PageSIZE+(u32)(page_offset+i));
@@ -256,16 +236,5 @@ void DF_WriteFlashDirect(u16 page_counter,u16 page_offset,u8 *p,u16 length)//512
 	DF_delay_ms(5);  
 }
 
-void DF_ClearUpdate_Area(void)   // 清除远程升级区域 
-{
-    u8  updata_flag=0;
-   
-	updata_flag=0;	 // 不更新下载的程序
-	DF_WriteFlash(DF_APP1_PageNo,0,&updata_flag,1); 
-	DF_delay_ms(2);
-    DF_EraseAppFile_Area();   // 清除  
-
-}
-	
 
 

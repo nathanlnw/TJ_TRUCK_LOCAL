@@ -463,18 +463,7 @@ void vdr_erase(void)
    }
   #endif
 
-#if 0
-   for(i=0;i<48;i++) 
-   {
-	 WatchDog_Feed();      
-	 SST25V_SectorErase_4KByte(VDR_START_ADDRESS+0xA000+i*0x1000);   // 32k  <=> 0x8000   
-     DF_delay_ms(300);  
-	 WatchDog_Feed();	 
-	 rt_kprintf("\r\n  addr=0x%X \r\n",VDR_START_ADDRESS+0xA000+i*0x1000);   
-	 rt_kprintf("\r\n   <------------ erase 4K : %d\r\n",i+1);   
-   }
-#endif   
-   
+  
    DF_LOCK=0;
  //  rt_mutex_release(DF_lock_mutex);  
  }   
@@ -1057,7 +1046,7 @@ u16 get_08h( u16 indexnum,u8 *p)
 
 
 
-FINSH_FUNCTION_EXPORT( get_08h, get_08 );
+//FINSH_FUNCTION_EXPORT( get_08h, get_08 );
 
 
 /*
@@ -1100,7 +1089,7 @@ u16  get_09h( u16 indexnum,u8 *p)
 
 }
 
-FINSH_FUNCTION_EXPORT( get_09h, get_09 );
+//FINSH_FUNCTION_EXPORT( get_09h, get_09 );
 
 
 /*
@@ -1143,7 +1132,7 @@ u16 get_10h( u16 indexnum,u8 *p)
 
 }
 
-FINSH_FUNCTION_EXPORT( get_10h, get_10 );
+//FINSH_FUNCTION_EXPORT( get_10h, get_10 );
 
 
 /*超时驾驶记录
@@ -1189,7 +1178,7 @@ u16 get_11h( u16 indexnum,u8 *p)
 	
 }
 
-FINSH_FUNCTION_EXPORT( get_11h, get_11 );
+//FINSH_FUNCTION_EXPORT( get_11h, get_11 );
 
 
 /*驾驶员身份登录
@@ -1230,7 +1219,7 @@ u16 get_12h( u16 indexnum,u8 *p)
 		  return 0; 
 }
 
-FINSH_FUNCTION_EXPORT( get_12h, get_12 );
+//FINSH_FUNCTION_EXPORT( get_12h, get_12 );
 
 
 /*外部供电记录
@@ -1261,7 +1250,7 @@ u16 get_13h( u16 indexnum,u8 *p)
 
 }
 
-FINSH_FUNCTION_EXPORT( get_13h, get_13 );
+//FINSH_FUNCTION_EXPORT( get_13h, get_13 );
 
 
 /*记录仪参数
@@ -1292,7 +1281,7 @@ u16 get_14h( u16 indexnum,u8 *p)
 
 }
 
-FINSH_FUNCTION_EXPORT( get_14h, get_14 );
+//FINSH_FUNCTION_EXPORT( get_14h, get_14 );
 
 
 /*
@@ -1334,7 +1323,7 @@ u16 get_15h( u16 indexnum,u8 *p)
 
 }
 
-FINSH_FUNCTION_EXPORT( get_15h, get_15 );
+//FINSH_FUNCTION_EXPORT( get_15h, get_15 );
 
 
 

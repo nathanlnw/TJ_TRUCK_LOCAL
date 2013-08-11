@@ -28,6 +28,7 @@
 
 extern u8  Udisk_Test_workState;  //  Udisk 工作状态 
 extern u32  sec_num;
+extern u8	value_thread;  //  检测线程运行状态
 
 
 extern   rt_device_t   Udisk_dev;
@@ -41,7 +42,6 @@ extern   u16   AD_Volte;
 extern 	rt_thread_t app_tid; // app 线程 pid
 
 
-extern u8      Udisk_Find(void);
 extern void SIMID_Convert_SIMCODE( void ); 
 extern void    Protocol_app_init(void);
 extern void  SensorPlus_caculateSpeed (void);

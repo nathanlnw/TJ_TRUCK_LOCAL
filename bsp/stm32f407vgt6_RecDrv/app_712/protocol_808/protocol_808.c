@@ -63,7 +63,7 @@ u8       CallState=CallState_Idle; // 通话状态
 u8  arr_A3B0[20]={0xA3,0xB0,0xA3,0xB1,0xA3,0xB2,0xA3,0xB3,0xA3,0xB4,0xA3,0xB5,0xA3,0xB6,0xA3,0xB7,0xA3,0xB8,0xA3,0xB9};
 
 //@ A-O      16
-u8  arr_A3C0[32]={0xA3,0xC0,0xA3,0xC1,0xA3,0xC2,0xA3,0xC3,0xA3,0xC4,0xA3,0xC5,0xA3,0xC6,0xA3,0xC7,0xA3,0xC8,0xA3,0xC9,0xA3,0xCA,0xA3,0xCB,0xA3,0xCC0,0xA3,0xCD,0xA3,0xCE,0xA3,0xCF};
+u8  arr_A3C0[32]={0xA3,0xC0,0xA3,0xC1,0xA3,0xC2,0xA3,0xC3,0xA3,0xC4,0xA3,0xC5,0xA3,0xC6,0xA3,0xC7,0xA3,0xC8,0xA3,0xC9,0xA3,0xCA,0xA3,0xCB,0xA3,0xCC,0xA3,0xCD,0xA3,0xCE,0xA3,0xCF};
 
 //P-Z         11个
 u8  arr_A3D0[22]={0xA3,0xD0,0xA3,0xD1,0xA3,0xD2,0xA3,0xD3,0xA3,0xD4,0xA3,0xD5,0xA3,0xD6,0xA3,0xD7,0xA3,0xD8,0xA3,0xD9,0xA3,0xDA};
@@ -100,10 +100,6 @@ u8		  Vehicle_sensor_BAK=0; // 车辆传感器状态	0.2s  查询一次
 DOUBT_TYPE  Sensor_buf[100];// 20s 状态记录
 u8          save_sensorCounter=0,sensor_writeOverFlag=0;;
 u32     total_plus=0; 
-
-
-
-
 
 
 u8  Camera_Number=1;
@@ -164,6 +160,7 @@ u16     GPRS_infoWr_Tx=0;
 
  ALIGN(RT_ALIGN_SIZE)
 u8  UDP_HEX_Rx[1024];    // EM310 接收内容hex 
+
 u16 UDP_hexRx_len=0;    // hex 内容 长度
 u16 UDP_DecodeHex_Len=0;// UDP接收后808 解码后的数据长度
 
@@ -305,6 +302,9 @@ u8		f_Exigent_warning= 0;//0;     //脚动 紧急报警装置 (INT0 PD0)
 u8		Send_warn_times= 0;     //   设备向中心上报报警次数，最大3 次
 u32  	fTimer3s_warncount=0;
 
+// ------  车辆信息单独了 ---------------
+VechINFO     Vechicle_Info;     //  车辆信息  
+
 
 //------  车门开关拍照 -------
 DOORCamera   DoorOpen;    //  开关车门拍照
@@ -341,7 +341,7 @@ u8  wmv_sendstate=0;
 
 //-------------------   公共 ---------------------------------------		
 static u8 GPSsaveBuf[40];     // 存储GPS buffer
-static u8	ISP_buffer[520];
+static u8	ISP_buffer[1024];
 static u16 GPSsaveBuf_Wr=0;
 
 
@@ -380,28 +380,8 @@ u8    MMedia2_Flag=0;  // 上传固有音频 和实时视频  的标志位    0 传固有 1 传实时
 
 
 
-//-----  ISP    远程下载相关 -------
-u8       f_ISP_ACK=0;   // 远程升级应答	
-u8       ISP_FCS[2];    //  下发的校验
-u16      ISP_total_packnum=0;  // ISP  总包数
-u16      ISP_current_packnum=0;// ISP  当前包数
-u32      ISP_content_fcs=0;    // ISP  的内容校验
-u8       ISP_ack_resualt=0;    // ISP 响应
-u8       ISP_rxCMD=0;          // ISP 收到的命令
-u8       f_ISP_88_ACK=0;       // Isp  内容应答
-u8       ISP_running_state=0;  // Isp  程序运行状态
-u8       f_ISP_23_ACK=0;    //  Isp  返回 文件完成标识
-u16      ISP_running_counter=0;// Isp  运行状态寄存器
-u8       ISP_RepeatCounter=0; //   ISP 单包发送重复次数 超过5次校验失败擦除区域
-
-
- u8     ISP_NeedtoProcessFlag=0;   //   需要处理ISP 程序
- u8     ISP_Raw[600];                        //  属于ISP 但还未处理的字符
-
-
-ISP_RSD  Isp_Resend;
 unsigned short int FileTCB_CRC16=0;
-unsigned short int Last_crc=0,crc_fcs=0;
+unsigned short int Last_crc=0,crc_fcs=0; 
 
 
 
@@ -417,14 +397,13 @@ u16  Delta_1s_Plus=0;
 u16  Delta_1s_Plus2=0; 
 u16  Sec_counter=0;
 
-
 void K_AdjustUseGPS(u32 sp, u32  sp_DISP);  // 通过GPS 校准  K 值  (车辆行驶1KM 的脉冲数目) 
 u16  Protocol_808_Encode(u8 *Dest,u8 *Src, u16 srclen);
 void Protocol_808_Decode(void);  // 解析指定buffer :  UDP_HEX_Rx  
 void Photo_send_end(void);
 void Sound_send_end(void);
 //void Video_send_end(void);  
-unsigned short int CRC16_file(unsigned short int num);  
+unsigned short int  File_CRC_Get(void);  
 void Spd_ExpInit(void);
 void AvrgSpd_MintProcess(u8 hour,u8 min, u8 sec) ; 
 u32   Distance_Point2Line(u32 Cur_Lat, u32  Cur_Longi,u32 P1_Lat,u32 P1_Longi,u32 P2_Lat,u32 P2_Longi);
@@ -452,7 +431,7 @@ void delay_ms(u16 j )
 
  u8  Do_SendGPSReport_GPRS(void)   
 {  	
-  unsigned short int crc_file=0;  
+  //unsigned short int crc_file=0;  
   u8  packet_type = 0;
   
 // 	  u8 i=0;
@@ -600,12 +579,17 @@ void delay_ms(u16 j )
 				   return true;
 	        	}	
 			    //  24 .  终端升级结果上报
-              if(1==SD_ACKflag.f_BD_ISPResualt_0108H)
+              if(SD_ACKflag.f_BD_ISPResualt_0108H)
               	{
                                 
-				Stuff_ISP_Resualt_BD_0108H();
-                           SD_ACKflag.f_BD_ISPResualt_0108H=0;
-				return true;		   
+				     Stuff_ISP_Resualt_BD_0108H();
+                     
+                    if(1==SD_ACKflag.f_BD_ISPResualt_0108H)
+					  ISP_file_Check();  // update 
+					else
+					   BD_ISP.ISP_running=0; // recover normal  	 
+					SD_ACKflag.f_BD_ISPResualt_0108H=0;
+				     return true;		   
               	}
 	        if(SD_ACKflag.f_CentreCMDack_0001H)
 	         {
@@ -713,53 +697,7 @@ void delay_ms(u16 j )
 			 
 				 return true;  
 			   } 
-			 
-				 
-			
-
-	     //----------   远程下载相关 ------------		
-            if((1==f_ISP_ACK)&&(1==TCP2_Connect))
-             	{
-				   Stuff_DataTrans_0900_ISP_ACK(ISPACK_92);
-				   f_ISP_ACK=0;
-				   return true;
-             	} 
-		    if((1==f_ISP_23_ACK)&&(1==TCP2_Connect)) 
-             	{
-				   Stuff_DataTrans_0900_ISP_ACK(ISPoverACK_96);  
-				   
-				   crc_file=CRC16_file(ISP_total_packnum); 
-				   
-				   if(crc_file==FileTCB_CRC16)
-						ISP_file_Check();//准备更新程序
-				   else
-						{    // 清除远程升级区域 
-						     
-							 rt_kprintf("\r\n检验不对清除  Caculate_crc=%x ReadCrc=%x ",crc_file,FileTCB_CRC16); 
-						        DF_ClearUpdate_Area();   
-						}
-							   
-				   f_ISP_23_ACK=0;
-				   return true; 
-             	}
-			//---------------------------------------------------
-			 if((1==f_ISP_88_ACK)&&(1==TCP2_Connect))
-                    {	
-				Stuff_DataTrans_0900_ISP_ACK(ISPinfoACK_94);
-				rt_kprintf( "\r\n CurrentPack_num:%u TotalPack_num %u \r\n",ISP_current_packnum,ISP_total_packnum); 
-			 	f_ISP_88_ACK=0;
-				return true;
-			  }	
-	            if((1==TCP2_Connect)&&(TCP2_sdFlag==1)&&(ISP_running_state==0))
-		   	{
-		   	      
-                          Stuff_RegisterPacket_0100H(1);  //    ISP 心跳包  
-                          rt_kprintf("\r\nISP--heart\r\n"); 
-                          TCP2_sdFlag=0;
-                           return true;
-		   	}
-	         //----------------------远程下载相关完毕------------------ 		
-			
+			//----------------------------------------------------------------------
 			if((Current_SD_Duration<10)&&(Current_State==1))   // 调试时30  实际是10 Current_SD_Duration
 			 {	
 				 if(PositionSD_Status()&&(DEV_Login.Operate_enable==2)&&((enable==BD_EXT.Trans_GNSS_Flag)||(DispContent==6))||(Current_UDP_sd&&PositionSD_Status()&&(DEV_Login.Operate_enable==2))||((DF_LOCK==enable)&&PositionSD_Status()))	  //首次定位再发 
@@ -781,7 +719,7 @@ void delay_ms(u16 j )
 				    }   
 			 }
 			 else 
-             if((RdCycle_RdytoSD==ReadCycle_status)&&(0==ISP_running_state)&&(DataLink_Status())&&(DEV_Login.Operate_enable==2))    // 读取发送--------- 正常GPS 
+             if((RdCycle_RdytoSD==ReadCycle_status)&&(0==BD_ISP.ISP_running)&&(DataLink_Status())&&(DEV_Login.Operate_enable==2))    // 读取发送--------- 正常GPS 
              {                                       /* 远程下载时不允许上报GPS ，因为有可能发送定位数据时
                                                           正在接收大数据量得下载数据包,导致GSM模块处理不过来，而不是单片机处理不过来*/
                   if (false==Stuff_Normal_Data_0200H())        
@@ -1425,8 +1363,11 @@ void  GPS_Delta_DurPro(void)    //告GPS 触发上报处理函数
 			  }
 			 else
 			 	 Current_State=0; 
-			 	    
-			  PositionSD_Enable();
+
+			 
+			 if (BD_ISP.ISP_running==0)
+			    PositionSD_Enable();  
+			 
 			  memcpy(BakTime,CurrentTime,3); // update   
 		  }
   	}  
@@ -1699,6 +1640,8 @@ void  Save_GPS(void)
 		  {
 		         if(DF_LOCK==enable)    // 清除文件区域时 ，禁止操作DF
 				 	return ;
+				 if(Vechicle_Info.loginpassword_flag!=1)  // 没有被设置前不存储相关位置信息，没有意义
+				 	return;  
 		     //-------------------------------------------------------	 
 		     //1.   时间超前判断
                               //if(Time_FastJudge()==false)    
@@ -1975,8 +1918,8 @@ u8  Stuff_RegisterPacket_0100H(u8  LinkNum)
     
   // 2. content 
     //  province ID
-    Original_info[Original_info_Wr++]=0x00;//(u8)(JT808Conf_struct.Vechicle_Info.Dev_ProvinceID>>8);
-    Original_info[Original_info_Wr++]=10;;//(u8)JT808Conf_struct.Vechicle_Info.Dev_ProvinceID;  // 天津12
+    Original_info[Original_info_Wr++]=0x00;//(u8)(Vechicle_Info.Dev_ProvinceID>>8);
+    Original_info[Original_info_Wr++]=10;;//(u8)Vechicle_Info.Dev_ProvinceID;  // 天津12
     //  county  ID
     Original_info[Original_info_Wr++]=(u8)(1010>>8);
     Original_info[Original_info_Wr++]=(u8)1010;    
@@ -1994,21 +1937,21 @@ u8  Stuff_RegisterPacket_0100H(u8  LinkNum)
     Original_info_Wr+=7;  
 	//  车牌颜色  
 	if(License_Not_SetEnable==1)       
-	   Original_info[Original_info_Wr++]=0; //JT808Conf_struct.Vechicle_Info.Dev_Color;
+	   Original_info[Original_info_Wr++]=0; //Vechicle_Info.Dev_Color;
 	else
-	   Original_info[Original_info_Wr++]=2; //JT808Conf_struct.Vechicle_Info.Dev_Color;
+	   Original_info[Original_info_Wr++]=2; //Vechicle_Info.Dev_Color;
 	
 	if(License_Not_SetEnable==0) //  0  设置车牌号  
 	{
 		//  车牌
-		memcpy(Original_info+Original_info_Wr,JT808Conf_struct.Vechicle_Info.Vech_Num,strlen((const char*)(JT808Conf_struct.Vechicle_Info.Vech_Num)));//13);  
-		Original_info_Wr+=strlen((const char*)(JT808Conf_struct.Vechicle_Info.Vech_Num));
+		memcpy(Original_info+Original_info_Wr,Vechicle_Info.Vech_Num,strlen((const char*)(Vechicle_Info.Vech_Num)));//13);  
+		Original_info_Wr+=strlen((const char*)(Vechicle_Info.Vech_Num));
 	}
 	else
 	{
 	       rt_kprintf("\r\n  车辆颜色:0     Need Vin\r\n");
 		// 车辆VIN 
-		memcpy(Original_info+Original_info_Wr,JT808Conf_struct.Vechicle_Info.Vech_VIN,17);
+		memcpy(Original_info+Original_info_Wr,Vechicle_Info.Vech_VIN,17);
 		Original_info_Wr+=17;
     }
 
@@ -2646,7 +2589,7 @@ u8 Paramater_0106_stuff(u32 cmdid, u8 *deststr)
 			Original_info[Original_info_Wr++]=0x00;   // 参数值
 			Original_info[Original_info_Wr++]=0x00; 
 			Original_info[Original_info_Wr++]=(7008>>8); 
-			Original_info[Original_info_Wr++]=7008; 
+			Original_info[Original_info_Wr++]=(u8)(7008); 
 			break;
      case 0x0019:			
 															
@@ -2659,7 +2602,7 @@ u8 Paramater_0106_stuff(u32 cmdid, u8 *deststr)
 			Original_info[Original_info_Wr++]=0x00;   // 参数值
 			Original_info[Original_info_Wr++]=0x00; 
 			Original_info[Original_info_Wr++]=(7008>>8); 
-			Original_info[Original_info_Wr++]=7008; 
+			Original_info[Original_info_Wr++]=(u8)(7008); 
 			break;
 
 	case 0x001a:		
@@ -2759,7 +2702,7 @@ u8 Paramater_0106_stuff(u32 cmdid, u8 *deststr)
 			Original_info[Original_info_Wr++]=(300>>24);   // 参数值  
 			Original_info[Original_info_Wr++]=(300>>16);
 			Original_info[Original_info_Wr++]=(300>>8);
-			Original_info[Original_info_Wr++]=(300);	
+			Original_info[Original_info_Wr++]=(u8)(300);	
 			break;
 	case 0x0028:		 
 											//	A.26 紧急报警时 
@@ -2856,7 +2799,7 @@ u8 Paramater_0106_stuff(u32 cmdid, u8 *deststr)
 			Original_info[Original_info_Wr++]=2  ; // 参数长度
 		  // 参数值 
 			Original_info[Original_info_Wr++]=(500>>8);
-			Original_info[Original_info_Wr++]=(500);	 
+			Original_info[Original_info_Wr++]=(u8)(500);	 
 	        break;
 	case 0x0040:
 				 //   A.34	  设置求助号码
@@ -3291,9 +3234,9 @@ u8 Paramater_0106_stuff(u32 cmdid, u8 *deststr)
 			Original_info[Original_info_Wr++]=0x00;
 			Original_info[Original_info_Wr++]=0x00;
 			Original_info[Original_info_Wr++]=0x83;
-			Original_info[Original_info_Wr++]=strlen((const char*)JT808Conf_struct.Vechicle_Info.Vech_Num); // 参数长度
-			memcpy( ( char * ) Original_info+ Original_info_Wr, ( char * )JT808Conf_struct.Vechicle_Info.Vech_Num,strlen((const char*)JT808Conf_struct.Vechicle_Info.Vech_Num) ); // 参数值
-			Original_info_Wr+=strlen((const char*)JT808Conf_struct.Vechicle_Info.Vech_Num); 
+			Original_info[Original_info_Wr++]=strlen((const char*)Vechicle_Info.Vech_Num); // 参数长度
+			memcpy( ( char * ) Original_info+ Original_info_Wr, ( char * )Vechicle_Info.Vech_Num,strlen((const char*)Vechicle_Info.Vech_Num) ); // 参数值
+			Original_info_Wr+=strlen((const char*)Vechicle_Info.Vech_Num); 
 			break;
 	case 0x0084:
 			
@@ -3303,7 +3246,7 @@ u8 Paramater_0106_stuff(u32 cmdid, u8 *deststr)
 			Original_info[Original_info_Wr++]=0x00;
 			Original_info[Original_info_Wr++]=0x84;
 			Original_info[Original_info_Wr++]=1  ; // 参数长?
-			Original_info[Original_info_Wr++]=JT808Conf_struct.Vechicle_Info.Dev_Color;
+			Original_info[Original_info_Wr++]=Vechicle_Info.Dev_Color;
 			break;
 	case 0x0090:
 	
@@ -4255,9 +4198,9 @@ u8  Stuff_SettingPram_0104H(void)
         Original_info[Original_info_Wr++]=0x00;
 		Original_info[Original_info_Wr++]=0x00;
 		Original_info[Original_info_Wr++]=0x83;
-		Original_info[Original_info_Wr++]=strlen((const char*)JT808Conf_struct.Vechicle_Info.Vech_Num); // 参数长度
-		memcpy( ( char * ) Original_info+ Original_info_Wr, ( char * )JT808Conf_struct.Vechicle_Info.Vech_Num,strlen((const char*)JT808Conf_struct.Vechicle_Info.Vech_Num) ); // 参数值
-		Original_info_Wr+=strlen((const char*)JT808Conf_struct.Vechicle_Info.Vech_Num); 
+		Original_info[Original_info_Wr++]=strlen((const char*)Vechicle_Info.Vech_Num); // 参数长度
+		memcpy( ( char * ) Original_info+ Original_info_Wr, ( char * )Vechicle_Info.Vech_Num,strlen((const char*)Vechicle_Info.Vech_Num) ); // 参数值
+		Original_info_Wr+=strlen((const char*)Vechicle_Info.Vech_Num); 
         
 //   A.70   车辆颜色
               Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
@@ -4265,7 +4208,7 @@ u8  Stuff_SettingPram_0104H(void)
 		Original_info[Original_info_Wr++]=0x00;
 		Original_info[Original_info_Wr++]=0x84;
 		Original_info[Original_info_Wr++]=1  ; // 参数长?
-		Original_info[Original_info_Wr++]=JT808Conf_struct.Vechicle_Info.Dev_Color;
+		Original_info[Original_info_Wr++]=Vechicle_Info.Dev_Color;
 
 //   A.71   GNSS  模式设置
               Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
@@ -4785,9 +4728,9 @@ u8  Stuff_RecoderACK_0700H( u8 PaketType )  //   行车记录仪数据上传
 			Original_info[Original_info_Wr++] = 0x00;                               // 保留字
 			//-----------	信息内容  --------------
 			//memcpy( Original_info + Original_info_Wr, "LGBK22E70AY100102", 17 );    //信息内容
-			memcpy( Original_info + Original_info_Wr,JT808Conf_struct.Vechicle_Info.Vech_VIN,17);
+			memcpy( Original_info + Original_info_Wr,Vechicle_Info.Vech_VIN,17);
 			Original_info_Wr += 17;
-			memcpy( Original_info + Original_info_Wr,JT808Conf_struct.Vechicle_Info.Vech_Num, 8 );               // 车牌号
+			memcpy( Original_info + Original_info_Wr,Vechicle_Info.Vech_Num, 8 );               // 车牌号
 			Original_info_Wr					+= 8;
 			//Original_info[Original_info_Wr++]	= 0x00;
 			Original_info[Original_info_Wr++]	= 0x00;
@@ -4816,7 +4759,7 @@ u8  Stuff_RecoderACK_0700H( u8 PaketType )  //   行车记录仪数据上传
 			Original_info[Original_info_Wr++]	= 0x00;
 			Original_info[Original_info_Wr++]	= 0x00;
 			Original_info[Original_info_Wr++]	= 0x00;*/
-			 memcpy(Original_info + Original_info_Wr,JT808Conf_struct.Vechicle_Info.Vech_Type,12); 
+			 memcpy(Original_info + Original_info_Wr,Vechicle_Info.Vech_Type,12); 
 			Original_info_Wr+=12; 
 			//---- 去掉了一个多余的字节
 			break;
@@ -5815,12 +5758,12 @@ u8  Stuff_ISP_Resualt_BD_0108H(void)
 	 BD_ISP.ISP_running=0; // clear
          //----------------------------------------------------
          Original_info[Original_info_Wr++]=BD_ISP.Update_Type; // 升级类型
-	  Original_info[Original_info_Wr++]=0;//BD_ISP.Update_Type;  // 升级结果
+	  Original_info[Original_info_Wr++]=SD_ACKflag.f_BD_ISPResualt_0108H-1;//BD_ISP.Update_Type;  // 升级结果
 	 
 	 //  3. Send 
 	 Protocol_End(Packet_Normal ,0);
 	  if(DispContent)
-	 rt_kprintf("\r\n	远程升级结果上报 \r\n");    
+	 rt_kprintf("\r\n	远程升级结果上报   %d \r\n",SD_ACKflag.f_BD_ISPResualt_0108H-1);      
 
 }
 u8  Stuff_BatchDataTrans_BD_0704H(void)
@@ -5951,124 +5894,15 @@ u8  Stuff_Worklist_0701H(void)
 	 return true; 
 
 }
-//------------------------------------------------------------------------------------
-u8 Stuff_DataTrans_0900_ISP_ACK(u8  AckType)
-{  
-  u16  TX_NUM=0,Rec_Num=0,i=0;	 
-  u8   Gfcs=0;
-  //---------------------------------------------
-   // 1. Head
-   if(!Protocol_Head(MSG_0x0900,Packet_Normal)) 
-	 return false; 
-	// 2. content	
-	//	应答流水号
-   Original_info[Original_info_Wr++]=1;// 返回透传数据的类型 1	表示远程下载
-	// 3. 内容
-		//	3.1. Sub Head  
-		   Rec_Num=Original_info_Wr; //reglen 
-			memcpy(Original_info+Original_info_Wr,"*GB",3); // GPRS 起始头
-		   Original_info_Wr+=3;
-		   
-		   Original_info[Original_info_Wr++]=0x00;	// SIM 号码   最先两个字节填写0x00
-		   Original_info[Original_info_Wr++]=0x00;
-		   memcpy(Original_info+Original_info_Wr,SIM_code,6);
-		   Original_info_Wr+=6;  
-  
-		   Original_info_Wr+=2;   // 长度增加两个字节，但内容随后填写
-		   
-		   Original_info[Original_info_Wr++]=0x00; //消息序号 默认 0x00
-		 // 3.2 Sub Info			 
-			 Original_info[Original_info_Wr-1]=0x01; //消息序号 默认 0x00
-			 Original_info[Original_info_Wr++]=0x30; //参数 	必须应答
-			 
-			 Original_info[Original_info_Wr++]=AckType; // 命令字	
-
-			 switch(AckType)
-			 	{
-                  case  ISPACK_92:
-				  case  ISPoverACK_96:    // 内容为空
-				  	               break;
-                  case  ISPinfoACK_94:                        
-								Original_info[Original_info_Wr++]=(u8)(ISP_current_packnum>>8); // 当前包数
-								Original_info[Original_info_Wr++]=(u8)ISP_current_packnum;
-								Original_info[Original_info_Wr++]=(u8)(ISP_total_packnum>>8); // 总包数
-								Original_info[Original_info_Wr++]=(u8)ISP_total_packnum;
-								Original_info[Original_info_Wr++]=ISP_ack_resualt;	// 返回的状态	 
-					               break;
-                  default:
-				  	      return false;
-			 	}
-  
-		 // 3.3 Sub end
-			 TX_NUM=Original_info_Wr-Rec_Num; // 子协议的长度
-				//----stuff Ginfolen ---- 
-			 Original_info[Rec_Num+11]=(u8)((TX_NUM-2)>>8);  // 长度不算头 
-			 Original_info[Rec_Num+12]=(u8)(TX_NUM-2); 
-			 //rt_kprintf("\r\n   测试	A=%X B=%X	reg=%d Reg=%d  REg=%d \r\n",GPRS_info[11],GPRS_info[12],reg,(u8)(reg<<8),reg&0x00ff);
-			
-			  Gfcs=0;				  //  计算从电话号码开始到校验前数据的异或和  G 协议校验 
-			  for(i=3;i<Original_info_Wr;i++)
-				   Gfcs^=Original_info[i]; 
-			  Original_info[Original_info_Wr++]=Gfcs;  // 填写G校验位
-			
-			   
-			  Original_info[Original_info_Wr++]=0x0D;  // G 协议尾	
-			  Original_info[Original_info_Wr++]=0x0A;						 
-	
-	//	3. Send 
-    Protocol_End(Packet_Normal,1 ); 
-   if(DispContent)
-   	{
-      		 switch(AckType)
-			 	{
-                  case  ISPACK_92:
-				  	              rt_kprintf("\r\n	 发送透传  ISP ID=%2X  ACK \r\n",ISPACK_92);       
-				  	               break;
-				  case  ISPoverACK_96:    // 内容为空
-				                  rt_kprintf("\r\n	 发送透传 ISP ID=%2X  overACK \r\n",ISPoverACK_96); 
-				  	               break;
-                  case  ISPinfoACK_94:
-					              // rt_kprintf("\r\nISP info ACK   current=%d ,totalnum=%d \r\n",ISP_current_packnum,ISP_total_packnum);		
-					               break; 
-                  default:
-				  	      return false;
-			 	}
- 
-   	}
-   
-   return true; 
-
-
-}
-
-//----------------------------------------------
-u8  Update_HardSoft_Version_Judge(u8 * instr)
-{
-     //   读取第50 页信息
-     	  Device_type=((u32)instr[1]<<24)+((u32)instr[2]<<16)+((u32)instr[3]<<8)+(u32)instr[4];
-	  Firmware_ver=((u32)instr[5]<<24)+((u32)instr[6]<<16)+((u32)instr[7]<<8)+(u32)instr[8];
-	  rt_kprintf("	\r\n 设备类型: %x  软件版本:%x \r\n",Device_type,Firmware_ver); 
-	 
-	 if(Device_type!=STM32F407_Recoder_32MbitDF)   
-	  { 
-		 rt_kprintf( "\r\n 设备类型不匹配不予更新" );
-		 return false;
-	  }  		   
-        else
-		  return true;
-
-
-}
-
-
-
-
  //-------------------- ISP Check  ---------------------------------------------
 void  ISP_file_Check(void)
 {
-   
-         memset(ISP_buffer,0,sizeof(ISP_buffer));
-	  ISP_Read(ISP_APP_Addr,ISP_buffer,PageSIZE);
+   u8  FileHead[100];
+   u8  ISP_judge_resualt=0;
+   u32  HardVersion=0;
+   	
+      memset(ISP_buffer,0,sizeof(ISP_buffer));
+	  SST25V_BufferRead(ISP_buffer,ISP_StartArea,256); 
 	  /*
 		   序号   字节数	名称			  备注
 		  1 		  1    更新标志 	 1 表示需要更新   0 表示不需要更新
@@ -6086,31 +5920,62 @@ void  ISP_file_Check(void)
 	 
 	  */
 	  //------------   Type check  ---------------------
-	  Device_type=((u32)ISP_buffer[1]<<24)+((u32)ISP_buffer[2]<<16)+((u32)ISP_buffer[3]<<8)+(u32)ISP_buffer[4];
-	  Firmware_ver=((u32)ISP_buffer[5]<<24)+((u32)ISP_buffer[6]<<16)+((u32)ISP_buffer[7]<<8)+(u32)ISP_buffer[8];
-	  rt_kprintf("	\r\n 设备类型: %x  软件版本:%x \r\n",Device_type,Firmware_ver); 
-	 
-	 if(Device_type!=STM32F407_Recoder_32MbitDF)   
-	  { 
-		 rt_kprintf( "\r\n 设备类型不匹配不予更新" );
-		 ISP_buffer[0]=0;	 // 不更新下载的程序
-		  ISP_Write(ISP_APP_Addr,ISP_buffer,PageSIZE); 
-	  }  		   
-	 	 
-	  rt_kprintf( "\r\n 文件日期: " );					  
-	  rt_kprintf("%20s",(const char*)(ISP_buffer+10));	 
-	  rt_kprintf( "\r\n");	
-	  rt_kprintf( "\r\n 文件名: " );
-	  rt_kprintf("%100s",(const char*)(ISP_buffer+201));      
-	  rt_kprintf( "\r\n");	
-	 if(Device_type==STM32F407_Recoder_32MbitDF)         
+	  memset(FileHead,0,sizeof(FileHead));
+	  memcpy(FileHead,ISP_buffer,32);
+	  rt_kprintf( "\r\n FileHead:%s\r\n",FileHead ); 
+
+
+	  //------    文件格式判断
+	  if(strncmp(ISP_buffer+32+13,"70420TW703",10)==0) //判断厂商和型号
+		 {
+			 ISP_judge_resualt++;// step 1
+			 rt_kprintf("\r\n 厂商型号正确\r\n");  
+
+			 // hardware 
+			 HardVersion=(ISP_buffer[32+38]<<24)+(ISP_buffer[32+39]<<16)+(ISP_buffer[32+40]<<8)+ISP_buffer[32+41]; 
+			 if((HardVersion>0)&&(HardVersion<5))
+			  {
+				  ISP_judge_resualt++;// step 2
+				  rt_kprintf("\r\n 硬件版本:%d\r\n",HardVersion);  
+			  }
+			 //firmware
+			 if(strncmp(ISP_buffer+32+42,"HBGGHYPT",8)==0) 
+			 {
+				ISP_judge_resualt++;// step 3
+				rt_kprintf("\r\n  固件版本:HBGGHYPT\r\n");	 
+			 }
+			 // operater
+			 if(strncmp(ISP_buffer+32+62,"HBTDT",8)==0) 
+			 {
+				ISP_judge_resualt++;// step 4
+				rt_kprintf("\r\n  固件版本:HBTDT\r\n");  	 
+			 }
+			 
+		 }
+
+	 if(ISP_judge_resualt==4) 
 	 {
-		Systerm_Reset_counter= (Max_SystemCounter-5);	 // 准备重启更新最新程序
-		ISP_resetFlag=1;//准备重启 
-		rt_kprintf( "\r\n 准备重启更新程序!\r\n" );	 
-	 }	 
+		  //------- enable  flag -------------
+		/* SST25V_BufferRead( FileHead,0x001000,100 );
+		 FileHead[32] = 0x01; 
+		 SST25V_BufferWrite( FileHead,0x001000,100);  
+		
+		 {
+			Systerm_Reset_counter= (Max_SystemCounter-5);	 // 准备重启更新最新程序
+			ISP_resetFlag=1;//准备重启 
+			rt_kprintf( "\r\n 准备重启更新程序!\r\n" );	  
+		 }	
+		 */
+		 rt_kprintf( "\r\n 升级完成了，但不更新等待判断 校验测试 \r\n" );	   
+	 }
+	else
+	{
+	      BD_ISP.ISP_running=0; // recover normal  
+          rt_kprintf( "\r\n 相关参数不匹配不与更新!\r\n" );	 
+	}
    
  }
+ FINSH_FUNCTION_EXPORT(ISP_file_Check, ISP_file_Check);   
 
 
 
@@ -6197,442 +6062,6 @@ u8  Save_MediaIndex( u8 type, u8* name, u8 ID,u8 Evencode)
   
 }
 //------------------------------------------------------------------
-#if 0
-u8  CentreSet_subService_8103H(u32 SubID, u8 infolen, u8 *Content )
-{  
- 
-  u8    i=0;
-  u8    reg_str[80];
-  u8    reg_in[20];
-  u32   resualtu32=0;
-  
-
-   rt_kprintf("\r\n    收到中心设置命令 SubID=%X \r\n",SubID);  
-	   
-  switch(SubID)
-   {
-     case 0x0001:  // 终端心跳包发送间隔  单位:s
-                    if(infolen!=4)
-						break;					
-					JT808Conf_struct.DURATION.Heart_Dur=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
-                                    Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
-                                   rt_kprintf("\r\n 心跳包间隔: %d s\r\n",JT808Conf_struct.DURATION.Heart_Dur);
-                    break;
-	 case 0x0002:  // TCP 消息应答超时时间  单位:s	                
-                    if(infolen!=4)
-						break;					
-					JT808Conf_struct.DURATION.TCP_ACK_Dur=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
-                    Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
-					rt_kprintf("\r\n TCP消息应答间隔: %d s\r\n",JT808Conf_struct.DURATION.TCP_ACK_Dur); 
-	                break;
-	 case 0x0003:  //  TCP 消息重传次数	                
-                    if(infolen!=4)
-						break;					
-					JT808Conf_struct.DURATION.TCP_ReSD_Num=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
-                    Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
-					rt_kprintf("\r\n TCP重传次数: %d\r\n",JT808Conf_struct.DURATION.TCP_ReSD_Num); 
-	                break;
-	 case 0x0004:  // UDP 消息应答超时时间  单位:s	                
-                    if(infolen!=4)
-						break;					
-					JT808Conf_struct.DURATION.UDP_ACK_Dur=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
-                    Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
-                    rt_kprintf("\r\n UDP应答超时: %d\r\n",JT808Conf_struct.DURATION.UDP_ACK_Dur);
-	                break;
-	 case 0x0005:  //  UDP 消息重传次数	                
-                    if(infolen!=4)
-						break;					
-					JT808Conf_struct.DURATION.UDP_ReSD_Num=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
-                    Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
-					rt_kprintf("\r\n UDP重传次数: %d\r\n",JT808Conf_struct.DURATION.UDP_ReSD_Num); 
-					break;
-	 case 0x0010:  //  主服务器APN 
-                                    if(infolen==0)
-					  	break;
-					  memset(APN_String,0,sizeof(APN_String));					  
-					  memcpy(APN_String,(char*)Content,infolen);  
-					  memset((u8*)SysConf_struct.APN_str,0,sizeof(APN_String));	
-					  memcpy((u8*)SysConf_struct.APN_str,(char*)Content,infolen);  
-					 Api_Config_write(config,ID_CONF_SYS,(u8*)&SysConf_struct,sizeof(SysConf_struct));
-
-
-                                     DataLink_APN_Set(APN_String,1); 
-									 
-	                break; 
-	 case 0x0013:  //  主服务器地址  IP 或域名
-                      memset(reg_in,0,sizeof(reg_in)); 
-					  memcpy(reg_in,Content,infolen);
-					 //----------------------------	
-					 
-					 i =str2ip((char*)reg_in, RemoteIP_main);
-					 if (i <= 3)
-					 {
-					  rt_kprintf("\r\n  域名: %s \r\n",reg_in); 
-					  
-					  memset(DomainNameStr,0,sizeof(DomainNameStr));					  
-					  memset(SysConf_struct.DNSR,0,sizeof(DomainNameStr));
-					  memcpy(DomainNameStr,(char*)Content,infolen);   
-					  memcpy(SysConf_struct.DNSR,(char*)Content,infolen);   
-					 Api_Config_write(config,ID_CONF_SYS,(u8*)&SysConf_struct,sizeof(SysConf_struct));
-
-                                     //----- 传给 GSM 模块------
-                                    DataLink_DNSR_Set(SysConf_struct.DNSR,1); 
-
-									 
-					  SD_ACKflag.f_CentreCMDack_0001H=2 ;//DataLink_EndFlag=1; //AT_End(); 先返回结果再挂断  
-					  break;
-					 }
-					 memset(reg_str,0,sizeof(reg_str));
-					 IP_Str((char*)reg_str, *( u32 * ) RemoteIP_main); 		  
-					 strcat((char*)reg_str, " :");		 
-					 sprintf((char*)reg_str+strlen((const char*)reg_str), "%u\r\n", RemotePort_main);  
-					 memcpy(SysConf_struct.IP_Main,RemoteIP_main,4);
-					 SysConf_struct.Port_main=RemotePort_main;
-					 
-					 Api_Config_write(config,ID_CONF_SYS,(u8*)&SysConf_struct,sizeof(SysConf_struct));
-					 rt_kprintf("\r\n 中心设置主服务器 IP \r\n");
-					 rt_kprintf("\r\n SOCKET :");  
-					 rt_kprintf((char*)reg_str);   
-					  //-----------  Below add by Nathan  ----------------------------				  
-					  rt_kprintf("\r\n		   备用IP: %d.%d.%d.%d : %d \r\n",RemoteIP_aux[0],RemoteIP_aux[1],RemoteIP_aux[2],RemoteIP_aux[3],RemotePort_main);   
-					 
-					  //-----------  Below add by Nathan  ----------------------------
-					  DataLink_MainSocket_set(RemoteIP_main,RemotePort_main,1);
-	                              //-------------------------------------------------------------	
-					   
-					   SD_ACKflag.f_CentreCMDack_0001H=2 ;//DataLink_EndFlag=1; //AT_End(); 先返回结果再挂断  
-
-	                break;
-	 case 0x0014:  // 备份服务器 APN
-
-	                break;
-	 case 0x0017:  // 备份服务器  IP                    
-				  memset(reg_in,0,sizeof(reg_in)); 
-				  memcpy(reg_in,Content,infolen);
-				 //---------------------------- 
-				  i =str2ip((char*)reg_in, RemoteIP_aux);
-				  if (i <= 3)
-				 {
-					  rt_kprintf("\r\n  域名aux: %s \r\n",reg_in); 					  
-					 memset(DomainNameStr_aux,0,sizeof(DomainNameStr_aux));					  
-					 memset(SysConf_struct.DNSR_Aux,0,sizeof(DomainNameStr_aux));     
-					  memcpy(DomainNameStr_aux,(char*)Content,infolen);   
-					  memcpy(SysConf_struct.DNSR_Aux,(char*)Content,infolen);    
-					 Api_Config_write(config,ID_CONF_SYS,(u8*)&SysConf_struct,sizeof(SysConf_struct));
-                                     //----- 传给 GSM 模块------
-                                    DataLink_DNSR2_Set(SysConf_struct.DNSR_Aux,1);
-									 
-					  SD_ACKflag.f_CentreCMDack_0001H=2 ;//DataLink_EndFlag=1; //AT_End(); 先返回结果再挂断  
-					  break;
-				 }  				  
-				  memset(reg_str,0,sizeof(reg_str));
-				  IP_Str((char*)reg_str, *( u32 * ) RemoteIP_aux);		   
-				  strcat((char*)reg_str, " :"); 	  
-				  sprintf((char*)reg_str+strlen((const char*)reg_str), "%u\r\n", RemotePort_aux);  
-				 
-				  Api_Config_write(config,ID_CONF_SYS,(u8*)&SysConf_struct,sizeof(SysConf_struct));
-				  rt_kprintf("\r\n 中心设置备用服务器 IP \r\n");
-				  rt_kprintf("\r\nUDP SOCKET :");  
-				  rt_kprintf((char*)reg_str);  
-				  DataLink_AuxSocket_set(RemoteIP_aux,RemotePort_aux,1);
-				   //-----------  Below add by Nathan  ----------------------------				   
-				   rt_kprintf("\r\n 		备用IP: %d.%d.%d.%d : %d \r\n",RemoteIP_aux[0],RemoteIP_aux[1],RemoteIP_aux[2],RemoteIP_aux[3],RemotePort_aux);	
-	                break;
-	 case 0x0018:  //  服务器 TCP 端口
-                    //----------------------------	
-                      if(infolen!=4)
-						break;	
-					  RemotePort_main=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
-
-					  Api_Config_write(config,ID_CONF_SYS,(u8*)&SysConf_struct,sizeof(SysConf_struct));
-					  rt_kprintf("\r\n 中心设置主服务器 PORT \r\n");
-					  rt_kprintf("\r\nUDP SOCKET :");  
-					  rt_kprintf((char*)reg_str);  
-					   //-----------  Below add by Nathan  ----------------------------
-                                     DataLink_MainSocket_set(RemoteIP_main,RemotePort_main,1);					   //-------------------------------------------------------------		   
-					   SD_ACKflag.f_CentreCMDack_0001H=2 ;//DataLink_EndFlag=1; //AT_End(); 先返回结果再挂断	
-	                break;
-	 case 0x0019:  //  服务器 UDP 端口
-                    
-					if(infolen!=4)
-					  break;  
-					RemotePort_aux=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
-					
-					 Api_Config_write(config,ID_CONF_SYS,(u8*)&SysConf_struct,sizeof(SysConf_struct));
-					rt_kprintf("\r\n 中心设置UDP服务器 PORT \r\n");
-					rt_kprintf("\r\nUDP SOCKET :");   
-					rt_kprintf((char*)reg_str);    
-					rt_kprintf("\r\n		 备用IP: %d.%d.%d.%d : %d \r\n",RemoteIP_aux[0],RemoteIP_aux[1],RemoteIP_aux[2],RemoteIP_aux[3],RemotePort_aux);	 
-	                break;
-     case 0x0020:  //  汇报策略  0 定时汇报  1 定距汇报 2 定时和定距汇报
-                    if(infolen!=4)
-						break;	
-                    resualtu32=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
-					switch(resualtu32)
-						{
-						   case 0:rt_kprintf("\r\n 定时汇报 \r\n");
-						   	      break;
-						   case 1:rt_kprintf("\r\n 定距汇报 \r\n");
-						   	      break;
-						   case 2:rt_kprintf("\r\n 定时和定距汇报\r\n"); 
-						   	      break;
-						   default:
-						   	      break;
-
-						}
-	                break;
-	 case 0x0021:  //  位置汇报方案  0 根据ACC上报  1 根据ACC和登录状态上报 
-
-	                break;
-       //--------
-					
-	 case 0x0022:  //  驾驶员未登录 汇报时间间隔 单位:s    >0	                  
-                    if(infolen!=4)
-						break;					
-					JT808Conf_struct.DURATION.NoDrvLogin_Dur=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
-                                    Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
-                                   rt_kprintf("\r\n 驾驶员未登录汇报间隔: %d\r\n",JT808Conf_struct.DURATION.NoDrvLogin_Dur);  
-	                break;
-	 case 0x0027:   //  休眠时汇报时间间隔，单位 s  >0	                
-                    if(infolen!=4)
-						break;					
-					JT808Conf_struct.DURATION.Sleep_Dur=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
-                    Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
-                    rt_kprintf("\r\n 休眠汇报时间间隔: %d \r\n",JT808Conf_struct.DURATION.Sleep_Dur);   
-	                break;
-	 case 0x0028:   //  紧急报警时汇报时间间隔  单位 s	                
-                    if(infolen!=4)
-						break;					
-					JT808Conf_struct.DURATION.Emegence_Dur=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
-                   Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct)); 
-                    rt_kprintf("\r\n 紧急报警时间间隔: %d \r\n",JT808Conf_struct.DURATION.Emegence_Dur);   
-	                break;
-	 case 0x0029:   //  缺省时间汇报间隔  单位 s
-	                if(infolen!=4)
-						break;					
-					JT808Conf_struct.DURATION.Default_Dur=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
-                    Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));   
-					rt_kprintf("\r\n 缺省汇报时间间隔: %d \r\n",JT808Conf_struct.DURATION.Default_Dur);   
-	                break;
-       //---------
-					
-	 case 0x002C:   //  缺省距离汇报间隔  单位 米
-	                if(infolen!=4)
-						break;					
-					JT808Conf_struct.DISTANCE.Defalut_DistDelta=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
-                    Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
-					rt_kprintf("\r\n 缺省距离汇报间隔: %d m\r\n",JT808Conf_struct.DISTANCE.Defalut_DistDelta); 
-	                break;
-	 case 0x002D:   //  驾驶员未登录汇报距离间隔 单位 米
-	               if(infolen!=4)
-						break;					
-					JT808Conf_struct.DISTANCE.NoDrvLogin_Dist=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
-                    Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct)); 
-					rt_kprintf("\r\n 驾驶员未登录汇报距离: %d m\r\n",JT808Conf_struct.DISTANCE.NoDrvLogin_Dist); 
-	                break;
-	 case 0x002E:   //  休眠时汇报距离间隔  单位 米
-	               if(infolen!=4)
-						break;					
-					JT808Conf_struct.DISTANCE.Sleep_Dist=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
-                    Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
-					rt_kprintf("\r\n 休眠时定距上报间隔: %d m\r\n",JT808Conf_struct.DISTANCE.Sleep_Dist); 
-	                break;
-	 case 0x002F:   //  紧急报警时汇报距离间隔  单位 米
-	               if(infolen!=4)
-						break;					
-					JT808Conf_struct.DISTANCE.Emergen_Dist=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
-                    Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
-					rt_kprintf("\r\n 紧急报警时定距上报间隔: %d m\r\n",JT808Conf_struct.DISTANCE.Emergen_Dist); 
-	                break;
-	 case 0x0030:   //  拐点补传角度 , <180
-                    if(infolen!=4)
-						break;					
-					JT808Conf_struct.DURATION.SD_Delta_maxAngle=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
-                    Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
-					rt_kprintf("\r\n 拐点补传角度: %d 度\r\n",JT808Conf_struct.DISTANCE.Emergen_Dist);  
-	                break;
-	 case 0x0031: 		 	            
-                    if(infolen!=2)
-						break;					
-					JT808Conf_struct.DURATION.IllgleMovo_disttance=(Content[0]<<8)+Content[1]; 
-                    Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
-					rt_kprintf("\r\n 电子围栏半径(非法移动阈值): %d m\r\n",JT808Conf_struct.DURATION.IllgleMovo_disttance);  
-        //---------
-	 case 0x0040:   //   监控平台电话号码  
-	                 if(infolen==0)
-					 	 break;
-					i=strlen((const char*)JT808Conf_struct.LISTEN_Num);
-					rt_kprintf("\r\n old: %s \r\n",JT808Conf_struct.LISTEN_Num);
-					 
-					memset(JT808Conf_struct.LISTEN_Num,0,sizeof(JT808Conf_struct.LISTEN_Num));
-					memcpy(JT808Conf_struct.LISTEN_Num,Content,infolen);											
-					Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));  
- 					rt_kprintf("\r\n new: %s \r\n",JT808Conf_struct.LISTEN_Num);
-                     
-	                //CallState=CallState_rdytoDialLis;  // 准备开始拨打监听号码 
-	                rt_kprintf("\r\n 设置监控平台号码: %s \r\n",JT808Conf_struct.LISTEN_Num);   
-
-	                break;
-	 case 0x0041:   //   复位电话号码，可采用此电话号码拨打终端电话让终端复位
-                    if(infolen==0)
-					 	 break;
-					memset(reg_str,0,sizeof(reg_str)); 
-					memcpy(reg_str,Content,infolen);											
- 					rt_kprintf("\r\n 复位电话号码 %s \r\n",reg_str);  
-	                break;
-	 case 0x0042:   //   恢复出厂设置电话，可采用该电话号码是终端恢复出厂设置
-
-	                break;
-	 case 0x0045:   //  终端电话接听策略 0 自动接听  1 ACC ON自动接听 OFF时手动接听
-
-	                break;
-	 case 0x0046:   //  每次通话最长时间 ，单位  秒
-                    
-	                break;
-	 case 0x0047:   //  当月最长通话时间，单位  秒
-
-	                break;
-	 case 0x0048:   //  监听电话号码                    
-					if(infolen==0)
-						 break;
-					memset(JT808Conf_struct.LISTEN_Num,0,sizeof(JT808Conf_struct.LISTEN_Num));
-					memcpy(JT808Conf_struct.LISTEN_Num,Content,infolen); 										
-					Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));  
-					CallState=CallState_rdytoDialLis;  // 准备开始拨打监听号码 
-					rt_kprintf("\r\n 立即拨打监听号码: %s \r\n",JT808Conf_struct.LISTEN_Num);  
-	                break;  
-
-	    //----------				
-	 case 0x0050:  //  报警屏蔽字， 与位置信息中报警标志相对应。相应位为1时报警被屏蔽---
-                    
-                    if(infolen!=4)
-						break;	
-                    resualtu32=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8) +Content[3];
-                    rt_kprintf("\r\n 报警屏蔽字: %x \r\n",resualtu32);    
-					break;
-	 case 0x0052:  //  报警拍照开关， 与报警标志对应的位1时，拍照
-
-	                break;
-	 case 0x0053:  //  报警拍照存储  	与报警标志对应的位1时，拍照存储 否则实时上传
-
-	                break;
-	 case 0x0054:  //  关键标志  		与报警标志对应的位1  为关键报警
-
-	                break;
-        //---------  
-					
-	 case 0x0055:  //  最高速度   单位   千米每小时
-                   if(infolen!=4)
-						break;
-				    JT808Conf_struct.Speed_warn_MAX=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8)	+Content[3];
-				   memset(reg_str,0,sizeof(reg_str));
-				   memcpy(reg_str,& JT808Conf_struct.Speed_warn_MAX,4);
-				   memcpy(reg_str+4,&JT808Conf_struct.Spd_Exd_LimitSeconds,4);
-				    Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
-				   rt_kprintf("\r\n 最高速度: %d km/h \r\n", JT808Conf_struct.Speed_warn_MAX); 
-				   Spd_ExpInit();
-	                break;
-	 case 0x0056:  //  超速持续时间    单位 s
-                   if(infolen!=4)
-						break;
-				   JT808Conf_struct.Spd_Exd_LimitSeconds=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8)	+Content[3];
-				   memset(reg_str,0,sizeof(reg_str));
-				   memcpy(reg_str,& JT808Conf_struct.Speed_warn_MAX,4);
-				   memcpy(reg_str+4,&JT808Conf_struct.Spd_Exd_LimitSeconds,4); 
-				    Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
-				   rt_kprintf("\r\n 超时持续时间: %d s \r\n",JT808Conf_struct.Spd_Exd_LimitSeconds); 
-				   Spd_ExpInit();
-	                break;
-	 case 0x0057:  //  连续驾驶时间门限 单位  s
-					 if(infolen!=4)
-						  break;
-				   TiredConf_struct.TiredDoor.Door_DrvKeepingSec=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8)   +Content[3];
-                               Api_Config_write(tired_config,0,(u8*)&TiredConf_struct,sizeof(TiredConf_struct));				   rt_kprintf("\r\n 连续驾驶时间门限: %d s \r\n",TiredConf_struct.TiredDoor.Door_DrvKeepingSec);  
-				   Warn_Status[3]&=~0x04;  //BIT(2)	接触疲劳驾驶报警 
-				   TIRED_Drive_Init();    // 清除疲劳驾驶状态      
-	               break;
-	 case 0x0058:  //  当天累计驾驶时间门限  单位  s
-				   if(infolen!=4)
-						break;
-				   TiredConf_struct.TiredDoor.Door_DayAccumlateDrvSec=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8)   +Content[3];
-                               Api_Config_write(tired_config,0,(u8*)&TiredConf_struct,sizeof(TiredConf_struct));				   rt_kprintf("\r\n 连续驾驶时间门限: %d s \r\n",TiredConf_struct.TiredDoor.Door_DrvKeepingSec);  
-				   TiredConf_struct.Tired_drive.ACC_ONstate_counter=0;
-				   TiredConf_struct.Tired_drive.ACC_Offstate_counter=0;
-                                Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct)); 
-                               rt_kprintf("\r\n 当天累计驾驶时间: %d s \r\n",TiredConf_struct.TiredDoor.Door_DayAccumlateDrvSec); 
-	                break;
-     case 0x0059:  //  最小休息时间  单位 s
-				   if(infolen!=4)
-						break;
-				    TiredConf_struct.TiredDoor.Door_MinSleepSec=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8)   +Content[3];
-                               Api_Config_write(tired_config,0,(u8*)&TiredConf_struct,sizeof(TiredConf_struct));				   rt_kprintf("\r\n 连续驾驶时间门限: %d s \r\n",TiredConf_struct.TiredDoor.Door_DrvKeepingSec);  
-					rt_kprintf("\r\n 最小休息时间: %d s \r\n",TiredConf_struct.TiredDoor.Door_MinSleepSec);  
-	                break;
-	 case 0x005A:  //  最长停车时间   单位 s
-					 if(infolen!=4)
-						  break;
-					TiredConf_struct.TiredDoor.Door_MaxParkingSec=(Content[0]<<24)+(Content[1]<<16)+(Content[2]<<8)	 +Content[3];
-                                   Api_Config_write(tired_config,0,(u8*)&TiredConf_struct,sizeof(TiredConf_struct));				   rt_kprintf("\r\n 连续驾驶时间门限: %d s \r\n",TiredConf_struct.TiredDoor.Door_DrvKeepingSec);  
-					TiredConf_struct.TiredDoor.Parking_currentcnt=0; 
-					 Warn_Status[1]&=~0x08;  // 清除超时触发 
-					rt_kprintf("\r\n 最长停车时间: %d s \r\n",TiredConf_struct.TiredDoor.Door_MaxParkingSec);   
-	                break;
-	     //--------- 
-	 case  0x0070: //  图像/视频质量  1-10  1 最好
-
-	                break;
-	 case  0x0071: //  亮度  0-255
-
-	                break;
-	 case  0x0072: //  对比度  0-127
-
-	                break;
-	 case  0x0073: // 饱和度  0-127
-
-	                break;
-	 case  0x0074: // 色度   0-255
-
-	                break;
-		  //---------
-	 case  0x0080: // 车辆里程表读数   1/10 km
-
-	                break;
-	 case  0x0081: // 车辆所在的省域ID
-	                if(infolen!=2)
-						  break;
-					JT808Conf_struct.Vechicle_Info.Dev_ProvinceID=(Content[0]<<8)+Content[1];
-                                   Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
-					rt_kprintf("\r\n 车辆所在省域ID: 0x%X \r\n",JT808Conf_struct.Vechicle_Info.Dev_ProvinceID); 
-	                break;
-	 case  0x0082: // 车辆所在市域ID
-	                if(infolen!=2)
-						  break;
-					JT808Conf_struct.Vechicle_Info.Dev_ProvinceID=(Content[0]<<8)+Content[1];
-                                   Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
-					rt_kprintf("\r\n 车辆所在市域ID: 0x%X \r\n",JT808Conf_struct.Vechicle_Info.Dev_ProvinceID); 
-	                break;
-	 case  0x0083: // 公安交通管理部门颁发的机动车号牌
-	                if(infolen<4)
-						  break;					
-					memset(JT808Conf_struct.Vechicle_Info.Vech_Num,0,sizeof(JT808Conf_struct.Vechicle_Info.Vech_Num));
-					memcpy(JT808Conf_struct.Vechicle_Info.Vech_Num,Content,infolen);
-                                   Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
-					rt_kprintf("\r\n 机动车驾驶证号: %s  \r\n",JT808Conf_struct.Vechicle_Info.Vech_Num);  
-	                break;
-	 case  0x0084: // 车牌颜色  按照国家规定
-	                if(infolen!=1)
-						  break;
-					JT808Conf_struct.Vechicle_Info.Dev_Color=Content[0];           
-                                   Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
-					rt_kprintf("\r\n 车辆颜色: %d  \r\n",JT808Conf_struct.Vechicle_Info.Dev_Color);                 
-	                break;
-	 default:
-				return false;
-   }
-
-    return true;
-}
-#endif
 u8  CentreSet_subService_8103H(u32 SubID, u8 infolen, u8 *Content )
 {  
  
@@ -7081,31 +6510,31 @@ u8  CentreSet_subService_8103H(u32 SubID, u8 infolen, u8 *Content )
 	 case  0x0081: // 车辆所在的省域ID
 	                if(infolen!=2)
 						  break;
-					JT808Conf_struct.Vechicle_Info.Dev_ProvinceID=(Content[0]<<8)+Content[1];
-                                   Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
-					rt_kprintf("\r\n 车辆所在省域ID: 0x%X \r\n",JT808Conf_struct.Vechicle_Info.Dev_ProvinceID); 
+					Vechicle_Info.Dev_ProvinceID=(Content[0]<<8)+Content[1];
+                    DF_WriteFlashSector(DF_Vehicle_Struct_offset,0,(u8*)&Vechicle_Info,sizeof(Vechicle_Info));      
+					rt_kprintf("\r\n 车辆所在省域ID: 0x%X \r\n",Vechicle_Info.Dev_ProvinceID); 
 	                break;
 	 case  0x0082: // 车辆所在市域ID
 	                if(infolen!=2)
 						  break;
-					JT808Conf_struct.Vechicle_Info.Dev_ProvinceID=(Content[0]<<8)+Content[1];
-                                   Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
-					rt_kprintf("\r\n 车辆所在市域ID: 0x%X \r\n",JT808Conf_struct.Vechicle_Info.Dev_ProvinceID); 
+					Vechicle_Info.Dev_ProvinceID=(Content[0]<<8)+Content[1];
+                    DF_WriteFlashSector(DF_Vehicle_Struct_offset,0,(u8*)&Vechicle_Info,sizeof(Vechicle_Info));      
+					rt_kprintf("\r\n 车辆所在市域ID: 0x%X \r\n",Vechicle_Info.Dev_ProvinceID); 
 	                break;
 	 case  0x0083: // 公安交通管理部门颁发的机动车号牌
 	                if(infolen<4)
 						  break;					
-					memset(JT808Conf_struct.Vechicle_Info.Vech_Num,0,sizeof(JT808Conf_struct.Vechicle_Info.Vech_Num));
-					memcpy(JT808Conf_struct.Vechicle_Info.Vech_Num,Content,infolen);
-                                   Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
-					rt_kprintf("\r\n 机动车驾驶证号: %s  \r\n",JT808Conf_struct.Vechicle_Info.Vech_Num);  
+					memset(Vechicle_Info.Vech_Num,0,sizeof(Vechicle_Info.Vech_Num));
+					memcpy(Vechicle_Info.Vech_Num,Content,infolen);
+					DF_WriteFlashSector(DF_Vehicle_Struct_offset,0,(u8*)&Vechicle_Info,sizeof(Vechicle_Info));		
+					rt_kprintf("\r\n 机动车驾驶证号: %s  \r\n",Vechicle_Info.Vech_Num);  
 	                break;
 	 case  0x0084: // 车牌颜色  按照国家规定
 	                if(infolen!=1)
 						  break;
-					JT808Conf_struct.Vechicle_Info.Dev_Color=Content[0];           
-                                   Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
-					rt_kprintf("\r\n 车辆颜色: %d  \r\n",JT808Conf_struct.Vechicle_Info.Dev_Color);    
+					Vechicle_Info.Dev_Color=Content[0];           
+					DF_WriteFlashSector(DF_Vehicle_Struct_offset,0,(u8*)&Vechicle_Info,sizeof(Vechicle_Info));		
+					rt_kprintf("\r\n 车辆颜色: %d  \r\n",Vechicle_Info.Dev_Color);    
 
 					//  redial();
 					// idip("clear");
@@ -7300,9 +6729,9 @@ u8  CentreSet_subService_8103H(u32 SubID, u8 infolen, u8 *Content )
 
 	              break;
        case    0x0094:// GNSS 模块详细定位数据上传方式
-                   if(Content[0]=0x01)
+                   if(Content[0]==0x01)
                        rt_kprintf("\r\n 按时间上传");
-				   if(Content[0]=0x00)
+				   if(Content[0]==0x00)
                        rt_kprintf("\r\n 本地存储不上传"); 
 				   
 	              break;
@@ -7431,16 +6860,16 @@ void CenterSet_subService_8701H(u8 cmd,  u8*Instr)
   switch(cmd)
    {
 	 case 0x82: //	  中心设置车牌号  
-				memset(JT808Conf_struct.Vechicle_Info.Vech_VIN,0,sizeof(JT808Conf_struct.Vechicle_Info.Vech_VIN));
-				memset(JT808Conf_struct.Vechicle_Info.Vech_Num,0,sizeof(JT808Conf_struct.Vechicle_Info.Vech_Num));
-				memset(JT808Conf_struct.Vechicle_Info.Vech_Type,0,sizeof(JT808Conf_struct.Vechicle_Info.Vech_Type));	
+				memset(Vechicle_Info.Vech_VIN,0,sizeof(Vechicle_Info.Vech_VIN));
+				memset(Vechicle_Info.Vech_Num,0,sizeof(Vechicle_Info.Vech_Num));
+				memset(Vechicle_Info.Vech_Type,0,sizeof(Vechicle_Info.Vech_Type));	
 				
 				 //-----------------------------------------------------------------------
-				 memcpy(JT808Conf_struct.Vechicle_Info.Vech_VIN,Instr,17);
-				 memcpy(JT808Conf_struct.Vechicle_Info.Vech_Num,Instr+17,12);
-				 memcpy(JT808Conf_struct.Vechicle_Info.Vech_Type,Instr+29,12); 
+				 memcpy(Vechicle_Info.Vech_VIN,Instr,17);
+				 memcpy(Vechicle_Info.Vech_Num,Instr+17,12);
+				 memcpy(Vechicle_Info.Vech_Type,Instr+29,12); 
 
-				Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));    
+				DF_WriteFlashSector(DF_Vehicle_Struct_offset,0,(u8*)&Vechicle_Info,sizeof(Vechicle_Info));      
 				break;
 	 case 0xC2: //设置记录仪时钟
 			    // 没啥用，给个回复就行，俺有GPS校准就够了 
@@ -7502,7 +6931,7 @@ void CenterSet_subService_8701H(u8 cmd,  u8*Instr)
 
 			
 			memcpy(JT808Conf_struct.FirstSetupDate,Instr+6,6);  
-			Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
+			//Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
 			     // instr     + 12      设置初始里程的位置   BCD
 			     
 			reg_dis=(Instr[12]>>4)*10000000+(Instr[12]&0x0F)*1000000+(Instr[13]>>4)*100000+(Instr[13]&0x0F)*10000 \
@@ -7544,231 +6973,6 @@ void CenterSet_subService_8701H(u8 cmd,  u8*Instr)
         VDR_product_14H(cmd);     
     
 }
-//-----------------------------------------------
-void  ISP_Get_RawData(u8 * Instr, u16  InLen)
-{
-      memcpy(ISP_Raw,Instr,InLen);
-      ISP_NeedtoProcessFlag=1;	 	
-}
-void Nullpro_8900H(u8*Instr)
-{  
-      u16	i=0,DF_PageAddr=0;
-	  u16  infolen=0;//,contentlen=0;
-	  u8   New_CMD=0;
-	//  u8   CenterAckCameraFlag=0;
-	//  u8   ireg[5]; 
-	  u8   FCS_RX_UDP_sub=0;
-
-  //  2.   get infolen    CMD 
-  infolen=( u16 )(Instr[11] << 8 ) + ( u16 ) Instr[12]; 
-//  contentlen=infolen-14;  //  8+2+1+1+1+1
-  New_CMD = Instr[15];  
- //   4 .  Classify  Process 
-   // rt_kprintf("\r\n New_CMD=%X",New_CMD);
-     switch(New_CMD)
-   {
-  		   case  0x91:     //   中心下发远程下载开始命令
-					       ISP_rxCMD=New_CMD; 
-						f_ISP_ACK=1;						
-							rt_kprintf( "\r\n ISP request! \r\n" ); 					   
-						//------------- ISP state ------------------------	
-						ISP_running_state=1;
-						ISP_running_counter=0;
-						ISP_RepeatCounter=0;
-					  break;
-		   case  0x93:     //   中心下发远程下载数据内容命令
-		                       rt_kprintf("\r\n infolen=%d",infolen);
-                                     //--------------------------------------- 
-                                    ISP_current_packnum=((u16)Instr[16]<<8)+(u16)Instr[17];
-					  ISP_total_packnum=((u16)Instr[18]<<8)+(u16)Instr[19]; 
-					    ISP_ack_resualt=0x01;   // ok		
-						ISP_RepeatCounter=0;
-					  //--------------------------------------		   
-				        ISP_running_state=1;
-					 ISP_running_counter=0;   			                
-					 f_ISP_88_ACK=1;			
-					  break;
-		   case  0x95:     //   中心下发远程下载结束命令
-					   f_ISP_23_ACK=1;					   
-					   rt_kprintf( "\r\n ISP download over! \r\n" ); 
-					   //------------- ISP state ------------------------  
-					   ISP_running_state=1;
-					   ISP_running_counter=0; 
-					   ISP_RepeatCounter=0; 
-			          break;
-		    default:
-				      break;  	
-   }
-
-
-}
-
-
-void DataTrans_ISPService_8900H(u8*Instr)
-{  
-      u16	i=0,DF_PageAddr=0;
-	  u16  infolen=0;//,contentlen=0;
-	  u8   New_CMD=0;
-	//  u8   CenterAckCameraFlag=0;
-	//  u8   ireg[5]; 
-	  u8   FCS_RX_UDP_sub=0;
-  //  1. Sub Protocol check 
-   if(strncmp((char*)Instr, "*GB",3) != 0)           //   过滤头 
-  	   return;
- 
-  //  2.   get infolen    CMD 
-  infolen=( u16 )(Instr[11] << 8 ) + ( u16 ) Instr[12]; 
-//  contentlen=infolen-14;  //  8+2+1+1+1+1
-  New_CMD = Instr[15];  
-
-  //  3.   Check  Fcs  
-	  FCS_RX_UDP_sub=0;
-	  for ( i=0; i <(infolen-1); i++ ) //先算出收到数据的异或和  长度包括校验所以信息长度应减1
-		  {
-			  FCS_RX_UDP_sub^=Instr[3+i];	
-		  } 
-	  // ------- FCS filter -----------------
-	  if( Instr[infolen+2]!= FCS_RX_UDP_sub ) 	   
-		  {
-			  rt_kprintf("\r\n ISP校验错误	  Caucate %x  ,RX  %x\r\n",FCS_RX_UDP_sub,Instr[infolen+2]); 
-				//-----------------  memset  -------------------------------------
-			  return; 
-		  }
-	  else		 
-		  rt_kprintf("\r\nISP校验正确	  Caucate %x  ,RX  %x\r\n",FCS_RX_UDP_sub,Instr[infolen+2]);	  
-   
- //   4 .  Classify  Process 
-   // rt_kprintf("\r\n New_CMD=%X",New_CMD);
-     switch(New_CMD)
-   {
-  		   case  0x91:     //   中心下发远程下载开始命令
-					       ISP_rxCMD=New_CMD; 
-						f_ISP_ACK=1;						
-							rt_kprintf( "\r\n ISP request! \r\n" ); 					   
-						//------------- ISP state ------------------------	
-						ISP_running_state=1;
-						ISP_running_counter=0;
-						ISP_RepeatCounter=0;
-					  break;
-		   case  0x93:     //   中心下发远程下载数据内容命令
-		                       rt_kprintf("\r\n infolen=%d",infolen);
-		               #if 0
-						if(532!=infolen)   
-						{
-							  ISP_current_packnum=((u16)Instr[16]<<8)+(u16)Instr[17]; 
-							  ISP_total_packnum=((u16)Instr[18]<<8)+(u16)Instr[19]; 
-							 // rt_kprintf("\r\n ISP_current_packnum=%d,ISP_total_packnum=%d",ISP_current_packnum,ISP_total_packnum);
-						
-							  f_ISP_88_ACK=1;
-							  ISP_ack_resualt=0x02;   // no  pass
-							  rt_kprintf( "\r\n Total packet len	error! \r\n" );
-						}
-						else
-						  {
-							   ISP_current_packnum=((u16)Instr[16]<<8)+(u16)Instr[17];
-							   ISP_total_packnum=((u16)Instr[18]<<8)+(u16)Instr[19]; 
-					         //  rt_kprintf("\r\n ISP_current_packnum=%d,ISP_total_packnum=%d",ISP_current_packnum,ISP_total_packnum);
-						
-								if(ISP_current_packnum<=ISP_total_packnum)
-								  {
-							   
-									//------------------------------
-									DF_PageAddr=(u16)(Instr[20]<<8)+Instr[21];  //page
-									//rt_kprintf("\r\n 写入Page=%d\r\n",DF_PageAddr);
-						
-									//-----------  protect	RAM data  ------
-									if((DF_PageAddr>=DF_BL_PageNo)&&(DF_PageAddr<DF_PageAddr))
-										break; 
-									
-									//---------------- write APP data --------- 
-									ISP_Format(DF_PageAddr,0,Instr+22,PageSIZE);
-					
-									//rt_kprintf("\r\n写内容:\r\n ");
-									//for(i=0;i<PageSIZE;i++)
-										//rt_kprintf("%X ",Instr[22+i]);
-								    // rt_kprintf("\r\n读内容:\r\n ");	
-								      rt_thread_delay(5); 
-								       rt_kprintf("\r\n清除ISP 区域\r\n ");	
-									ISP_Read(DF_PageAddr, ISP_buffer,PageSIZE);  
-									//for(i=0;i<PageSIZE;i++)
-									//	rt_kprintf("%X ",ISP_buffer[i]);
-									//rt_kprintf("\r\n"); 
-									for(i=0;i<PageSIZE;i++)
-									{
-										 if(Instr[22+i]!=ISP_buffer[i]) 
-										   {
-											   //------------- ISP state ------------------------
-											   ISP_running_state=1;
-											   ISP_running_counter=0; 
-											   rt_kprintf( "\r\n i=%d  读取和写不匹配! \r\n",i );  
-											   break; 
-										   }
-									}  									
-									if(i<PageSIZE)
-									 {
-									   rt_kprintf( "\r\n DFwrite error!\r\n" );
-									   ISP_ack_resualt=0x02;   // no pass
-									   ISP_RepeatCounter++;
-									   if(ISP_RepeatCounter>6)
-									   	{
-                                                                          ISP_RepeatCounter=0;
-										    rt_kprintf("\r\n 超过最大错误5次数，清除远程升级区域!\r\n");
-                                                                          DF_ClearUpdate_Area();  
-									   	}
-									 } 
-									else  
-										
-									 {
-									   ISP_ack_resualt=0x01;   // ok		
-									   ISP_RepeatCounter=0;
-									 } 
-								   //---------------------------------
-								   rt_thread_delay(10);  // 不加会导致堆栈溢出
-								   
-								   f_ISP_88_ACK=1;								   
-						  }
-				             }
-						//------------- ISP state ------------------------
-					#endif	
-				        ISP_running_state=1;
-					 ISP_running_counter=0;   			                
-					 f_ISP_88_ACK=1;			
-					  break;
-		   case  0x95:     //   中心下发远程下载结束命令
-					   f_ISP_23_ACK=1;					   
-					   rt_kprintf( "\r\n ISP download over! \r\n" ); 
-					   //------------- ISP state ------------------------  
-					   ISP_running_state=1;
-					   ISP_running_counter=0; 
-					   ISP_RepeatCounter=0; 
-			          break;
-		    default:
-				      break;  	
-   }
-
-
-}
-void  ISP_Process(void)
-{
-      if(1==ISP_NeedtoProcessFlag)
-      	{
-      	      rt_kprintf( "\r\n ISP _process \r\n" ); 
-      	     //DataTrans_ISPService_8900H(ISP_Raw);
-      	     f_ISP_ACK=1;	
-            ISP_running_state=1;
-		ISP_running_counter=0;
-		ISP_RepeatCounter=0;
-	     //----------------------		 
-            ISP_NeedtoProcessFlag=0;
-      	}	
-}
-
-
-u8 ISP_running_Status(void)
-{ 
-     return   ISP_running_state;
-}
-
 //-------------------------------------------
 void  Media_Start_Init( u8  MdType , u8  MdCodeType)
 {  
@@ -7900,7 +7104,7 @@ void Photo_send_start(u16 Numpic)
 	 Photo_sdState.photo_sending=other;	//disable        
 	 Photo_sdState.SD_flag=0;  
 	 Photo_sdState.SD_packetNum=1; // 从1 开始
-        Photo_sdState.Exeption_timer=0;
+     Photo_sdState.Exeption_timer=0;
 	 
 	if(Camera_Number==1)
 	             PicFileSize=Api_DFdirectory_Query(camera_1, 1);
@@ -7936,7 +7140,7 @@ void Photo_send_start(u16 Numpic)
 
 
       // -------  MultiMedia Related --------
-      Media_Start_Init(0,0);
+      Media_Start_Init(0,0);  // 0: 图片格式 0: JPEG 文件格式      
 
 }
 
@@ -8199,6 +7403,7 @@ void Meida_Trans_Exception(void)
 }
 
 #endif
+
 //------------------------------------------------------------
 void DataTrans_Init(void)
 {
@@ -8273,6 +7478,8 @@ void TCP_RX_Process( u8  LinkNum)  //  ---- 808  标准协议
 {
   	  u16	i=0,j=0;//,DF_PageAddr;
 	  u16  infolen=0,contentlen=0;
+	  u8  ISP_judge_resualt=0;
+	  u32 HardVersion=0;
 	 // u8   ireg[5]; 
 	  u8   Ack_Resualt=1;
 	  u16  Ack_CMDid_8001=0;
@@ -8281,7 +7488,7 @@ void TCP_RX_Process( u8  LinkNum)  //  ---- 808  标准协议
 	  u8   ContentRdAdd=0;   // 当前读取到的地址
 	  u8   SubInfolen=0;     // 子信息长度
 	  u8   Reg_buf[22];
-	  //u8   CheckResualt=0;
+	  u8   CheckResualt=0;
       u32  reg_u32=0;
 	  u16  GB19056infolen=0;  
   //----------------      行车记录仪808 协议 接收处理   -------------------------- 
@@ -8295,11 +7502,6 @@ void TCP_RX_Process( u8  LinkNum)  //  ---- 808  标准协议
   Centre_CmdID=(UDP_HEX_Rx[1]<<8)+UDP_HEX_Rx[2];  // 接收到中心消息ID   
   Centre_FloatID=(UDP_HEX_Rx[11]<<8)+UDP_HEX_Rx[12];  // 接收到中心消息流水号        
 
-  //  分包判断
-  if(UDP_HEX_Rx[3]&0x20) 
-  	{   //  分包判断
-        ;  
-  	} 
 
   //  3.   get infolen    ( 长度为消息体的长度)    不分包的话  消息头长度为12 则参与计算校验的长度 =infolen+12
   //infolen =( u16 )((UDP_HEX_Rx[3]&0x3f) << 8 ) + ( u16 ) UDP_HEX_Rx[4];  
@@ -8307,24 +7509,25 @@ void TCP_RX_Process( u8  LinkNum)  //  ---- 808  标准协议
   contentlen=infolen+12;    //  参与校验字节的长度   
 
   //  4.   Check  Fcs 
+  
 	  FCS_RX_UDP=0; 
   	  //nop;nop;
-	  for ( i=0; i<(UDP_DecodeHex_Len-3); i++ ) //先算出收到数据的异或和  
+	  for ( i=0;i<(UDP_DecodeHex_Len-3); i++ ) //先算出收到数据的异或和   
 		  {
 			  FCS_RX_UDP^=UDP_HEX_Rx[1+i];	  
 		  } 
 	  //nop;
 	  // ------- FCS filter -----------------
-	/*  if( UDP_HEX_Rx[UDP_DecodeHex_Len-2]!=FCS_RX_UDP ) //判断校验结果	    
+	  if( UDP_HEX_Rx[UDP_DecodeHex_Len-2]!=FCS_RX_UDP ) //判断校验结果	    
 		  {
-			  rt_kprintf("\r\n  infolen=%d ",infolen);  
+			  rt_kprintf("\r\n  Protocolinfolen=%d   UDP_hexRx_len=%d",infolen,UDP_hexRx_len);  
 			  rt_kprintf("\r\n808协议校验错误	  Caucate %x  ,RX  %x\r\n",FCS_RX_UDP,UDP_HEX_Rx[UDP_DecodeHex_Len-2]); 
+			 // OutPrint_HEX("UDP_HEX_RX",UDP_HEX_Rx,UDP_DecodeHex_Len);
 				//-----------------  memset  -------------------------------------
 			  memset(UDP_HEX_Rx, 0, sizeof(UDP_HEX_Rx));    
 			  UDP_hexRx_len= 0; 
 			  return; 
-		  }	
-	  */
+		  }		  
 	//  else		  
 		 // rt_kprintf("\r\n 808协议校验正确	  Caucate %x  ,RX  %x\r\n",FCS_RX_UDP,UDP_HEX_Rx[UDP_DecodeHex_Len-2]);	   
    
@@ -9456,7 +8659,7 @@ void TCP_RX_Process( u8  LinkNum)  //  ---- 808  标准协议
 						                  Photo_send_end();  // 拍照上传结束
 						                  rt_kprintf("\r\n 图像传输结束! \r\n");
                                           //------------多路拍照处理  -------
-                                         // CheckResualt=Check_MultiTakeResult_b4Trans();  
+                                          CheckResualt=Check_MultiTakeResult_b4Trans();  
 						                 				   
 								          break;
 								  case 1 : // 音频
@@ -9470,8 +8673,8 @@ void TCP_RX_Process( u8  LinkNum)  //  ---- 808  标准协议
 								  default:
 								  	      break;
 						         }
-						// if(CheckResualt==0)	
-						   	   Media_Clear_State(); 
+						 if(CheckResualt==0)	
+						   	   Media_Clear_State();  
 		              	}
 					  else
 					  	{  //  重传包ID 列表 
@@ -9625,57 +8828,12 @@ void TCP_RX_Process( u8  LinkNum)  //  ---- 808  标准协议
                        switch(UDP_HEX_Rx[13])
                        	{ 
                        	  case 0x00:  // 停录音
-                       	                      // VOC_REC_STOP(void);
-						    //   VOC_REC_Stop();
-							/* 					  
-	                                     Dev_Voice.CMD_Type='0';
-										 Dev_Voice.info_sdFlag=0;    
-										 Dev_Voice.Voice_FileOperateFlag=0;
-										 Dev_Voice.Centre_RecordFlag=0; // 清空中心录音标志位
-										 if(TF_Card_Status()==1)	
-												{
-												  //memset(Dev_Voice.Voice_Reg,0,512);//clear left
-												  //edit_file(Dev_Voice.FileName,Dev_Voice.Voice_Reg,512); //写信息到TF
-												  //Dev_Voice.Voice_FileSize+=500; //add  											  
-												  rt_kprintf("\r\n ---------   语音文件的最后地址	  VoiceFileSize %d Bytes  \r\n",Dev_Voice.Voice_FileSize);
-												}   
-										Api_DFdirectory_Write(voice, Dev_Voice.Voice_Reg,500);  
-		                                 Dev_Voice.Voice_FileSize+=500;
-		                                 Sound_SaveEnd();  */
+
 						            break;
 						  case 0x01:  // 开始录音
                                                        
-								     VOC_REC_Start();
-						 					   
-					 /*
-						          if(MMedia2_Flag==0)
-						          	{
-                                       MP3_send_start();
-									   rt_kprintf("\r\n  上传固有音频 \r\n"); 
-									   MMedia2_Flag=1;
-									   break;
-						          	}
-                                    Dev_Voice.Rec_Dur=(UDP_HEX_Rx[14]<<8)+UDP_HEX_Rx[15];
-									Dev_Voice.SaveOrNotFlag=UDP_HEX_Rx[16];
-
-                                    // ------   录音文件名 -----------
-                                    if(TF_Card_Status()==1)
-	                                { 
-	                                    memset(Dev_Voice.FileName,0,sizeof(Dev_Voice.FileName)); 	    									
-										sprintf((char*)Dev_Voice.FileName,"%d%d%d%d.spx",time_now.day,time_now.hour,time_now.min,time_now.sec);    
-	                                   // creat_file(Dev_Voice.FileName); //创建文件名了 
-	                                    Sound_SaveStart(); 
-										rt_kprintf("\r\n			  中心录音文件名称: %s \r\n",Dev_Voice.FileName);	
-										Save_MediaIndex(1,Dev_Voice.FileName,0,0);     
-                                     }
-                                    Dev_Voice.Centre_RecordFlag=1;//中心开始录音标志位
-									              
-									Dev_Voice.CMD_Type='1';
-									Dev_Voice.info_sdFlag=2;									
-									Dev_Voice.Voice_FileSize=0; //clear size
-									Dev_Voice.Voice_FileOperateFlag=1; 
-									MMedia2_Flag=0;  
-					   */				
+								     VOC_REC_Start();			 					   
+		
 							        break;
 
                        	}
@@ -9753,19 +8911,7 @@ void TCP_RX_Process( u8  LinkNum)  //  ---- 808  标准协议
 		   	        }
 				 else
 				 {
-                                   if(UDP_HEX_Rx[13]==0x1F) 
-					  	{
-					  	 
-						    //ISP_Get_RawData(UDP_HEX_Rx+14,UDP_hexRx_len-14); 	
-						    rt_kprintf("\r\n ISP_raw\r\n"); 
-					           Nullpro_8900H (UDP_HEX_Rx+14);
-						    return;	
-					  	  //  DataTrans_ISPService_8900H(UDP_HEX_Rx+14); //14 偏移是信息内容
-					  	}
-					  else
-					  	{
 					  	rt_kprintf("\r\n透传数据类型错误UDP_HEX_Rx[13]=%d",UDP_HEX_Rx[13]);
-					  	}
 				 }
 		              break;
 		   case  0x8A00:   //    平台RSA公钥
@@ -9812,16 +8958,24 @@ void TCP_RX_Process( u8  LinkNum)  //  ---- 808  标准协议
 						  	     BD_ISP.Total_PacketNum=(UDP_HEX_Rx[13]<<8)+UDP_HEX_Rx[14];  // 总包数
 						         BD_ISP.CurrentPacket_Num=(UDP_HEX_Rx[15]<<8)+UDP_HEX_Rx[16]; // 当前包序号从1 开始
 						  	} 
-						 else
+						    else
 						 	{
 							 	//------------   ACK   Flag -----------------
 							  	 SD_ACKflag.f_CentreCMDack_0001H=1;
 		 						 Ack_Resualt=0;
 		 						 SD_ACKflag.f_CentreCMDack_resualt=Ack_Resualt;
 						 	}	
+						  //  exception	
+                          if(BD_ISP.Total_PacketNum==0)
+						  	{
+                               rt_kprintf("\r\n 总包数为0  异常\r\n"); 
+							    break;
+                          	}
+							
 						//   2.  检测 
 						if(BD_ISP.CurrentPacket_Num==1)
 						{	
+						          ISP_judge_resualt=0;
 	                              BD_ISP.Update_Type=UDP_HEX_Rx[17];  //升级包类型
 		                                            //----  Debug ------
 								  switch(BD_ISP.Update_Type)
@@ -9843,25 +8997,139 @@ void TCP_RX_Process( u8  LinkNum)  //  ---- 808  标准协议
 								  i=24+BD_ISP.Version_len;
 								  BD_ISP.Content_len=(UDP_HEX_Rx[i]<<24)+(UDP_HEX_Rx[i+1]<<16)+(UDP_HEX_Rx[i+2]<<8)+UDP_HEX_Rx[i+3];// 升级包长度
 								  i+=4;  
-		                          rt_kprintf("\r\n 升级包长度:%d Bytes\r\n",BD_ISP.Content_len);
+								  rt_kprintf("\r\n 制造商ID:%s\r\n",BD_ISP.ProductID); 
+		                          rt_kprintf("\r\n 升级包长度:%d Bytes\r\n",BD_ISP.Content_len); 
 
 								  infolen=infolen-11-BD_ISP.Version_len;// infolen 					 
 
 								  BD_ISP.PacketRX_wr=0; // clear
-								  BD_ISP.ISP_running=1;					 
-						}					  
-						   //--------  升级包内容  -------------					 
-						  if(infolen)      //  升级内容以后根据类型往不同的存储区域写
+								  BD_ISP.ISP_running=1;			
+
+                                   i=17+24;
+
+                                  //   判断自己文件
+								    memcpy(BD_ISP.ContentData,UDP_HEX_Rx+i,infolen); // 升级包内容								    
+									//OutPrint_HEX("第一包",BD_ISP.ContentData,infolen);
+                                   if(strncmp(BD_ISP.ContentData+32+13,"70420TW703",10)==0) //判断厂商和型号
+                                   	{
+                                   	    ISP_judge_resualt++;// step 1
+                                        rt_kprintf("\r\n 厂商型号正确\r\n");  
+
+                                        // hardware 
+										HardVersion=(BD_ISP.ContentData[32+38]<<24)+(BD_ISP.ContentData[32+39]<<16)+(BD_ISP.ContentData[32+40]<<8)+BD_ISP.ContentData[32+41]; 
+                                        if((HardVersion>0)&&(HardVersion<5))
+                                         {
+                                             ISP_judge_resualt++;// step 2
+										     rt_kprintf("\r\n 硬件版本:%d\r\n",HardVersion);  
+                                         }
+										//firmware
+										if(strncmp(BD_ISP.ContentData+32+42,"HBGGHYPT",8)==0) 
+										{
+										   ISP_judge_resualt++;// step 3
+										   rt_kprintf("\r\n  固件版本:HBGGHYPT\r\n");   
+										}
+										// operater
+										if(strncmp(BD_ISP.ContentData+32+62,"HBTDT",5)==0)  
+										{
+										   ISP_judge_resualt++;// step 4
+										   rt_kprintf("\r\n  固件版本:HBTDT\r\n");      
+										}
+										
+                                   	}
+
+								  
+								  //  根据判断是否是本机的然后进行操作，如不是返回取消    
+								  // 若是 第一包，擦除相关区域
+								  if(ISP_judge_resualt==4) 
+								     DF_Erase();  
+								  else
+								  	{									  	
+	                                  SD_ACKflag.f_BD_ISPResualt_0108H=3;  // 取消
+	                                  rt_kprintf("\r\n 类型不匹配失败!\r\n");  
+									  break; 
+								  	}
+
+								  
+						}		
+						else
+							 i=17; 
+						   //3. --------  升级包内容  -------------		
+                           if(BD_ISP.CurrentPacket_Num!=BD_ISP.Total_PacketNum)
+								 BD_ISP.PacketSizeGet=infolen;
+						   
+						   if(infolen) //  升级内容以后根据类型往不同的存储区域写
                             {
-                                  memcpy(BD_ISP.ContentData,UDP_HEX_Rx+i+4,infolen); // 升级包内容
-                                  BD_ISP.PacketRX_wr+=infolen;   
+                                  memcpy(BD_ISP.ContentData,UDP_HEX_Rx+i,infolen); // 升级包内容
+                                  BD_ISP.PacketRX_wr+=infolen;
+                                  //---- 替换更新标志-----
+                                  if(BD_ISP.CurrentPacket_Num==1)
+								  	     BD_ISP.ContentData[32]=0xF1;       
+								  
+								  // OutPrint_HEX("Write",BD_ISP.ContentData,infolen);   
+                                  //  判断写入地址
+                                  if(((BD_ISP.CurrentPacket_Num-1)*BD_ISP.PacketSizeGet)>257024) //257024=251*1024
+                                  	{                                  	
+									     SD_ACKflag.f_BD_ISPResualt_0108H=3;  // 取消
+									    rt_kprintf("\r\n 地址偏出区域 --异常 ，失败!\r\n"); 
+								  	    break;
+                                  	}	
+								  
+                                  //  write area   
+                                  WatchDog_Feed();
+                                  SST25V_BufferWrite(BD_ISP.ContentData,ISP_StartArea+(BD_ISP.CurrentPacket_Num-1)*BD_ISP.PacketSizeGet,infolen);
+								  delay_ms(100);
+								  WatchDog_Feed();
+                            
+
+								  // read 
+								  memset(ISP_buffer,0,sizeof(ISP_buffer));
+								  SST25V_BufferRead(ISP_buffer,ISP_StartArea+(BD_ISP.CurrentPacket_Num-1)*BD_ISP.PacketSizeGet,infolen); 
+								  delay_ms(50);
+
+								  for(i=0;i<infolen;i++)
+								  {
+                                     if(BD_ISP.ContentData[i]!=ISP_buffer[i])
+                                     	{
+                                          rt_kprintf("\r\n ISP error at :%d  \r\n",i);
+                                          break;
+                                     	}
+
+								  }
+                                //  OutPrint_HEX("Read",ISP_buffer,infolen);   
+								  
 						    }
-						   //------------   ACK   Flag -----------------
-						  	 SD_ACKflag.f_CentreCMDack_0001H=1;
-	 						 Ack_Resualt=0;
-	 						 SD_ACKflag.f_CentreCMDack_resualt=Ack_Resualt;	
-						   //------------------------------------------------------------------------	 
-                                            break;
+						   
+						   rt_kprintf("\r\n  ISP  当前包数:%d	--- 总包数:%d    contentlen=%d Bytes \r\n",BD_ISP.CurrentPacket_Num,BD_ISP.Total_PacketNum,infolen);
+						   
+                           //4.----------- ISP state update ---------------------- 
+                           BD_ISP.ISP_running=1;
+                           BD_ISP.ISP_runTimer=0;     
+
+						   //5. --------  ISP ACK process  -----------
+						   if((BD_ISP.CurrentPacket_Num==BD_ISP.Total_PacketNum)&&(i==infolen))
+						   {
+						        // File_CRC_Get(); 
+						       SD_ACKflag.f_BD_ISPResualt_0108H=1;   //正常
+							   rt_kprintf("\r\n 最后一包\r\n"); 
+						   }
+						   else
+						   if(BD_ISP.CurrentPacket_Num>BD_ISP.Total_PacketNum)
+						   	{
+                                
+                                  SD_ACKflag.f_BD_ISPResualt_0108H=3;  // 取消
+                                 rt_kprintf("\r\n 当前包大于总包数 --异常 ，失败!\r\n"); 
+						   	}
+						   else
+						   	{
+                                
+								//------------	 ACK   Flag -----------------
+		  					    SD_ACKflag.f_CentreCMDack_0001H=1;
+							    Ack_Resualt=0;
+							    SD_ACKflag.f_CentreCMDack_resualt=Ack_Resualt; 
+						    	 //------------------------------------------------------------------------   
+
+						   	} 
+                            break;
             case   0x8203://BD--8.22  人工确认报警消息
                                      rt_kprintf( "\r\n收到8203!\r\n"); 
                              	    if (Warn_Status[3]&0x01)  //紧急报警
@@ -10064,293 +9332,6 @@ void AvrgSpd_MintProcess(u8 hour,u8 min, u8 sec)
 //==================================================================================================
 
 //  1.  上载数据命令字相关  
-/*
-u8 In_Type  :   传输类型
-u8* InStr   :   参数字符串
-u8 TransType:   传输方式   串口  或  GPRS
-
-*/
-void Device_Data(u8 In_Type,u8 TransType) 
-{
-  u8   UpReg[500];
-  u16  Up_wr=0,SregLen=0,Greglen=0,Swr=0;//,Gwr=0; // S:serial  G: GPRS
-  u8   Sfcs=0, Gfcs=0;  
-  u16  i=0;
-//  u16  packet_len=0;
-  u8   Reg[70];  
-  u32  regdis=0,reg2=0;
-  u8    QueryRecNum=0;
-  
-  memset(UpReg,0,500);
-  Up_wr=0;
-
-  
-  if(TransType)  //-------  GPRS  得添加 无线协议头
-  {
-    memcpy(UpReg+Up_wr,"*GB",3); // GPRS 起始头
-    Up_wr+=3;
-	
-    UpReg[Up_wr++]=0x00;  // SIM 号码   最先两个字节填写0x00
-	UpReg[Up_wr++]=0x00;
-	memcpy(UpReg+Up_wr,SIM_code,6);
-	Up_wr+=6;
-	
-	Greglen=Up_wr;                      // 长度
-	Up_wr+=2;
-	
-	UpReg[Up_wr++]=0x00; //消息序号 默认 0x00
-
-	UpReg[Up_wr++]=0x20; //参数  bit5 bit4 10 选择应答遵照协议 
-
-    UpReg[Up_wr++]=0xF0; // 命令字  无线传输RS232数据
-
-	//   以下是数据内容
-  }  
-  //---------------填写 A 协议头 ------------------------
-  Swr=Up_wr;  // reg save
-  UpReg[Up_wr++]=0xAA;  // 起始头
-  UpReg[Up_wr++]=0x75;
-  //---------------根据类型分类填写内容------------------
-  switch(In_Type)  
-  	{
-  	    //---------------- 上传数类型  -------------------------------------
-		case  A_Up_DrvInfo  :      //  当前驾驶人信息
-		                     UpReg[Up_wr++]=In_Type; //命令字
-
-							 SregLen=0x00;           // 信息长度
-                             UpReg[Up_wr++]=0x00;    // Hi
-                             UpReg[Up_wr++]=39;      // Lo
-                             
-                             UpReg[Up_wr++]=0x00;    // 保留字 
-                             
-                             
-                             memcpy(UpReg+Up_wr,JT808Conf_struct.Driver_Info.DriverCard_ID,18); //信息内容
-                             Up_wr+=18;
-							 memcpy(UpReg+Up_wr,JT808Conf_struct.Driver_Info.DriveName,21);
-							 Up_wr+=21;
-							 
-			                 break;
-		case  A_Up_RTC      :      //  采集记录仪的实时时钟
-                             UpReg[Up_wr++]=In_Type; //命令字
-
-							 SregLen=0x00;           // 信息长度
-                             UpReg[Up_wr++]=0x00;    // Hi
-                             UpReg[Up_wr++]=6;      // Lo
-                             
-                             UpReg[Up_wr++]=0x00;    // 保留字
-                             
-                             Time2BCD(UpReg+Up_wr);   //信息内容  
-                             Up_wr+=6;
-                             break;
-		case  A_Up_Dist     :    //  采集里程
-                             UpReg[Up_wr++]=In_Type; //命令字
-
-							 SregLen=0x00;           // 信息长度
-                             UpReg[Up_wr++]=0x00;    // Hi
-                             UpReg[Up_wr++]=16;      // Lo
-                             
-                             UpReg[Up_wr++]=0x00;    // 保留字
-                             //   信息内容
-                             Time2BCD(UpReg+Up_wr);
-							 Up_wr+=6;
-                             memcpy(UpReg+Up_wr,(u8*)JT808Conf_struct.FirstSetupDate,6);
-							 Up_wr+=6;
-							 regdis=JT808Conf_struct.Distance_m_u32/100;  //单位0.1km 
-							 reg2=regdis/10000000;
-							 UpReg[Up_wr++]=(reg2<<4)+((regdis%10000000)/1000000);
-							 UpReg[Up_wr++]=((regdis%1000000/100000)<<4)+(regdis%100000/10000);
-							 UpReg[Up_wr++]=((regdis%10000/1000)<<4)+(regdis%1000/100);
-							 UpReg[Up_wr++]=((regdis%100/10)<<4)+(regdis%10); 
-							 
-
-		case  A_Up_PLUS     :    //  采集记录仪速度脉冲系数
-                             UpReg[Up_wr++]=In_Type; //命令字
-
-							 SregLen=0x00;           // 信息长度
-                             UpReg[Up_wr++]=0x00;    // Hi
-                             UpReg[Up_wr++]=10;      // Lo
-                             
-                             UpReg[Up_wr++]=0x00;    // 保留字
-
-							 //  信息内容
-							 Time2BCD(UpReg+Up_wr);
-							 Up_wr+=6;
-                             UpReg[Up_wr++]=(u8)(JT808Conf_struct.Vech_Character_Value<<24);
-							 UpReg[Up_wr++]=(u8)(JT808Conf_struct.Vech_Character_Value<<16);
-							 UpReg[Up_wr++]=(u8)(JT808Conf_struct.Vech_Character_Value<<8);
-							 UpReg[Up_wr++]=(u8)(JT808Conf_struct.Vech_Character_Value); 
-							 
-                             break;
-		case  A_Up_VechInfo :    //  车辆信息
-		                     UpReg[Up_wr++]=In_Type; //命令字
-
-							 SregLen=0x00;           // 信息长度
-                             UpReg[Up_wr++]=0x00;    // Hi
-                             UpReg[Up_wr++]=41;      // Lo
-                             
-                             UpReg[Up_wr++]=0x00;    // 保留字                              
-                             
-                             memcpy(UpReg+Up_wr,JT808Conf_struct.Vechicle_Info.Vech_VIN,17); //信息内容
-                             Up_wr+=17;
-							 memcpy(UpReg+Up_wr,JT808Conf_struct.Vechicle_Info.Vech_Num,12);
-                             Up_wr+=12;
-							 memcpy(UpReg+Up_wr,JT808Conf_struct.Vechicle_Info.Vech_Type,12);  
-                             Up_wr+=12;
-
-		                     break;
-		case  A_Up_AvrgMin  :      //  每分钟平均速度记录      // 默认填写最新7分钟记录
-                                       UpReg[Up_wr++]=In_Type; //命令字
-			
-									   SregLen=455;		   // 信息长度
-									   UpReg[Up_wr++]=(u8)(SregLen>>8);    // Hi
-									   UpReg[Up_wr++]=(u8)SregLen;		   // Lo	65x7    
-									   
-									   UpReg[Up_wr++]=0x00;    // 保留字	 
-									   //-----------  信息内容  --------------		
-									       //----------------------
-										  QueryRecNum=Api_DFdirectory_Query(spdpermin,0);   //查询当前疲劳驾驶记录数目
-										 if(QueryRecNum>7)								   
-										        QueryRecNum=7;			
-								
-										    SregLen=QueryRecNum*65;     // 改写信息长度
-			                                                      UpReg[Up_wr-3]=(u8)(SregLen>>8);	  // Hi
-			                                                      UpReg[Up_wr-2]=(u8)SregLen;	  // Lo    65x7    
-
-																  
-										 for(i=0;i<QueryRecNum;i++)			   // 从最新处读取存储填写
-										  {
-											 Api_DFdirectory_Read(spdpermin,Reg,70,0,i); // 从new-->old  读取
-											  memcpy(UpReg+Up_wr,Reg+5,60);	// 只填写速度
-											Up_wr+=65;	    
-										  }
-									       //------------------------------
-									   
-		                     break; 
-		case  A_Up_Tired    :     //  疲劳驾驶记录
-		                               UpReg[Up_wr++]=In_Type; //命令字
-			
-									   SregLen=180;		   // 信息长度
-									   UpReg[Up_wr++]=(u8)(SregLen>>8);    // Hi
-									   UpReg[Up_wr++]=(u8)SregLen;		   // Lo	30x6   
-									   
-									   UpReg[Up_wr++]=0x00;    // 保留字	   
-
-
-									   //----------------------------------									    
-                                                                   	QueryRecNum=Api_DFdirectory_Query(tired_warn,0);   //查询当前疲劳驾驶记录数目
-										 if(QueryRecNum>6)								   
-										        QueryRecNum=6;		
-										 
-                                                                  SregLen=30*QueryRecNum;		   // 信息长度
-									   UpReg[Up_wr-3]=(u8)(SregLen>>8);    // Hi
-									   UpReg[Up_wr-2]=(u8)SregLen;		   // Lo	65x7  
-										 
-										 for(i=0;i<QueryRecNum;i++)			   // 从最新处读取存储填写
-										  {
-											 Api_DFdirectory_Read(tired_warn,Reg,31,0,i); // 从new-->old  读取
-                                                                              memcpy(UpReg+Up_wr,Reg,30); 
-											 Up_wr+=30; 	    
-										  }
-									  //----------------------------------	 
-                                                                    
-
-		                     break;
-		//------------------------ 下传数据相关命令 ---------------------
-	    case  A_Dn_DrvInfo  :       //  设置车辆信息
-                              
-							  //-----------------------------------------------------------------------
-							/*  memset(JT808Conf_struct.Vechicle_Info.Vech_VIN,0,18);
-							  memset(JT808Conf_struct.Vechicle_Info.Vech_Num,0,13);
-							  memset(JT808Conf_struct.Vechicle_Info.Vech_Type,0,13); 
-							  
-							  memcpy(JT808Conf_struct.Vechicle_Info.Vech_VIN,InStr,17);
-							  memcpy(JT808Conf_struct.Vechicle_Info.Vech_Num,InStr+17,12);
-							  memcpy(JT808Conf_struct.Vechicle_Info.Vech_Type,InStr+29,12);  
-							  
-							  Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));  
-							  */
-		                    // break;
-                           
-		case  A_Dn_RTC      :        //  设置记录仪时间
-		                    
-		                     UpReg[Up_wr++]=In_Type; //命令字
-
-							                    // 信息长度
-                             UpReg[Up_wr++]=0x00;    // Hi
-                             UpReg[Up_wr++]=0;      // Lo   20x8
-                             
-                             UpReg[Up_wr++]=0x00;    // 保留字  
-
-		                     break;
-		case  A_Dn_Plus     :        //  设置速度脉冲系数
-                             
-						//	 JT808Conf_struct.Vech_Character_Value=((u32)(*InStr)<<24)+((u32)(*InStr+1)<<16)+((u32)(*InStr+2)<<8)+(u32)(*InStr+3); // 特征系数	速度脉冲系数
-						//	 Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));  
-                             //-------------------------------------------------------------  
-							 UpReg[Up_wr++]=In_Type; //命令字
-							                    // 信息长度
-                             UpReg[Up_wr++]=0x00;    // Hi
-                             UpReg[Up_wr++]=0;      // Lo   20x8                             
-                             UpReg[Up_wr++]=0x00;    // 保留字   
-		                     break;
-		default :
-                             rt_kprintf("Error:   Device Type Error! \r\n");
-			                 return; 
-							 
-  	}
-  //---------------  填写计算 A 协议  Serial Data   校验位  -------------------------------------
-  Sfcs=0;						//	计算S校验 从OxAA 开始 
-  for(i=Swr;i<Up_wr;i++)
-	 Sfcs^=UpReg[i];
-  UpReg[Up_wr++]=Sfcs;			 // 填写FCS  
-  //-----------------------------------------------------------------------------
-  if(TransType)  //-------通过  GPRS  
-  {
-    
-    //----stuff Ginfolen ----
-    UpReg[Greglen]=(u8)((Up_wr-2)<<8);  //长度不算头 
-	UpReg[Greglen+1]=(u8)(Up_wr-2);   
-	
-    Gfcs=0;                 //  计算从电话号码开始到校验前数据的异或和  G 协议校验 
-	for(i=3;i<Up_wr;i++)
-		Gfcs^=UpReg[i];
-	
-    UpReg[Up_wr++]=Gfcs;  // 填写G校验位
-
-	
-    UpReg[Up_wr++]=0x0D;  // G 协议尾
-	UpReg[Up_wr++]=0x0A;
-    //=================================================================================================
-    //---------通过 GPRS 发送  --------------    
-	GPRS_infoWr_Tx=0;	//--------------  clear  --------- 
-	//-----------------------------------------------------------------------
-	memcpy(GPRS_info+GPRS_infoWr_Tx,UpReg,Up_wr); // 拷贝内容到发送缓存区
-	GPRS_infoWr_Tx+=Up_wr; 	
-	//-----------  Add for Debug ---------------------------------
-#if  0   	
-	 memset(UDP_AsciiTx,0,sizeof(UDP_AsciiTx)); 	 
-	 strcat((char*)UDP_AsciiTx,"AT%IPSENDX=1,\"");
-	 packet_len=14;//strlen((const char*)UDP_AsciiTx);	
-	 UDP_AsciiTx_len=HextoAscii(GPRS_info, GPRS_infoWr_Tx,UDP_AsciiTx+packet_len);
-	
-	 packet_len+=UDP_AsciiTx_len;	 
-	 strcat((char*)UDP_AsciiTx,"\"\r\n");  
- 
-	  以后再说吧
-	 if(DispContent==2)
-		Uart1_PutData((uint8_t *) UDP_AsciiTx, packet_len+3);		
-	 GSM_PutData((uint8_t*)UDP_AsciiTx,packet_len+3);  
-	 rt_kprintf("\r\n	SEND DriveRecord -UP-Data! \r\n");  
-#endif	
-  }  
-  else	 
-  {                 //-----  通过串口输出
-    for(i=0;i<Up_wr;i++)
-		rt_kprintf("%c",UpReg[i]); 
-  }
-
-
-} 
 
 //------------------------------------------------------------------
 void  Process_GPRSIN_DeviceData(u8 *instr, u16  infolen)
@@ -10420,17 +9401,17 @@ void  Process_GPRSIN_DeviceData(u8 *instr, u16  infolen)
 				break;
 	  //  下行
 	  case 0x82: // 设置车辆信息                 
-				    memset(JT808Conf_struct.Vechicle_Info.Vech_VIN,0,sizeof(JT808Conf_struct.Vechicle_Info.Vech_VIN));
-				    memset(JT808Conf_struct.Vechicle_Info.Vech_Num,0,sizeof(JT808Conf_struct.Vechicle_Info.Vech_Num));
-				    memset(JT808Conf_struct.Vechicle_Info.Vech_Type,0,sizeof(JT808Conf_struct.Vechicle_Info.Vech_Type)); 	
+				    memset(Vechicle_Info.Vech_VIN,0,sizeof(Vechicle_Info.Vech_VIN));
+				    memset(Vechicle_Info.Vech_Num,0,sizeof(Vechicle_Info.Vech_Num));
+				    memset(Vechicle_Info.Vech_Type,0,sizeof(Vechicle_Info.Vech_Type)); 	
                  
 					 //-----------------------------------------------------------------------
-					 memcpy(JT808Conf_struct.Vechicle_Info.Vech_VIN,instr,17);
-					 memcpy(JT808Conf_struct.Vechicle_Info.Vech_Num,instr+17,12);
-					 memcpy(JT808Conf_struct.Vechicle_Info.Vech_Type,instr+29,12); 
+					 memcpy(Vechicle_Info.Vech_VIN,instr,17);
+					 memcpy(Vechicle_Info.Vech_Num,instr+17,12);
+					 memcpy(Vechicle_Info.Vech_Type,instr+29,12); 
 					 
 			
-				 	Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));   
+				 	DF_WriteFlashSector(DF_Vehicle_Struct_offset,0,(u8*)&Vechicle_Info,sizeof(Vechicle_Info));      
 
                  Adata_ACKflag.A_Flag_Dn_DrvInfo_82H=instr[2];
 				    
@@ -10468,32 +9449,6 @@ void  Process_GPRSIN_DeviceData(u8 *instr, u16  infolen)
 
    	}
 }
-
-u8 Send_Device_Data(void)  //  给行车记录仪发送数据
-{
-  u8  j=0,i=0,reg=0;;
-
-   j=sizeof(Adata_ACKflag);
-  for(i=0;i<j;i++)
-  	{
-  	    reg=(*((u8*)&Adata_ACKflag+i)); 
-        if(reg)
-        {
-		    if(reg!=0xff)
-			{
-			  Device_Data(reg,1);
-		    }
-			else
-			   Device_Data(0x00,1);	   // 采集行车记录仪执行标准版本号 命令为0x00 置位时填写0xFF,所以单独处理
-            (*((u8*)&Adata_ACKflag+i))=0;  // clear flag 
-            return true;
-		}  
-		
-  	}
-   return false; 
-
-}
-
 
 #if 0
 
@@ -10646,7 +9601,7 @@ void Protocol_808_Decode(void)  // 解析指定buffer :  UDP_HEX_Rx
 		}
 		else  
 		{
-		  UDP_HEX_Rx[UDP_DecodeHex_Len]=UDP_HEX_Rx[i];  
+		  UDP_HEX_Rx[UDP_DecodeHex_Len]=UDP_HEX_Rx[i];   
 		}
 	    UDP_DecodeHex_Len++;
 	 }	
@@ -11454,57 +10409,78 @@ u32   Distance_Point2Line(u32 Cur_Lat, u32  Cur_Longi,u32 P1_Lat,u32 P1_Longi,u3
 
 
 
- unsigned short int CRC16_file(unsigned short int num)  
+ unsigned short int File_CRC_Get(void)  
 {
-#if  0
+ 
+ u8   buffer_temp[514]; 
  unsigned short int i=0,j=0;
- unsigned char buffer_temp[514];
-   memset(buffer_temp,0,sizeof(buffer_temp));
-   for(i=0;i<num;i++)
+ u16  packet_num=0,leftvalue=0;  // 512    per packet
+ u32  File_size=0; 
+
+ 
+   memset(buffer_temp,0,sizeof(buffer_temp));   
+
+   //  获取  文件头信息
+   SST25V_BufferRead( buffer_temp,ISP_StartArea,  256 );     
+   File_size=(buffer_temp[114]<<24)+(buffer_temp[115]<<16)+(buffer_temp[116]<<8)+buffer_temp[117];
+   
+   leftvalue=File_size%512;
+   rt_kprintf("\r\n 文件大小: %d Bytes  leftvalue=%d \r\n",File_size,leftvalue);  			
+   FileTCB_CRC16=(buffer_temp[134]<<8)+buffer_temp[135];
+   rt_kprintf("\r\n Read CRC16: 0x%X Bytes\r\n",FileTCB_CRC16);  
+
+  // OutPrint_HEX("1stpacket",buffer_temp,256);  
+   
+    if(leftvalue)   // 除以 512
+          packet_num=(File_size>>9)+1; 
+	else 
+          packet_num=(File_size>>9);
+
+	
+   for(i=0;i<packet_num;i++)
 	{
 		if(i==0)   //第一包
 			{
 			Last_crc=0;   // clear first  
-			crc_fcs=0;
-			buffer_temp[0]=0;
-	        buffer_temp[1]=51;
-	        DF_ReadFlash(51,0,&buffer_temp[2],PageSIZE);
-			 WatchDog_Feed(); 
+			crc_fcs=0; 
+			SST25V_BufferRead(buffer_temp,ISP_StartArea+256,512);   // 0x001000+256=0x001100   ISP_StartArea+256
+			delay_ms(50);
+			WatchDog_Feed();		 	
+			Last_crc=CRC16_1(buffer_temp,512,0xffff);
+			rt_kprintf("\r\ni=%d,j=%d,Last_crc=%x",i,j,Last_crc); 
 			
-			Last_crc=CRC16_1(buffer_temp,514,0xffff);
-			rt_kprintf("\r\ni=%d,j=%d,Last_crc=%x",i,j,Last_crc);
+			rt_kprintf("\r\n //----------   %d     packet    len=%d  ",i+1,512);
+			OutPrint_HEX("1stpacket",buffer_temp,512);  
 			}
-		else if(i==(num-1))  //最后一包
+		else 
+		if(i==(packet_num-1))  //最后一包  
 			{
-            buffer_temp[0]=0;
-	        buffer_temp[1]=50;
-	        DF_ReadFlash(50,0,&buffer_temp[2],PageSIZE);
-			FileTCB_CRC16=((unsigned short int)buffer_temp[512]<<8)+(unsigned short int)buffer_temp[513];
-			crc_fcs=CRC16_1(buffer_temp,512,Last_crc);
-			rt_kprintf("\r\ni=%d,j=%d,Last_crc=%x ReadCrc=%x ",i,j,crc_fcs,FileTCB_CRC16);
-			}
+             SST25V_BufferRead(buffer_temp,ISP_StartArea+256+i*512,leftvalue);    
+			 delay_ms(50);
+			 WatchDog_Feed();			 
+			 rt_kprintf("\r\n //----------   %d     packet    len=%d  ",i+1,leftvalue);
+			 OutPrint_HEX("endstpacket",buffer_temp,leftvalue);  
+			 crc_fcs=CRC16_1(buffer_temp,leftvalue,Last_crc);
+			 rt_kprintf("\r\ni=%d,Last_crc=0x%X ReadCrc=0x%X ",i+1,crc_fcs,FileTCB_CRC16);   
+			} 
 		else  
 			{             // 中间的包
-			 j=i+51;
-			 buffer_temp[0]=(char)(j>>8);
-			 buffer_temp[1]=(char)j;
-			 DF_ReadFlash(j,0,&buffer_temp[2],PageSIZE);
-			 WatchDog_Feed(); 
-			Last_crc=CRC16_1(buffer_temp,514,Last_crc);
-			//rt_kprintf("\r\ni=%d,j=%d,Last_crc=%d",i,j,Last_crc);
+			  SST25V_BufferRead(buffer_temp,ISP_StartArea+256+i*512,512);    
+			  delay_ms(50); 
+			  WatchDog_Feed();			  
+			  rt_kprintf("\r\n //----------   %d	 packet    len=%d  ",i+1,512); 
+			  OutPrint_HEX("midstpacket",buffer_temp,512);     
+			  Last_crc=CRC16_1(buffer_temp,512,Last_crc);  
 			}
 	   }
-rt_kprintf("\r\n  校验结果 %x",crc_fcs);
+   
+      rt_kprintf("\r\n  校验结果 %x",crc_fcs); 
 return crc_fcs;
-#endif
-		  return 1;
 }
-
-
-
+FINSH_FUNCTION_EXPORT(File_CRC_Get, File_CRC_Get);      
 
 //-----------------------------------------------------------------------------------
-void Save_AvrgSpdPerMin(void) 
+void Save_AvrgSpdPerMin(void)  
 { /*
      Note: 存储单位小时每分钟平均速度 
   */
@@ -11841,7 +10817,7 @@ FINSH_FUNCTION_EXPORT(normalspd, normalspd);
 void  dur(u8 *content)
 {
   sscanf(content, "%d", (u32*)&Current_SD_Duration);
-  rt_kprintf("\r\n 手动设置上报时间间隔 %d s\r\n",Current_SD_Duration); 
+  rt_kprintf("\r\n 手动设置上报时间间隔 %d s \r\n",Current_SD_Duration); 
   
        JT808Conf_struct.DURATION.Default_Dur=Current_SD_Duration;
         Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
@@ -11858,7 +10834,7 @@ void handsms(u8 *instr)
 	SMS_Service.SMS_come=1;
     rt_kprintf("手动发送:  %s",SMS_Service.SMS_sd_Content);    
 }
-FINSH_FUNCTION_EXPORT(handsms, handsms);  
+//FINSH_FUNCTION_EXPORT(handsms, handsms);  
 
 
 void driver_name(u8 *instr)
@@ -11873,18 +10849,19 @@ FINSH_FUNCTION_EXPORT(driver_name, set_driver_name );
 
 void chepai(u8 *instr)
 {    
-    memset(JT808Conf_struct.Vechicle_Info.Vech_Num,0,sizeof(JT808Conf_struct.Vechicle_Info.Vech_Num));
-    memcpy(JT808Conf_struct.Vechicle_Info.Vech_Num,instr,8); 
-    Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));  
+    memset(Vechicle_Info.Vech_Num,0,sizeof(Vechicle_Info.Vech_Num));
+    memcpy(Vechicle_Info.Vech_Num,instr,8); 
+   DF_WriteFlashSector(DF_Vehicle_Struct_offset,0,(u8*)&Vechicle_Info,sizeof(Vechicle_Info));      
 }
 FINSH_FUNCTION_EXPORT(chepai, set_chepai);   
 
 void  vin_set(u8 *instr)
 {
 	 //车辆VIN
-	memset(JT808Conf_struct.Vechicle_Info.Vech_VIN,0,sizeof(JT808Conf_struct.Vechicle_Info.Vech_VIN));
-	memcpy(JT808Conf_struct.Vechicle_Info.Vech_VIN,instr,strlen(instr)); 
-	Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
+	memset(Vechicle_Info.Vech_VIN,0,sizeof(Vechicle_Info.Vech_VIN));
+	memcpy(Vechicle_Info.Vech_VIN,instr,strlen(instr)); 
+	DF_WriteFlashSector(DF_Vehicle_Struct_offset,0,(u8*)&Vechicle_Info,sizeof(Vechicle_Info));		
+
        rt_kprintf("\r\n 手动设置vin:%s \r\n",instr); 
 
 }
@@ -11894,7 +10871,6 @@ void  current(void)
 {
     PositionSD_Enable();
     Current_UDP_sd=1;
-
 }
 FINSH_FUNCTION_EXPORT(current, current );    
 
@@ -11904,15 +10880,14 @@ void  link_mode(u8 *instr)
    if(instr[0]=='1')
    {
       JT808Conf_struct.Link_Frist_Mode=1;
-	   rt_kprintf("\r\n Mainlink:%s \r\n",instr); 
+	   rt_kprintf("\r\n Mainlink:%s \r\n",instr);   
    }	  
    else
    if(instr[0]=='0')
    {
    	   JT808Conf_struct.Link_Frist_Mode=0;
        rt_kprintf("\r\n DNSR :%s \r\n",instr);  
-   }
-
+   }	
   
    Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));	 
 
@@ -11950,7 +10925,7 @@ void  port_aux(u8 *instr)
 		//	DataLink_EndFlag=1; //AT_End();  
 
 }
-FINSH_FUNCTION_EXPORT(port_aux, port_aux); 
+//FINSH_FUNCTION_EXPORT(port_aux, port_aux); 
 
 
 void dnsr_main(u8*instr)
@@ -11995,7 +10970,16 @@ void dnsr_aux(u8*instr)
 	}					 
 
 }
-FINSH_FUNCTION_EXPORT(dnsr_aux, dnsr_aux);  
+//FINSH_FUNCTION_EXPORT(dnsr_aux, dnsr_aux);  
 
+void password(u8 in)
+{
+  
+   Vechicle_Info.loginpassword_flag=in;    // clear  first flag 	 
+   DF_WriteFlashSector(DF_Vehicle_Struct_offset,0,(u8*)&Vechicle_Info,sizeof(Vechicle_Info)); 
+
+  rt_kprintf("\r\n  password=%d \r\n",Vechicle_Info.loginpassword_flag);  
+}
+FINSH_FUNCTION_EXPORT(password, password);   
 
 // C.  Module

@@ -89,6 +89,10 @@ unsigned char data_tirexps[120];
 unsigned char OneKeyCallFlag=0;   //  一键拨号
 unsigned char BD_upgrad_contr=0; //  北斗升级控制
 unsigned char print_rec_flag=0;  // 打印记录标志 
+
+u8  print_workingFlag=0;  // 打印进行中。。
+
+
 u8 CarSet_0_counter=1;//记录设置车辆信息的设置内容1:车牌号2:类型3:颜色
 
 //------------ 使用前锁定相关 ------------------

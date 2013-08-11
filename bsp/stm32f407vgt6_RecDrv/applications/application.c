@@ -154,7 +154,10 @@ static void rt_thread_entry_led(void* parameter)
 			     	}	           
 
 		//-----------------------------------------------
-                        rt_thread_delay(RT_TICK_PER_SECOND/10);
+
+
+		rt_thread_delay(RT_TICK_PER_SECOND/5);
+
 	
   }
 }
@@ -165,7 +168,7 @@ int rt_application_init()
     rt_thread_t init_thread;
 
 
-       Device_CAN2_regist();    //  Device CAN2 Init
+     Device_CAN2_regist();    //  Device CAN2 Init 
 
 #if (RT_THREAD_PRIORITY_MAX == 32)
     init_thread = rt_thread_create("init",

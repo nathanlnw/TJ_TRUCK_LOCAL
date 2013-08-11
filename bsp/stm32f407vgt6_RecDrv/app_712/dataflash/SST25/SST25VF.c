@@ -113,7 +113,6 @@ u8 SPI_Flash_SendByte(u8 data)
     // Return the shifted data
     return data;
 }
-
 u8 SPI_Flash_ReceiveByte(void)
 {
   return (SPI_Flash_SendByte(Dummy_Byte));
@@ -149,38 +148,6 @@ void SST25V_BufferRead(u8* pBuffer, u32 ReadAddr, u16 NumByteToRead)
   }
   SST25V_CS_HIGH();
 }
-
-void SST25V_HighSpeedBufferRead(u8* pBuffer, u32 ReadAddr, u16 NumByteToRead)
-{
-  SST25V_CS_LOW();
-  SPI_Flash_SendByte(HighSpeedReadData);
-  SPI_Flash_SendByte((ReadAddr & 0xFF0000) >> 16);
-  SPI_Flash_SendByte((ReadAddr& 0xFF00) >> 8);
-  SPI_Flash_SendByte(ReadAddr & 0xFF);
-  SPI_Flash_SendByte(Dummy_Byte);
-
-  while(NumByteToRead--)
-  {
-    *pBuffer = SPI_Flash_ReceiveByte();
-    pBuffer++;
-  }
-  SST25V_CS_HIGH();
-}
-
-u8 SST25V_HighSpeedRead(u32 ReadAddr)
-{
-  u32 Temp = 0;
-  SST25V_CS_LOW();
-  SPI_Flash_SendByte(HighSpeedReadData);
-  SPI_Flash_SendByte((ReadAddr & 0xFF0000) >> 16);
-  SPI_Flash_SendByte((ReadAddr& 0xFF00) >> 8);
-  SPI_Flash_SendByte(ReadAddr & 0xFF);
-  SPI_Flash_SendByte(Dummy_Byte);
-  Temp = SPI_Flash_ReceiveByte();
-  SST25V_CS_HIGH();
-  return Temp;
-}
-
 
 // u8 SPI_Flash_SendByte(u8 byte)
 // {
@@ -249,54 +216,6 @@ void SST25V_strWrite(u8 *p, u32 WriteAddr,u16 length)
   SST25V_CS_HIGH();  
   SST25V_WaitForWriteEnd(); 
 }
-
-
-
-void AutoAddressIncrement_WordProgramA(u8 Byte1, u8 Byte2, u32 Addr)
-{
-  SST25V_WriteEnable();
-  SST25V_CS_LOW();
-  SPI_Flash_SendByte(AAI_WordProgram);
-  SPI_Flash_SendByte((Addr & 0xFF0000) >> 16);
-  SPI_Flash_SendByte((Addr & 0xFF00) >> 8);
-  SPI_Flash_SendByte(Addr & 0xFF);   
-
-  SPI_Flash_SendByte(Byte1);
-  SPI_Flash_SendByte(Byte2);  
-
-  SST25V_CS_HIGH();
-  SST25V_Wait_Busy_AAI();
-  //SPI_FLASH_WaitForWriteEnd();
-}
-
-
-void AutoAddressIncrement_WordProgramB(u8 state,u8 Byte1, u8 Byte2) 
-{ 
-  SST25V_WriteEnable();
-  SST25V_CS_LOW();
-  SPI_Flash_SendByte(AAI_WordProgram);
-
-  SPI_Flash_SendByte(Byte1);
-  SPI_Flash_SendByte(Byte2);
-
-  SST25V_CS_HIGH();
-  SST25V_Wait_Busy_AAI();
-  
-  if(state==1)
-  {
-    SST25V_WriteDisable();
-  }
-  SST25V_Wait_Busy_AAI();
-}
-
-
-void SST25V_Wait_Busy_AAI(void) 
-{ 
-  while (SST25V_ReadStatusRegister() == 0x43) /* 等待空闲 */
-  SST25V_ReadStatusRegister(); 
-}
-
-
 void SST25V_SectorErase_4KByte(u32 Addr)
 {
   SST25V_WriteEnable();
@@ -332,15 +251,6 @@ void SST25V_BlockErase_64KByte(u32 Addr)
   SPI_Flash_SendByte((Addr & 0xFF00) >> 8);
   SPI_Flash_SendByte(Addr & 0xFF);
   
-  SST25V_CS_HIGH();
-  SST25V_WaitForWriteEnd();
-}
-
-void SST25V_ChipErase(void)
-{
-  SST25V_WriteEnable();
-  SST25V_CS_LOW();
-  SPI_Flash_SendByte(ChipErace);
   SST25V_CS_HIGH();
   SST25V_WaitForWriteEnd();
 }
@@ -399,18 +309,6 @@ void SST25V_WaitForWriteEnd(void)
   SST25V_CS_HIGH();
 }
 
-u32 SST25V_ReadJedecID(void)
-{
-  u32 JEDECID = 0, Temp0 = 0, Temp1 = 0, Temp2 = 0;
-  SST25V_CS_LOW();
-  SPI_Flash_SendByte(ReadJedec_ID);
-  Temp0 = SPI_Flash_ReceiveByte();
-  Temp1 = SPI_Flash_ReceiveByte();
-  Temp2 = SPI_Flash_ReceiveByte();
-  SST25V_CS_HIGH();  
-  JEDECID = (Temp0 << 16) | (Temp1 << 8) | Temp2;
-  return JEDECID;
-}
 
 u16 SST25V_ReadManuID_DeviceID(u32 ReadManu_DeviceID_Addr)
 {
@@ -430,8 +328,8 @@ u16 SST25V_ReadManuID_DeviceID(u32 ReadManu_DeviceID_Addr)
   }
   else
   {
-    ManufacturerID = SPI_Flash_ReceiveByte();
-    DeviceID = SPI_Flash_ReceiveByte();
+    ManufacturerID = SPI_Flash_ReceiveByte(); 
+    DeviceID = SPI_Flash_ReceiveByte(); 
   }
   
   ManuID_DeviceID = ((ManufacturerID<<8) | DeviceID);
@@ -514,13 +412,7 @@ u8  SST25V_OneSector_Write(u8 *p,  u32  addr,  u32 len)
 	//else
 		//  return false;
 }
-void df_test(void)
-{
-   SST25V_OneSector_Write("1234567890jfldsajfdsjafjsajldsjalfjdslfjldsjlfjdsjfdsajfdsjlfjdslkfjldsajf",0x316125,76);
 
-   SST25V_OneSector_Write("我们是共产主义接班人",0x316445,20);
-}
-FINSH_FUNCTION_EXPORT( df_test, df_test);   
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 

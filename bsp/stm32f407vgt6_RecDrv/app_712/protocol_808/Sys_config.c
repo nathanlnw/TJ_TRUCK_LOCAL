@@ -12,8 +12,8 @@
 #include "Device_808.h"
 #include  "Vdr.h"
 
-
-#define   SYSID            0xDEF2    
+ 
+#define   SYSID            0xAE5B     
                                 /*        
                                                         0x0000   -----   0x00FF  生产和研发用
                                                         0x0100   -----   0x0FFF  产品出货用
@@ -26,7 +26,8 @@ ALIGN(RT_ALIGN_SIZE)
 SYS_CONF          SysConf_struct;   //  系统配置   
 
 ALIGN(RT_ALIGN_SIZE) 
-JT808_CONF       JT808Conf_struct;   //  JT 808   相关配置 
+JT808_CONF       JT808Conf_struct;    //  JT 808   相关配置   
+JT808_CONF       JT808_struct_Bak;    //  JT808 相关模式设置备份
 
 ALIGN(RT_ALIGN_SIZE) 
 TIRED_CONF      TiredConf_struct;    //  疲劳驾驶相关配置
@@ -200,6 +201,7 @@ void    Create_Sys_Directory(void)
 /*
         删除既有目录内容
 */
+#if 0
 void  Delete_exist_Directory(void)
 {
             //  配置 
@@ -233,7 +235,7 @@ void  Delete_exist_Directory(void)
 
 
 }  
-
+#endif
 
 /*
        系统配置信息写入
@@ -376,16 +378,20 @@ void  JT808_RealTimeLock_Init(void)
    JT808Conf_struct.RT_LOCK.Lock_KeepCnter=0;
 }
 
-void  JT808_Vehicleinfo_Init(void) 
+void  Vehicleinfo_Init(void) 
 {
-	memset((u8*)&JT808Conf_struct.Vechicle_Info,0,sizeof(JT808Conf_struct.Vechicle_Info));
+	memset((u8*)&Vechicle_Info,0,sizeof(Vechicle_Info));
 	//-----------------------------------------------------------------------
-	memcpy(JT808Conf_struct.Vechicle_Info.Vech_VIN,"00000000000000000",17);
-	memcpy(JT808Conf_struct.Vechicle_Info.Vech_Num,"津A00000",8);        
-	memcpy(JT808Conf_struct.Vechicle_Info.Vech_Type,"未知型",6);       
-	JT808Conf_struct.Vechicle_Info.Dev_ProvinceID=0;  // 默认省ID   0
-	JT808Conf_struct.Vechicle_Info.Dev_CityID=0;      // 默认市ID   0		
-	JT808Conf_struct.Vechicle_Info.Dev_Color=1;       // 默认颜色    // JT415    1  蓝 2 黄 3 黑 4 白 9其他     
+	memcpy(Vechicle_Info.Vech_VIN,"00000000000000000",17);
+	memcpy(Vechicle_Info.Vech_Num,"津A00000",8);        
+	memcpy(Vechicle_Info.Vech_Type,"未知型",6);       
+	Vechicle_Info.Dev_ProvinceID=0;  // 默认省ID   0
+	Vechicle_Info.Dev_CityID=0;      // 默认市ID   0		
+	Vechicle_Info.Dev_Color=1;       // 默认颜色    // JT415    1  蓝 2 黄 3 黑 4 白 9其他     
+	Vechicle_Info.loginpassword_flag=0;
+
+	DF_WriteFlashSector(DF_Vehicle_Struct_offset,0,(u8*)&Vechicle_Info,sizeof(Vechicle_Info));  
+	
 }
 
 u8     JT808_Conf_init( void ) 
@@ -443,7 +449,6 @@ u8     JT808_Conf_init( void )
    	
                 JT808Conf_struct.OutGPS_Flag=1;     //  0  默认  1  接外部有源天线 
                 JT808Conf_struct.concuss_step=40;
-				JT808Conf_struct.password_flag=0;//初次为0，设置好后为1
 				JT808Conf_struct.Link_Frist_Mode=0; //     0  : dnsr first     1: mainlink  first
 		   JT808_RealTimeLock_Init();   //  实时跟踪设置	
 
@@ -464,7 +469,6 @@ u8     JT808_Conf_init( void )
 		  memcpy(JT808Conf_struct.Driver_Info.Drv_CareerID,"0000000000000000000000000000000000000000",40); 
 		  memcpy(JT808Conf_struct.Driver_Info.Comfirm_agentID,"000000000000000",16);
 							
-  	          JT808_Vehicleinfo_Init();
        
 
        //    3. Operate
@@ -1212,7 +1216,7 @@ void  BD_list(void)
 
 }
 
-FINSH_FUNCTION_EXPORT(BD_list, BD status); 
+//FINSH_FUNCTION_EXPORT(BD_list, BD status); 
 
 
 void SendMode_Config(void)     //  发送方式设置 
@@ -1325,6 +1329,9 @@ void  FirstRun_Config_Write(void)
                  JT808_Conf_init();   //  写入 JT808   配置信息
                   Api_WriteInit_var_rd_wr();	
 		    BD_EXT_initial(); 		  
+
+			     
+				 Vehicleinfo_Init();// 写入车辆信息
                  Event_Write_Init();
 		   MSG_BroadCast_Write_Init();
 		   PhoneBook_Init(0);  
@@ -1346,7 +1353,7 @@ void SetConfig(void)
 	
        rt_kprintf("\r\nSave Config\r\n");
 	// 1.  读取config 操作      0 :成功    1 :  失败
-	res=Api_Config_read(config,ID_CONF_SYS,(u8*)&SysConf_struct,sizeof(SysConf_struct));  
+	res=Api_Config_read(config,ID_CONF_SYS,(u8*)&SysConf_struct,sizeof(SysConf_struct));           
        //rt_kprintf("\r\nRead Save SYSID\r\n");
        //  2. 读取成功  ，判断  版本ID 
 	if(SysConf_struct.Version_ID!=SYSID)//SYSID)   //  check  wether need  update  or not 
@@ -1367,11 +1374,54 @@ void SetConfig(void)
 
  void ReadConfig(void) 
 {
+    u16   i=0;
+	
+           DF_delay_ms(50); 
+		  DF_LOCK=1;   // lock  df
+          // Api_Config_read(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));   //  读取JT808   配置信息
+         //-------- JT808 参数配置读取测试，操作频繁而且重要所以需要特殊处理 
+           DF_ReadFlash(JT808Start_offset, 0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct)); 
+		   DF_delay_ms(80); 	// large content delay	
 
-                 Api_Config_read(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));   //  读取JT808   配置信息
-                 SysConfig_Read();  //读取系统配置信息	                 
-                 TIRED_DoorValue_Read();          		   
-                 Event_Read();
+		   DF_ReadFlash(JT808_BakSetting_offset, 0,(u8*)&JT808_struct_Bak,sizeof(JT808_struct_Bak)); 
+		   DF_delay_ms(80); 	// large content delay	
+
+		   // 2. 比较
+		  i=memcmp((u8*)&JT808Conf_struct,(u8*)&JT808_struct_Bak,sizeof(JT808_struct_Bak));
+
+			if(i==0)
+			   rt_kprintf("\r\n JT808 读取校验成功! i=%d\r\n",i); 
+			else
+				{
+				   rt_kprintf("\r\n JT808 读取校验失败! i=%d\r\n",i); 	 
+
+				   if((JT808Conf_struct.DURATION.Default_Dur==0xFF)&&\
+				   	  (JT808Conf_struct.DURATION.Sleep_Dur==0xFF)&&\
+				   	  (JT808Conf_struct.SD_MODE.Dur_EmegencMode==0xFF))
+				    {
+				       Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808_struct_Bak,sizeof(JT808_struct_Bak));	
+					   rt_kprintf("\r\n Formal Fail");
+				   	}	
+				   else 	   
+                   if((JT808_struct_Bak.DURATION.Default_Dur==0xFF)&&\
+				   	  (JT808_struct_Bak.DURATION.Sleep_Dur==0xFF)&&\
+				   	  (JT808_struct_Bak.SD_MODE.Dur_EmegencMode==0xFF))
+                   	{
+				      Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
+					   rt_kprintf("\r\n Bak Fail");
+                   	}
+                   else
+                   	{
+                   	  rt_kprintf("\r\n all recover"); 
+	                  JT808_Conf_init();	
+                   	}
+				}
+           
+         //-------------------------------------------------------------------------------------
+		   
+		   SysConfig_Read();  //读取系统配置信息	                 
+           TIRED_DoorValue_Read();          		   
+           Event_Read();
 		   MSG_BroadCast_Read();
 		   PhoneBook_Read();  
 		  // RailCycle_Read();
@@ -1382,6 +1432,7 @@ void SetConfig(void)
                  BD_EXT_Read();   
 		   Api_Read_var_rd_wr();	  	  	   
 
+		   DF_ReadFlash(DF_Vehicle_Struct_offset,0,(u8*)&Vechicle_Info,sizeof(Vechicle_Info));   
            
 			//---- 设备ID  --------	 
 		   memset(DeviceNumberID,0,sizeof(DeviceNumberID));
@@ -1405,7 +1456,7 @@ void SetConfig(void)
 		              ModuleStatus&=~Status_Pcheck;
                   } 
                  
-       
+          DF_LOCK=0;  // unlock 
     rt_kprintf("\r\n Read Config Over \r\n");   
 }
 void DefaultConfig(void)
@@ -1508,12 +1559,12 @@ void DefaultConfig(void)
 
 
 
-         rt_kprintf("\r\n		  车辆VIN号: %17s \r\n",JT808Conf_struct.Vechicle_Info.Vech_VIN);   
-         rt_kprintf("\r\n		  车牌号码: %12s \r\n",JT808Conf_struct.Vechicle_Info.Vech_Num);  
-         rt_kprintf("\r\n		  车牌分类: %12s \r\n",JT808Conf_struct.Vechicle_Info.Vech_Type);  
-         rt_kprintf("\r\n        车辆所在省ID: %d \r\n",JT808Conf_struct.Vechicle_Info.Dev_ProvinceID);
-         rt_kprintf("\r\n        车辆所在市ID: %d \r\n",JT808Conf_struct.Vechicle_Info.Dev_CityID); 
-         rt_kprintf("\r\n        车辆颜色:   JT415    1  蓝 2 黄 3 黑 4 白 9其他----当前颜色 %d \r\n",JT808Conf_struct.Vechicle_Info.Dev_Color);  
+         rt_kprintf("\r\n		  车辆VIN号: %17s \r\n",Vechicle_Info.Vech_VIN);   
+         rt_kprintf("\r\n		  车牌号码: %12s \r\n",Vechicle_Info.Vech_Num);  
+         rt_kprintf("\r\n		  车牌分类: %12s \r\n",Vechicle_Info.Vech_Type);  
+         rt_kprintf("\r\n        车辆所在省ID: %d \r\n",Vechicle_Info.Dev_ProvinceID);
+         rt_kprintf("\r\n        车辆所在市ID: %d \r\n",Vechicle_Info.Dev_CityID); 
+         rt_kprintf("\r\n        车辆颜色:   JT415    1  蓝 2 黄 3 黑 4 白 9其他----当前颜色 %d \r\n",Vechicle_Info.Dev_Color);  
 
 
          rt_kprintf("\r\n        触发上报传感器为  TriggerSDsatus=%X    \r\n",TriggerSDsatus);   
@@ -1597,7 +1648,7 @@ void DefaultConfig(void)
 	  	
  
 }
-FINSH_FUNCTION_EXPORT(DefaultConfig, DefaultConfig);     
+//FINSH_FUNCTION_EXPORT(DefaultConfig, DefaultConfig);     
 
 
 
@@ -1661,7 +1712,7 @@ void  idip(u8 *str)
                   Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));   
       }
 }
-FINSH_FUNCTION_EXPORT(idip, id code set);
+//FINSH_FUNCTION_EXPORT(idip, id code set);
 
 
 
@@ -1731,7 +1782,7 @@ void simid(u8 *str)
 	 
 	    memset(reg_str,0,sizeof(reg_str));
 	     if (strlen((const char*)str)==0){
-		   rt_kprintf("\r\n 入网 SIM_ID为 : "); 
+		   rt_kprintf("\r\n 入网 SIM_ID为 : ");  
 		  for(i=0;i<12;i++)
 		  	rt_kprintf("%c",SimID_12D[i]); 
 		  rt_kprintf("\r\n");

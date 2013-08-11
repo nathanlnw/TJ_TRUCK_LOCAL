@@ -137,10 +137,6 @@
 #define   SpxGet_Size       100
 
 
-//---------  ISP 	相关   ---
-#define  ISPACK_92             0x92
-#define  ISPinfoACK_94         0x94
-#define  ISPoverACK_96         0x96
 
 typedef struct _A_AckFlag 
 {
@@ -209,7 +205,7 @@ u8  f_BD_Extend_7F00H;// 扩展终端上发指令
 u8  f_BD_DeviceAttribute_8107; //  中心查找终端属性
 u8  f_BD_BatchTrans_0704H;   //  定位数据批量上传
 u8  f_BD_CentreTakeAck_0805H; // 中心拍照命令应答 
-u8  f_BD_ISPResualt_0108H;   //    终端升级结果  
+u8  f_BD_ISPResualt_0108H;   //    终端升级结果     1  :成功    2: 失败      3:取消
 
 }TCP_ACKFlag;
  
@@ -250,6 +246,7 @@ typedef struct _VechInfo
  u16    Dev_ProvinceID;      // 车辆所在省ID
  u16    Dev_CityID;          // 车辆所在市ID    
  u8     Dev_Color;           // 车牌颜色           // JT415    1  蓝 2 黄 3 黑 4 白 9其他
+ u8     loginpassword_flag;  //  界面输入标志位    0 :default    1:  longin ok
 }VechINFO;
 
 //--------- 终端属性---------
@@ -579,15 +576,6 @@ typedef struct _DoorCamra
   u8	  BakState;   // 存储状态
 } DOORCamera;
 
-//     ISP  Module
-typedef struct IspRSD
-{  
-  u8 	   ISP_ResendACK_state;  // Isp   重发机制
-  u16	   ISP_ResendACK_counter;// Isp  重发机制  
-  u8 	   ISP_ResendCounter; // ISP 重发次数 最大不超过3次
-}ISP_RSD;
-
-
 
 typedef struct   TGPSInfo_GPRS
 {
@@ -643,8 +631,10 @@ typedef struct _HUMAN_CONFIRM_WARN
 typedef struct _ISP_BD
 {
    u8     ISP_running;//  远程下载进行中
+   u16    ISP_runTimer;// 进行中 计时器
    u16   Total_PacketNum;//  总包数
    u16   CurrentPacket_Num;//  当前报数
+   u16   PacketSizeGet; 
    u32   PacketRX_wr;//  接收数据累加长度
    u8     Update_Type;  // 终端数据类型
    u8  ProductID[5];// 制造商编号
@@ -715,7 +705,6 @@ typedef struct  _JT808Config   //name:  jt808
    	
     u8       OutGPS_Flag;     //  0  默认  1  接外部有源天线 
     u8       concuss_step;    //------add by  xijing
-    u8       password_flag;   //密码输入标志     
     u8       relay_flag;      // 继电器开关状态
 
 	
@@ -735,21 +724,16 @@ typedef struct  _JT808Config   //name:  jt808
     //------  摄像头 相关设置 ------------------------------
     u32  BD_CameraTakeByTime_Settings;   // 摄像头定时拍照开关    0 不允许1 允许 表13
     u32  BD_CameraTakeByDistance_Settings;  //  摄像头定距离拍照控制位
-
-    u8    Close_CommunicateFlag;   // 关闭通信标志位	
-
-
-	u8       Link_Frist_Mode;       //   首次连接模式        0  : dnsr first     1: mainlink  first 
+    u8   Close_CommunicateFlag;   // 关闭通信标志位
+	u8   Link_Frist_Mode;       //   首次连接模式        0  : dnsr first     1: mainlink  first 
     
      //--------  实时上报 ---------  
     REALTIME_LOCK    RT_LOCK;     // 实时跟踪      
 
       //----------  Standard Version -----------------------
-    STD_VER               StdVersion;   // 标准国家版本 
-  
+    STD_VER               StdVersion;   // 标准国家版本   
     DRV_INFO             Driver_Info;        //  驾驶员信息
 	
-    VechINFO             Vechicle_Info;     //  车辆信息  
 }JT808_CONF;
 
     //------------- 疲劳驾驶相关----------------
@@ -950,6 +934,10 @@ typedef struct _CAN_TRAN
 
  }CAN_TRAN;
 
+// ------  车辆信息单独了 ---------------
+extern  VechINFO             Vechicle_Info;     //  车辆信息  
+
+
 //------- 北斗扩展协议  ------------
 extern BD_EXTEND     BD_EXT;     //  北斗扩展协议
 extern DETACH_PKG   Detach_PKG; // 分包重传相关
@@ -996,26 +984,6 @@ extern 	u8		   save_sensorCounter,sensor_writeOverFlag;
 extern u16  Delta_1s_Plus;
 extern 	u32 	   total_plus; 
 
-
-
-extern u8		 fCentre_ACK; 			  // ---------判断中西你应答标志位－－
-extern u8		 ACK_timer;				   //---------	ACK timer 定时器--------------------- 
-extern u8        f_ISP_ACK;   // 远程升级应答	
-extern u8        ISP_FCS[2];    //  下发的校验 
-extern u16       ISP_total_packnum;  // ISP  总包数
-extern u16       ISP_current_packnum;// ISP  当前包数
-extern u32       ISP_content_fcs;    // ISP  的内容校验
-extern u8		 ISP_ack_resualt;    // ISP 响应
-extern u8		 ISP_rxCMD;		   // ISP 收到的命令
-extern u8		 f_ISP_88_ACK;	   // Isp  内容应答
-extern u8        ISP_running_state;  // Isp  程序运行状态
-extern u8        f_ISP_23_ACK;    //  Isp  返回 文件完成标识
-extern u16       ISP_running_counter;// Isp  运行状态寄存器 
-extern u8        ISP_RepeatCounter; //   ISP 单包发送重复次数 超过5次校验失败擦除区域 
-extern u8        ISP_NeedtoProcessFlag;   //   需要处理ISP 程序
-extern u8        ISP_Raw[600];                    //  属于ISP 但还未处理的字符 
-
-extern ISP_RSD   Isp_Resend;
 
 extern u8 TextInforCounter;//文本信息条数
 extern DOORCamera   DoorOpen;    //  开关车门拍照
@@ -1106,6 +1074,7 @@ extern u8   Sdgps_Time[3];  // GPS 发送 时间记录
 
 
 extern  ALIGN(RT_ALIGN_SIZE) u8  UDP_HEX_Rx[1024];    // EM310 接收内容hex     
+
 extern u16 UDP_hexRx_len;    // hex 内容 长度
 extern u16 UDP_DecodeHex_Len;// UDP接收后808 解码后的数据长度   
 
@@ -1223,7 +1192,6 @@ extern void   GPS_Delta_DurPro(void);    //告GPS 触发上报处理函数
      2.1   和协议相关的功能函数
      ----------------------------- 
 */
-extern u8 ISP_running_Status(void);
 extern int IP_Str(char *buf, u32 IP);
 extern void strtrim(u8 *s, u8 c);
 extern int str2ip(char *buf, u8 *ip);
@@ -1303,10 +1271,8 @@ extern u8    Stuff_BatchDataTrans_BD_0704H(void);
 extern u8    Stuff_CANDataTrans_BD_0705H(void);
 extern u8    Sub_stuff_AppointedPram_0106(void);  
 
-extern u8    Stuff_DataTrans_0900_ISP_ACK(u8  AckType);  
-extern u8    Update_HardSoft_Version_Judge(u8 * instr);
 extern void  ISP_file_Check(void);
-extern void  ISP_Process(void);  
+extern unsigned short int  File_CRC_Get(void);  
 //  河北天地通多媒体事件信息上传报文应答不好，所以单独处理  
 extern  void Multimedia_0800H_ACK_process(void);   
 
@@ -1340,12 +1306,11 @@ extern void  Time2BCD(u8 *dest);
 
 extern void SpeedWarnJudge(void);
 extern void Process_GPRSIN_DeviceData(u8 *instr, u16  infolen);
-extern u8   Send_Device_Data(void);
 extern void SpeedSensorProcess(void);   // 通过汽车的速度传感器获得 速度 并计算里程 
 
 
 extern void  Sleep_Mode_ConfigEnter(void); 
-extern void  Sleep_Mode_ConfigExit(void);
+extern void  Sleep_Mode_ConfigExit(void); 
 
 //extern u16   WaveFile_EncodeHeader(u32 inFilesize ,u8* DestStr);   
 extern void  CycleRail_Judge(u8* LatiStr,u8* LongiStr);
