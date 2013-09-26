@@ -86,14 +86,45 @@
 #define Buzzer_Group_Num         GPIO_Pin_6  
 
 
+#define 	 REDLIGHT_ON		 GPIO_SetBits(GPIOE,GPIO_Pin_7) 	  
+#define 	 REDLIGHT_OFF 	     GPIO_ResetBits(GPIOE,GPIO_Pin_7)	  
+
+
 
 #define  timer1_dur         14111        // 168*84=1412      -1  =14111
 
 
+
+typedef  struct  _AD_POWER
+{
+  u16   ADC_ConvertedValue; //电池电压AD数值    
+  u16   AD_Volte;      // 采集到的实际电压数值
+  u16   Classify_Door;   //  区分大车小车类型，  >16V  大型车17V 欠压            <16V 小型车   10V 欠压
+  u16   LowWarn_Limit_Value;  //  欠压报警门限值      
+  
+}AD_POWER;
+
+
+typedef  struct _TRUK_USE
+{
+  u32   abnormal_counter ;    //  工作异常状态指示    5分钟
+  u32   door_open_state_counter;   //  开门状态计数器  
+  u32   door_close_state_counter;   //  关门状态计数器
+  u8    State_Door;           //  翻斗状态计数器
+  u8    Work_state_enable;    //  工作状态
+
+}TRUCK_USE;
+
+extern TRUCK_USE    TRK_Related; //渣土车相关     
+
 //-----  WachDog related----
 extern u8    wdg_reset_flag;    //  Task Idle Hook 相关
-extern u16   ADC_ConvertedValue; //电池电压AD数值    
 
+//----------AD  电压采集-----
+extern AD_POWER  Power_AD; 
+
+extern u32  IC2Value;   // 
+extern u32  DutyCycle;
 
 
 
@@ -119,6 +150,7 @@ extern u8  DoorLight_StatusGet(void);
 extern u8  RightLight_StatusGet(void);
 extern u8  BreakLight_StatusGet(void);
 extern u8 RainBrush_StatusGet(void);
+extern u8  HardWareGet(void);      
 
 //   OUTPUT
 extern void  Enable_Relay(void);
@@ -132,8 +164,9 @@ extern void  ACC_status_Check(void);
     2.  应用相关
      ----------------------------- 
 */
-extern   void TIM2_Configuration(void); 
 extern   void Init_ADC(void); 
+extern void pulse_init( void );
+extern void TIM5_IRQHandler( void );
 /*    
      -----------------------------
     3.  RT 驱动相关
@@ -173,11 +206,20 @@ extern   u8       Api_CHK_ReadCycle_status(void);
  extern   u8     Api_RecordNum_Write( u8 *name,u8 Rec_Num,u8 *buffer, u16 len);  
  extern    u8    Api_RecordNum_Read( u8 *name,u8 Rec_Num,u8 *buffer, u16 len);  
 
+ //------------  AD    电压相关  -------------------- 
+ extern void  AD_PowerInit(void);  
+
  
 
  extern u8     TF_Card_Status(void);
  extern  void Socket_aux_Set(u8* str);
  extern  void Socket_main_Set(u8* str); 
+ extern  void  debug_relay(u8 *str);  
+
+ extern  void  Truck_init(void);   
+ extern  void  TRK_Door_State_Check(void); 
+ extern  void  TRK_Work_Status_check_1s_once(void);
+ extern  void  TRK_Light_Ctrl(void);
  
 
 #endif

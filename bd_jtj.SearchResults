@@ -1,5 +1,13 @@
----- FINSH_THREAD_PRIORITY Matches (4 in 3 files) ----
-Rtconfig.h (bsp\stm32f407vgt6_recdrv):// FINISH   有限级别是这个    11   #define FINSH_THREAD_PRIORITY    11
-Shell.c (components\finsh):		FINSH_THREAD_PRIORITY, 10);
-Shell.h (components\finsh):#ifndef FINSH_THREAD_PRIORITY
-Shell.h (components\finsh):#define FINSH_THREAD_PRIORITY    11 //20
+---- Vechicle_Info.loginpassword_flag Matches (12 in 7 files) ----
+App_hmi.c (bsp\stm32f407vgt6_recdrv\app_712\hmi):	rt_kprintf("\r\nVechicle_Info.loginpassword_flag=%d\r\n",Vechicle_Info.loginpassword_flag);
+App_hmi.c (bsp\stm32f407vgt6_recdrv\app_712\hmi):    if(Vechicle_Info.loginpassword_flag==0)
+Device_gsm.c (bsp\stm32f407vgt6_recdrv\app_712\gsm):              if((GSM_PWR.GSM_power_over==1) &&(Vechicle_Info.loginpassword_flag==1))
+Menu_0_5_Colour.c (bsp\stm32f407vgt6_recdrv\app_712\lcd):				Vechicle_Info.loginpassword_flag=1; 
+Menu_1_Idle.c (bsp\stm32f407vgt6_recdrv\app_712\lcd):		Vechicle_Info.loginpassword_flag=0;     // clear  first flag		
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):				 if(Vechicle_Info.loginpassword_flag!=1)  // 没有被设置前不存储相关位置信息，没有意义
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):   Vechicle_Info.loginpassword_flag=in;    // clear  first flag 	 
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):  rt_kprintf("\r\n  password=%d \r\n",Vechicle_Info.loginpassword_flag);  
+SMS.c (bsp\stm32f407vgt6_recdrv\app_712\gsm):				  Vechicle_Info.loginpassword_flag=(u8)u16Temp;	   // clear  first flag 	  
+SMS.c (bsp\stm32f407vgt6_recdrv\app_712\gsm):				    if(Vechicle_Info.loginpassword_flag)
+SMS.c (bsp\stm32f407vgt6_recdrv\app_712\gsm):					 Vechicle_Info.loginpassword_flag=0;	  // clear	first flag		 
+Sys_config.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):	Vechicle_Info.loginpassword_flag=0;

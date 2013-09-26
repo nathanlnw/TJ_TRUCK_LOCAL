@@ -14,6 +14,8 @@
 #include "App_moduleConfig.h"
 #include "Device_CAN.h"
 #include <finsh.h>
+#include "Device_CAN2.h"
+
 
 u8   U3_Rx[100];
 u8   U3_content[100];
@@ -99,6 +101,7 @@ u16  Protocol_808_Decode_Good(u8 *Instr ,u8* Outstr,u16  in_len)  // ½âÎöÖ¸¶¨buf
 
 void CAN2_RxHandler(unsigned char rx_data)
 {
+ #if 0
     if(U3_flag)
     	{
            U3_Rx[U3_rxCounter++]=rx_data;
@@ -121,6 +124,17 @@ void CAN2_RxHandler(unsigned char rx_data)
       	}
 	else
 	    U3_rxCounter=0;	
+  #endif
+
+   if( rx_data!=0x0d )
+   {
+      U3_Rx[U3_rxCounter++]=rx_data;
+   }
+   else
+   	{
+        rt_kprintf("%s",U3_Rx);
+		U3_rxCounter=0;
+   	}
 	
 }
 
@@ -130,6 +144,21 @@ void CAN2_putc(char c)
 	while (!(USART3->SR & USART_FLAG_TXE));  
 	USART3->DR = (c & 0x1FF);   
 }
+
+void u3_send(u8 *instr)
+{
+   u16 len=0;
+
+    len=strlen((const char*)instr);     
+	       while (len)
+	{
+		CAN2_putc (*instr++);   
+		len--; 
+	}
+		 rt_kprintf("\r\nU3_out:%s\r\n",instr);
+}
+FINSH_FUNCTION_EXPORT(u3_send, u3_send[1|0]);     
+
 
 static rt_err_t   Device_CAN2_init( rt_device_t dev )
 {
@@ -179,7 +208,8 @@ static rt_err_t   Device_CAN2_init( rt_device_t dev )
 
 	/* Enable USART */
 	USART_Cmd(USART3, ENABLE);
-	USART_ITConfig(USART3, USART_IT_RXNE, ENABLE);           
+	USART_ITConfig(USART3, USART_IT_RXNE, ENABLE);         
+
 
 	return RT_EOK;
 }
@@ -224,7 +254,7 @@ static rt_err_t Device_CAN2_control( rt_device_t dev, rt_uint8_t cmd, void *arg 
 
 void  Device_CAN2_regist(void ) 
 {
-       Device_CAN2.type	= RT_Device_Class_Char;
+    Device_CAN2.type	= RT_Device_Class_Char;
 	Device_CAN2.init	=   Device_CAN2_init;
 	Device_CAN2.open	=  Device_CAN2_open; 
 	Device_CAN2.close	=  Device_CAN2_close;
