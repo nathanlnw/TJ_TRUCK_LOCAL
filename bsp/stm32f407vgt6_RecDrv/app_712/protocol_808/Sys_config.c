@@ -1791,8 +1791,11 @@ void DefaultConfig(void)
 
           if(HardWareVerion==7) // 全1
 		        BD_MODULE_Read();
-		  if(HardWareVerion==6)
-		  	     rt_kprintf("\r\n	北斗定位模块: 3020C/D 模式");   
+		  	  if(HardWareVerion==6)
+		  	 {  
+		  	   GPS_MODULE_TYPE=Module_3020C;  
+		  	   rt_kprintf("\r\n	北斗定位模块: 3020C/D 模式");  
+			 } 
 
           //------- 自动接听方式 -----------           
 		  rt_kprintf("\r\n		        -------自动接听方式:%d    \r\n",JT808Conf_struct.Auto_ATA_flag);     
