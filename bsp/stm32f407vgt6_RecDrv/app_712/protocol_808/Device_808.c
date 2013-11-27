@@ -18,6 +18,7 @@
 u8  HardWareVerion=0;   //   硬件版本检测 
 //-----  WachDog related----
 u8    wdg_reset_flag=0;    //  Task Idle Hook 相关
+u32   TIM3_Timer_Counter=0; //  测试定时器计数器
 
 //--------  电压检测 相关 ---------------------------------
 AD_POWER  Power_AD; 
@@ -99,6 +100,8 @@ void  TRK_Door_State_Check(void)
 				  //   1.2	使能状态位 
 					 // 扩展 BIT 22
 					 Car_Status[1]|=0x40; 
+				     //报警状态 bit  16  是渣土车后斗挡板开启 add  on   13-11-27
+				     Warn_Status[1]|=0x01;  
 
 				 //  1.3  使能发送即时数据
                   Current_State=1;   //   使能发送标志位
@@ -129,6 +132,9 @@ void  TRK_Door_State_Check(void)
                      //   1.2  使能状态位 
                   // 扩展 BIT 22
 	              Car_Status[1]&=~0x40;  
+				  //报警状态 bit  16  是渣土车后斗挡板开启 add  on   13-11-27
+				  Warn_Status[1]&=~0x01;   
+				  	 
 				 
 				 //  1.3  使能发送即时数据
 				  Current_State=1;   //   使能发送标志位
@@ -224,7 +230,7 @@ u8  HardWareGet(void)
       rt_kprintf("\r\n  硬件版本读取: %2X",Value);      
      return Value;
 }
-FINSH_FUNCTION_EXPORT(HardWareGet, HardWareGet); 
+//FINSH_FUNCTION_EXPORT(HardWareGet, HardWareGet); 
 
 
 void WatchDog_Feed(void)
@@ -652,7 +658,7 @@ void  IO_statusCheck(void)
 {
       Vehicle_sensor=Get_SensorStatus();
 	  //------------ 0.2s    速度状态 -----------------------
-	  Sensor_buf[save_sensorCounter].DOUBTspeed=GPS_speed/10;     //   速度  单位是km/h 所以除以10
+	  Sensor_buf[save_sensorCounter].DOUBTspeed=Spd_Using/10;     //   速度  单位是km/h 所以除以10
       Sensor_buf[save_sensorCounter++].DOUBTstatus=Vehicle_sensor;//   状态 
 		if(save_sensorCounter>100) 
 			{
@@ -766,6 +772,66 @@ void TIM5_IRQHandler( void )
 		DutyCycle	= 0;
 		Delta_1s_Plus	= 0;
 	}
+}
+
+/*定时器配置*/
+void TIM3_Config( void )  
+{
+	NVIC_InitTypeDef		NVIC_InitStructure;
+	TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
+
+	/* TIM3 clock enable */
+	RCC_APB1PeriphClockCmd( RCC_APB1Periph_TIM3, ENABLE );
+
+	/* Enable the TIM3 gloabal Interrupt */
+	NVIC_InitStructure.NVIC_IRQChannel						= TIM3_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	= 0;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority			= 2;
+	NVIC_InitStructure.NVIC_IRQChannelCmd					= ENABLE;
+	NVIC_Init( &NVIC_InitStructure );
+
+/* Time base configuration */
+	TIM_TimeBaseStructure.TIM_Period		= 1000;             /* 1ms */
+	TIM_TimeBaseStructure.TIM_Prescaler		= ( 168 / 2 - 1 );  /* 1M*/
+	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
+	TIM_TimeBaseStructure.TIM_CounterMode	= TIM_CounterMode_Up;
+	TIM_ARRPreloadConfig( TIM3, ENABLE );
+
+	TIM_TimeBaseInit( TIM3, &TIM_TimeBaseStructure );
+
+	TIM_ClearFlag( TIM3, TIM_FLAG_Update );
+/* TIM Interrupts enable */
+	TIM_ITConfig( TIM3, TIM_IT_Update, ENABLE );
+
+/* TIM3 enable counter */
+	TIM_Cmd( TIM3, ENABLE );
+}
+
+
+void TIM3_IRQHandler(void)
+{
+
+   if ( TIM_GetITStatus(TIM3 , TIM_IT_Update) != RESET )
+  {
+                    TIM_ClearITPendingBit(TIM3 , TIM_FLAG_Update); 
+
+	        //---------------------Timer  Counter -------------------------- 
+            TIM3_Timer_Counter++;
+
+            if(TIM3_Timer_Counter==20)  //  100ms  ----100        
+            {
+                 //--------  service ------------------                  
+				 KeyCheckFun();
+				 //---------- IC card  insert --------------------------
+				 CheckICInsert();  
+				 //------- Buzzer -----------------------------------
+				 KeyBuzzer(IC_CardInsert);
+	             //-----------service -----------------
+		       TIM3_Timer_Counter=0; 		  
+            }
+			
+ //------------------------------------------------------------
+   }
 }
 
 
@@ -1166,6 +1232,7 @@ else
 		   }
 		   if(flag)
 		   	{
+		   	    DF_delay_ms(5);
 		        DF_ReadFlash(pic_current_page, 0,PictureName, 23);
                       memcpy((u8*)&PicFileSize,PictureName+19,4);   
 			 return   PicFileSize	;
@@ -1257,6 +1324,7 @@ else
                //   numPacket    : 安装 style  方式读取开始 第几条数据包  from: 0
                u16   read_addr=0;
 			   
+			 DF_delay_ms(1); 
               if(strcmp((const char*)name,spdpermin)==0)
 		    {
 		        if(style==1)
@@ -1378,7 +1446,7 @@ else
 		{
 		       WatchDog_Feed(); 
                      SST25V_BlockErase_64KByte((PicStart_offset<<9));      
-			DF_delay_ms(500);   	
+			DF_delay_ms(100);   	
 			WatchDog_Feed(); 
 			return true;		 
                }
@@ -1386,7 +1454,7 @@ else
 		{
 		       WatchDog_Feed(); 
                      SST25V_BlockErase_64KByte((PicStart_offset2<<9));   
-			DF_delay_ms(500);   	
+			DF_delay_ms(100); 	
 			WatchDog_Feed(); 
 			return true;			 
                }
@@ -1394,7 +1462,7 @@ else
 		{
 		         WatchDog_Feed(); 
                        SST25V_BlockErase_64KByte((PicStart_offset3<<9));    
-			  DF_delay_ms(500);   
+			  DF_delay_ms(100); 
 			  WatchDog_Feed(); 
 			  return true;	 		   
                }
@@ -1402,7 +1470,7 @@ else
 		{
 		        WatchDog_Feed(); 
                        SST25V_BlockErase_64KByte((PicStart_offset4<<9));   
-		         DF_delay_ms(500);   
+		      DF_delay_ms(100); 
 			  WatchDog_Feed(); 	 
 			  return true;			   
                }  

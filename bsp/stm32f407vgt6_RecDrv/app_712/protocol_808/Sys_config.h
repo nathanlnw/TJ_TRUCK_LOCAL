@@ -133,7 +133,7 @@
 
 
 
-#define   Max_SystemCounter            20400// 28800 // 86400   //定时重启时间24小时 一天  
+#define   Max_SystemCounter            86400// 28800 // 86400   //定时重启时间24小时 一天   
 
 //-----------------------  Max  Add    ---------------------------------
 #define   Max_CycleNum                  16384
@@ -212,7 +212,7 @@ extern ALIGN(RT_ALIGN_SIZE)  SYS_CONF        SysConf_struct;   //  系统配置
 extern ALIGN(RT_ALIGN_SIZE)  JT808_CONF      JT808Conf_struct;   //  JT 808   相关配置 
 extern  ALIGN(RT_ALIGN_SIZE) JT808_CONF		 JT808_struct_Bak;	  //  JT808 相关模式设置备份 
 extern  ALIGN(RT_ALIGN_SIZE) JT808_CONF		 JT808_struct_Bak2;	  //  JT808 相关模式设置备份  
-extern  ALIGN(RT_ALIGN_SIZE)  TIRED_CONF     TiredConf_struct;    //  疲劳驾驶相关配置 
+extern ALIGN(RT_ALIGN_SIZE)  TIRED_CONF      TiredConf_struct;    //  疲劳驾驶相关配置 
 
 
 
@@ -285,6 +285,7 @@ extern u32  current_distance_meter;    //   当前距离
 //---------  SytemCounter ------------------
 extern u32  Systerm_Reset_counter; 
 extern u8   SYSTEM_Reset_FLAG;        // 系统复位标志位  
+extern u8   DistanceWT_Flag;  //  写里程标志位
 
 extern u32      Device_type;    // 硬件类型   STM32103  新A1 
 extern u32      Firmware_ver;   // 软件版本 
@@ -320,7 +321,7 @@ extern void  ProductAttribute_init(void);
 
 
 
-
+extern void Rails_Routline_Read(void);        
 extern void SysConfiguration(void);
 extern void SetConfig(void);
 extern void DefaultConfig(void);

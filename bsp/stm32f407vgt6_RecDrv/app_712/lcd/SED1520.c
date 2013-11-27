@@ -834,7 +834,7 @@ void lcd_text12(char left,char top ,char *p,char len,const char mode)
 	int i;
 	char msb,lsb;
 	
-	int addr;
+	int addr=0;
 	unsigned char start_col=left;
 	unsigned int  val_old, val_new, val_mask;
 

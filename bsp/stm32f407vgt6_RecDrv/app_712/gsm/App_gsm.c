@@ -343,6 +343,7 @@ static void gsm_thread_entry(void* parameter)
               GSM_Module_TotalInitial();  
             // 3. Receivce & Process   Communication  Module   data ----
 	       GSM_Buffer_Read_Process(); 
+		   rt_thread_delay(8);   	
 	       DataLink_Process();		
              //------------------------------------------------
 		    if (Send_DataFlag== 1) 
@@ -384,7 +385,7 @@ static void gsm_thread_entry(void* parameter)
 			 
 			 //   SMS  Service
 			 SMS_Process();            
-	         rt_thread_delay(25);    	      
+	         rt_thread_delay(10);      	      
 			   
 	}
 }

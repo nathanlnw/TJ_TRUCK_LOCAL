@@ -279,7 +279,7 @@ else
 	lcd_bitmap(68,13,&BMP_NOBattery, LCD_MODE_SET);
 
 //是否校验特征系数
-if(DF_K_adjustState)
+if(JT808Conf_struct.DF_K_adjustState) 
 	lcd_bitmap(60,23,&BMP_TriangleS, LCD_MODE_SET);
 else
 	lcd_bitmap(60,23,&BMP_TriangleK, LCD_MODE_SET); 

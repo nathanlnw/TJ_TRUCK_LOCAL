@@ -46,8 +46,8 @@ Crystal: 3.6864Mhz
 //   2.     config   information
 #define    ConfigStart_offset                         808        //   Block   ÆğÊ¼Î»ÖÃ  Conifg  Struct Save      Sector 1 
 #define    TiredCondifg_offset                        864        //   Block   ÆğÊ¼Î»ÖÃ  Conifg  Struct Save      Sector 3  
-#define    JT808_BakSetting_offset                    960        //   Block   ÆğÊ¼Î»Ö
-#define    JT808_Bak2Setting_offset                   6240        //   Block   ÆğÊ¼Î»Ö 
+#define    JT808_BakSetting_offset                    960        //   Block   ÆğÊ¼Î»?
+#define    JT808_Bak2Setting_offset                   6240        //   Block   ÆğÊ¼Î»?
 #define    JT808Start_offset                          1000        //   Block   ÆğÊ¼Î»ÖÃ  Conifg  Struct Save    Sector 2 
  
 
@@ -101,8 +101,8 @@ Crystal: 3.6864Mhz
 #define       DF_AbnormalLogAdd_Page                   1256                           // Block ÆğÊ¼--Òì³£Log´æ´¢ 
 #define       DF_RecordAdd_Page                        1264                           // Block ÆğÊ¼--ĞĞ³µ¼ÇÂ¼ÒÇÕı³£´æ´¢¼ÇÂ¼Æ«ÒÆµØÖ· 
 #define       DF_MaxSpdPerDay_Page                     1272                           // Block ÆğÊ¼--µ±Ìì×î´óËÙ¶È
-#define       DF_DayDistance_Page                      1280                           // Block ÆğÊ¼--µ±ÌìÀï³Ì  
-#define       DF_DoubtAdd_Page                         1288                           // Block ÊÂ¹ÊÒÉµãÏà¹Ø
+#define       DF_DoubtAdd_Page                         1280                           // Block ÊÂ¹ÊÒÉµãÏà¹Ø
+#define       DF_DayDistance_Page                      1288                           // Block ÆğÊ¼--µ±ÌìÀï³Ì  
 #define       DF_AvrgSpdSec_Page                       1296                           // Block ÆğÊ¼-Ã¿ÃëÖÓÆ½¾ùËÙ¶È
 #define       DF_Login_Page				               1304                           // Block ÆğÊ¼-µÇÂ¼¼ÇÂ¼
 #define       DF_Powercut_Page		                   1312                           // Block ÆğÊ¼-Íâ²¿µçÔ´¶Ï¿ª
@@ -275,7 +275,6 @@ extern void DF_ReadFlash(u16 page_counter,u16 page_offset,u8 *p,u16 length);
 extern void DF_WriteFlash(u16 page_counter,u16 page_offset,u8 *p,u16 length);
 extern void DF_ReadFlash(u16 page_counter,u16 page_offset,u8 *p,u16 length);
 extern void DF_WriteFlashSector(u16 page_counter,u16 page_offset,u8 *p,u16 length);//512bytes Ö±½Ó´æ´¢
-extern void DF_WriteFlashRemote(u16 page_counter,u16 page_offset,u8 *p,u16 length);//512bytes Ö±½Ó´æ´¢
 extern void DF_WriteFlashDirect(u16 page_counter,u16 page_offset,u8 *p,u16 length);
 extern void DF_Erase(void);
 extern void DF_init(void); 
