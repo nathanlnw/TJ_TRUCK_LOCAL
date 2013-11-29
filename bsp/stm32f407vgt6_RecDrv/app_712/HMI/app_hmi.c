@@ -365,7 +365,7 @@ static void HMI_thread_entry(void* parameter)
 		{
 	        pMenuItem=&Menu_1_Idle;   
 		    pMenuItem->show();  
-			TRK_Related.Work_state_enable=1;  
+			//TRK_Related.Work_state_enable=1;    // 杨总要求实际情况
 		}
 
 	while (1)

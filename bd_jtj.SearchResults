@@ -1,3 +1,101 @@
----- adjust_ok Matches (2 in 2 files) ----
-Protocol_808.h (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):extern void  adjust_ok(int in); 
-SMS.c (bsp\stm32f407vgt6_recdrv\app_712\gsm):						adjust_ok(u16Temp);//   0: GPS 速度   1:  传感器速度
+---- Warn_Status Matches (100 in 8 files) ----
+Application.c (bsp\stm32f407vgt6_recdrv\applications):							if((Warn_Status[3]&0x80)==0x00)     
+Application.c (bsp\stm32f407vgt6_recdrv\applications):									Warn_Status[3]|=0x80;  //欠压报警
+Application.c (bsp\stm32f407vgt6_recdrv\applications):						    if((Warn_Status[3]&0x80)==0x80) 
+Application.c (bsp\stm32f407vgt6_recdrv\applications):							 Warn_Status[3]&=~0x80; //取消欠压报警 
+App_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):	Warn_Status[3]&=~0x80; //取消欠压报警  
+Device_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):				     Warn_Status[1]|=0x01;  
+Device_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):				  Warn_Status[1]&=~0x01;   
+Device_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):    if((Warn_Status[3]&0x80)==0x00)  
+Gps.c (bsp\stm32f407vgt6_recdrv\app_712\gps):								   if((Warn_Status[3]&0x20)==0)
+Gps.c (bsp\stm32f407vgt6_recdrv\app_712\gps):								   Warn_Status[3]|=0x20;
+Gps.c (bsp\stm32f407vgt6_recdrv\app_712\gps):								   Warn_Status[3]&=~0x40;	
+Gps.c (bsp\stm32f407vgt6_recdrv\app_712\gps):						   Warn_Status[3]&=~0x20;
+Gps.c (bsp\stm32f407vgt6_recdrv\app_712\gps):						   Warn_Status[3]|=0x40;
+Gps.c (bsp\stm32f407vgt6_recdrv\app_712\gps):						  if(Warn_Status[3]&0x20)
+Gps.c (bsp\stm32f407vgt6_recdrv\app_712\gps):						   Warn_Status[3]&=~0x20;
+Gps.c (bsp\stm32f407vgt6_recdrv\app_712\gps):						   Warn_Status[3]&=~0x40;	  						   
+Gps.c (bsp\stm32f407vgt6_recdrv\app_712\gps):					   if((Warn_Status[3]&0x20)==0)
+Gps.c (bsp\stm32f407vgt6_recdrv\app_712\gps):					   Warn_Status[3]|=0x20;
+Gps.c (bsp\stm32f407vgt6_recdrv\app_712\gps):					   Warn_Status[3]&=~0x40; 	 
+Gps.c (bsp\stm32f407vgt6_recdrv\app_712\gps):			         if(( Warn_Status[3]&0x40)==0)   
+Gps.c (bsp\stm32f407vgt6_recdrv\app_712\gps):							   Warn_Status[3]&=~0x20;
+Gps.c (bsp\stm32f407vgt6_recdrv\app_712\gps):							   Warn_Status[3]|=0x40;	 
+Gps.c (bsp\stm32f407vgt6_recdrv\app_712\gps):				  if(Warn_Status[3]&0x20)
+Gps.c (bsp\stm32f407vgt6_recdrv\app_712\gps):	              Warn_Status[3]&=~0x20;
+Gps.c (bsp\stm32f407vgt6_recdrv\app_712\gps):				  Warn_Status[3]&=~0x40;   
+Gps.c (bsp\stm32f407vgt6_recdrv\app_712\gps):               Warn_Status[3]&=~0x20;
+Gps.c (bsp\stm32f407vgt6_recdrv\app_712\gps):			   Warn_Status[3]&=~0x40; 
+Menu_1_Idle.c (bsp\stm32f407vgt6_recdrv\app_712\lcd):	if(Warn_Status[1]&0x01)  
+Mma8451.c (bsp\stm32f407vgt6_recdrv\app_712\shakesensor):          if((Warn_Status[0]&0x20)==0x00)    // 如果没报警那么就让他报警
+Mma8451.c (bsp\stm32f407vgt6_recdrv\app_712\shakesensor):		                   {     Warn_Status[0]|=0x20; //bit29 	
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):u8		Warn_Status[4]		=
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):    Warn_Status[3] |= 0x01;//BIT( 0 );		   
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):    Warn_Status[3] &= ~0x01;//BIT( 0 );  	  	
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):   Warn_Status[2]	|= 0x01;//BIT( 0 );
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):   Warn_Status[2] &= ~0x01;//BIT( 0 );     
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):   Warn_Status[3] |= 0x02;//BIT( 1 );
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):  Warn_Status[3] &=~ 0x02;//BIT( 1 );
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):   Warn_Status[0]=0x00; //HH
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):   Warn_Status[1]=0x00; //HL  
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):   Warn_Status[2]=0x00; //LH 
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):   Warn_Status[3]=0x00; //LL	      
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):				   memcpy( ( char * ) GPSsaveBuf + GPSsaveBuf_Wr, ( char * )Warn_Status,4 );   
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):  if(Warn_Status[1]&0x10)
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):  if(Warn_Status[3]&0x02)
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):	memcpy( ( char * ) Original_info+ Original_info_Wr, ( char * )Warn_Status,4 );    
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):	if(Warn_Status[1]&0x10)
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):    if(Warn_Status[3]&0x02)
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):	memcpy( ( char * ) Original_info+ Original_info_Wr, ( char * )Warn_Status,4 );    
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):	if(Warn_Status[1]&0x10)
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):    if(Warn_Status[3]&0x02)
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):	memcpy( ( char * ) Original_info+ Original_info_Wr, ( char * )Warn_Status,4 );    
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):		memcpy( ( char * ) Original_info+ Original_info_Wr, ( char * )Warn_Status,4 );    
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):		memcpy( ( char * ) Original_info+ Original_info_Wr, ( char * )Warn_Status,4 );    
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):	memcpy( ( char * ) Instr+ Infowr, ( char * )Warn_Status,4 );    
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):				   Warn_Status[3]&=~0x04;  //BIT(2)	接触疲劳驾驶报警 
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):					 Warn_Status[1]&=~0x08;  // 清除超时触发 
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):									  if (Warn_Status[3]&0x01) 
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):									  if((Warn_Status[0]&0x20)==0x20) 
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):                                             Warn_Status[0]&=~0x20; 
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):                             	    if (Warn_Status[3]&0x01)  //紧急报警
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):                                            	     Warn_Status[3] &= ~0x01;  // bit 0
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):							     Warn_Status[3]&=~0x08;	// bit3
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):							     Warn_Status[1]&=~0x10;	// bit20 进出区域报警 
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):							     Warn_Status[1]&=~0x20;    // bit 21 进出线路报警
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):							     Warn_Status[1]&=~0x40; 	// bit 22  路段行驶时间不足报警 
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):							     Warn_Status[0]&=~0x08;    // bit 27  确认车辆非法点火报警
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):							     Warn_Status[0]&=~0x10;    // bit 28  确认车辆非法报警
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):                                                      Warn_Status[0]&=~0x80;    //bit 31  非法开门 (终端不设置区域时，车门开关无效) 
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):									  if ((Warn_Status[3]&0x01)&&(0x00000001&HumanConfirmWarn.ConfirmWarnType))  //紧急报警
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):			                                      	  if( (Warn_Status[3]&0x08)&&(0x00000008&HumanConfirmWarn.ConfirmWarnType))   //危险报警-BD
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):														  Warn_Status[3]&=~0x08;
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):				                                     if((Warn_Status[1]&0x10)&&(0x00001000&HumanConfirmWarn.ConfirmWarnType)) // 进出区域报警
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):										                  Warn_Status[1]&=~0x10;
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):									if((Warn_Status[1]&0x20)&&(0x00002000&HumanConfirmWarn.ConfirmWarnType)) // 进出路线报警
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):										                  Warn_Status[1]&=~0x20;  
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):									 if((Warn_Status[1]&0x40)&&(0x00004000&HumanConfirmWarn.ConfirmWarnType))  // 路段行驶时间不足、过长
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):				                                                  Warn_Status[1]&=~0x40; 
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):									   if((Warn_Status[0]&0x08)&&(0x08000000&HumanConfirmWarn.ConfirmWarnType))  //车辆非法点火
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):                                                                              Warn_Status[0]&=~0x08; 
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):									   if((Warn_Status[0]&0x10)&&(0x10000000&HumanConfirmWarn.ConfirmWarnType))  //车辆非法位移
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):                                                                              Warn_Status[0]&=~0x10; 
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):									      if((Warn_Status[0]&0x80)&&(0x80000000&HumanConfirmWarn.ConfirmWarnType))  //非法开门报警(终端未设置区域时，不判断非法开门)
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):                                                                        Warn_Status[0]&=~0x80; 
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):                  Warn_Status[1]|=0x10;// 进出区域报警
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):			   	  Warn_Status[1]|=0x10;// 进出区域报警
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):				 Warn_Status[1]|=0x10;// 进出区域报警
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):				 Warn_Status[1]|=0x10;// 进出区域报警
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):		    if( (Warn_Status[1]&0x80)==0)   //  如果以前没触发，那么及时上报
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):		    Warn_Status[1]|=0x80;// 路线偏航报警 
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):		     if (Warn_Status[1]&0x80)   //  如果以前没触发，那么及时上报
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):		    Warn_Status[1]&=~0x80;// 路线偏航报警      
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):	   Warn_Status[3]&=~0x04;  //BIT(2)	疲劳驾驶  
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):		Warn_Status[1]									&= ~0x08;                                                               // 停车超时清除
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):				Warn_Status[3]		|= 0x04; //BIT(2)  疲劳驾驶 
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):			Warn_Status[3]								|= 0x04;                                                                    //BIT(2)  疲劳驾驶
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):					Warn_Status[3]		|= 0x04;                                                                                    //BIT(2)  疲劳驾驶
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):				Warn_Status[3] |= 0x04;                                                                                             //BIT(2)  疲劳驾驶
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):					Warn_Status[3]										&= ~0x04;                    //BIT(2)	疲劳驾驶
+Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):				Warn_Status[1] |= 0x08;                                                                             // 停车超时触发
+Protocol_808.h (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):extern  u8		Warn_Status[4]; // 报警状态信息
