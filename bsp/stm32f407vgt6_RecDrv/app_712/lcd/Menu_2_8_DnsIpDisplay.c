@@ -86,11 +86,18 @@ static void msg( void *p)
 }
 static void show(void)
 	{
-	screen_2_8_counter=1;
-	lcd_fill(0);
-	lcd_text12(24,3,"查看设置信息",12,LCD_MODE_SET);
-	lcd_text12(30,18,"请按确认键",10,LCD_MODE_SET);
-	lcd_update_all();
+	if(Vechicle_Info.Vech_Type_Mark==2)
+		{
+		screen_2_8_counter=1;
+		lcd_fill(0);
+		lcd_text12(24,3,"查看设置信息",12,LCD_MODE_SET);
+		lcd_text12(30,18,"请按确认键",10,LCD_MODE_SET);
+		lcd_update_all();
+		}
+	else
+		{
+		Disp_DnsIP(2);
+		}
 	}
 static void keypress(unsigned int key)
 {
@@ -106,21 +113,28 @@ static void keypress(unsigned int key)
 			
 			break;
 		case KeyValueOk:
-			Disp_DnsIP(screen_2_8_counter);
+			if(Vechicle_Info.Vech_Type_Mark==2)
+				Disp_DnsIP(screen_2_8_counter);
 			break;
 		case KeyValueUP:
-			if(screen_2_8_counter>1)
-				screen_2_8_counter--;
-			else
-				screen_2_8_counter=3;
-			Disp_DnsIP(screen_2_8_counter);
+			if(Vechicle_Info.Vech_Type_Mark==2)
+				{
+				if(screen_2_8_counter>1)
+					screen_2_8_counter--;
+				else
+					screen_2_8_counter=3;
+				Disp_DnsIP(screen_2_8_counter);
+				}
 			break;
 		case KeyValueDown:
-			screen_2_8_counter++;
-			if(screen_2_8_counter>3)
-				screen_2_8_counter=1;
-				
-			Disp_DnsIP(screen_2_8_counter);
+			if(Vechicle_Info.Vech_Type_Mark==2)
+				{
+				screen_2_8_counter++;
+				if(screen_2_8_counter>3)
+					screen_2_8_counter=1;
+					
+				Disp_DnsIP(screen_2_8_counter);
+				}
 			break;
 		}
  KeyValue=0;

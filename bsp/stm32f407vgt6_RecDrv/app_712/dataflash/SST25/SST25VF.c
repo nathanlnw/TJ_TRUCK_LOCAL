@@ -75,7 +75,7 @@ void SST25V_DBSY(void)
         SPI_InitStructure.SPI_CPOL = SPI_CPOL_Low;  
         SPI_InitStructure.SPI_CPHA = SPI_CPHA_1Edge;
         SPI_InitStructure.SPI_NSS  = SPI_NSS_Soft;
-        SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_8;/* 42M/64=1.125M */    
+        SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_16;/* 42M/64=1.125M */    
         SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;
         SPI_InitStructure.SPI_CRCPolynomial = 7; 
 
@@ -135,6 +135,11 @@ u8 SST25V_ByteRead(u32 ReadAddr)
 
 void SST25V_BufferRead(u8* pBuffer, u32 ReadAddr, u16 NumByteToRead)
 {
+     u32  timeout=50000;
+   // note:  befor read  operation, please  check state
+   while((SST25V_ReadStatusRegister()&0x01)&&(timeout--))       
+   	   ;
+  
   SST25V_CS_LOW();
   SPI_Flash_SendByte(Read_Data);
   SPI_Flash_SendByte((ReadAddr & 0xFF0000) >> 16);

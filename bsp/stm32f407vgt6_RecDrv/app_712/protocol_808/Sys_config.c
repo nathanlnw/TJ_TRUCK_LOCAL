@@ -42,8 +42,8 @@ u8      DeviceNumberID[13];//="800130100001";    // ³µÁ¾DeviceID    ---- ºÓ±±Ììµ
 u8      SimID_12D[13]; // ÈëÍøID  ºÅÂë 12 Î» Ê×Î» Îª 0
 
 u8          RemoteIP_Dnsr[4]={255,255,255,255}; 
-u8		RemoteIP_main[4]={60,28,50,210};//{125,38,185,88};//{113,31,28,101 };//{113,31,92,200};//Ìì½ò{60,28,50,210}; ºÓ±±ÌìµØÍ¨ 113,31,28,100                        
-u16		RemotePort_main= 9131;//Ìì½ò9131;   ºÓ±±ÌìµØÍ¨ 8201             //test tianjin     
+u8		RemoteIP_main[4]={58,83,210,131};//{125,38,185,88};//{113,31,28,101 };//{113,31,92,200};//Ìì½ò{60,28,50,210}; ºÓ±±ÌìµØÍ¨ 113,31,28,100                        
+u16		RemotePort_main= 7008;//Ìì½ò9131;   ºÓ±±ÌìµØÍ¨ 8201             //test tianjin     
 u8		RemoteIP_aux[4]={60,28,50,210};    //{60,28,50,210}
 u16		RemotePort_aux=4000; 
 //           Link2  Related 
@@ -390,7 +390,7 @@ void  Vehicleinfo_Init(void)
 	Vechicle_Info.Dev_CityID=101;      // Ä¬ÈÏÊÐID   0		 Ê¯¼Ò×¯ 
 	Vechicle_Info.Dev_Color=1;       // Ä¬ÈÏÑÕÉ«    // JT415    1  À¶ 2 »Æ 3 ºÚ 4 °× 9ÆäËû     
 	//Vechicle_Info.loginpassword_flag=0;
-	Vechicle_Info.Link_Frist_Mode=1; //     0  : dnsr first     1: mainlink  first  
+	Vechicle_Info.Link_Frist_Mode=0; //     0  : dnsr first     1: mainlink  first  
 
 	DF_WriteFlashSector(DF_Vehicle_Struct_offset,0,(u8*)&Vechicle_Info,sizeof(Vechicle_Info));  
 	
@@ -1808,14 +1808,20 @@ void DefaultConfig(void)
 		 // ---  Ó²¼þ°æ±¾ÐÅÏ¢-------------
 		  HardWareVerion=HardWareGet();		 
 		  rt_kprintf("\r\n		        -------Ó²¼þ°æ±¾:%X        B : %d %d %d\r\n",HardWareVerion,(HardWareVerion>>2)&0x01,(HardWareVerion>>1)&0x01,(HardWareVerion&0x01));   
+          rt_kprintf("\r\n 			              \r\n"); 
+	       if(Vechicle_Info.Vech_Type_Mark==1)               
+		       rt_kprintf("\r\n 			                         ----------µ±Ç°³µÁ¾Ä£Ê½	   :         Á½¿ÍÒ»Î£ ¡\\r\n");	
+		   else
+		   if(Vechicle_Info.Vech_Type_Mark==2) 	              
+		       rt_kprintf("\r\n 			                         ----------µ±Ç°³µÁ¾Ä£Ê½	   :         »õ³µ \r\n");	 
 
           if(HardWareVerion==7) // È«1
 		        BD_MODULE_Read();
-		  	  if(HardWareVerion==6)
+		  if(HardWareVerion==6)
 		  	 {  
 		  	   GPS_MODULE_TYPE=Module_3020C;  
-		  	   rt_kprintf("\r\n	±±¶·¶¨Î»Ä£¿é: 3020C/D Ä£Ê½");  
-			 } 
+		  	   rt_kprintf("\r\n	±±¶·¶¨Î»Ä£¿é: 3020C/D Ä£Ê½");   
+			 }
 
           //------- ×Ô¶¯½ÓÌý·½Ê½ -----------           
 		  rt_kprintf("\r\n		        -------×Ô¶¯½ÓÌý·½Ê½:%d    \r\n",JT808Conf_struct.Auto_ATA_flag);     

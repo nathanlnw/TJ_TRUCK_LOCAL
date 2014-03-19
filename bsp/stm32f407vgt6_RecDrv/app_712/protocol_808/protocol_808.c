@@ -2174,32 +2174,7 @@ u8  Stuff_Normal_Data_0200H(void)
 	 Original_info[Original_info_Wr++]=0x00;
        Original_info[Original_info_Wr++]=BD_EXT.Extent_IO_status; 
 
-	   //  附加信息 6  -----------------------------	  
-	 //  附加信息 ID
-	 Original_info[Original_info_Wr++]=0xFE; //信号强度
-	 //  附加信息长度
-	 Original_info[Original_info_Wr++]=2; 
-	 //  类型
-	 Original_info[Original_info_Wr++]= BD_EXT.FJ_SignalValue;  
-	 Original_info[Original_info_Wr++]=0x00;  //  保留 
 
-        //if(DispContent)
-         //     printf("\r\n---- Satelitenum: %d , CSQ:%d\r\n",Satelite_num,ModuleSQ);  
-
-     //  附加信息 7  -----------------------------	   
-	 //  附加信息 ID
-	 Original_info[Original_info_Wr++]=0xFF; //自定义模拟量上传
-	 //  附加信息长度
-	 Original_info[Original_info_Wr++]=6; 
-	 //  类型
-	 Original_info[Original_info_Wr++]= BD_EXT.FJ_IO_1; 
-	 Original_info[Original_info_Wr++]= BD_EXT.FJ_IO_2;  
-	 Original_info[Original_info_Wr++]=(BD_EXT.AD_0>>8);  // 模拟量 1
-	 Original_info[Original_info_Wr++]=BD_EXT.AD_0;
-	 Original_info[Original_info_Wr++]=(BD_EXT.AD_1>>8);  // 模拟量 2
-	 Original_info[Original_info_Wr++]=BD_EXT.AD_1;
-
- 
  //  3. Send 
  Protocol_End(Packet_Normal ,0);
    	
@@ -2311,31 +2286,7 @@ rt_kprintf("\r\n ----- 0x0200 current 附加信息 \r\n");
        Original_info[Original_info_Wr++]=0x00;
 	 Original_info[Original_info_Wr++]=0x00;
        Original_info[Original_info_Wr++]=BD_EXT.Extent_IO_status; 
-	   //  附加信息 5  -----------------------------	  
-	 //  附加信息 ID
-	 Original_info[Original_info_Wr++]=0xFE; //信号强度
-	 //  附加信息长度
-	 Original_info[Original_info_Wr++]=2; 
-	 //  类型
-	 Original_info[Original_info_Wr++]= BD_EXT.FJ_SignalValue; 
-	 Original_info[Original_info_Wr++]=0x00;  //  保留 
 
-        //if(DispContent)
-         //     printf("\r\n---- Satelitenum: %d , CSQ:%d\r\n",Satelite_num,ModuleSQ);  
-
-        //  附加信息 6  -----------------------------	  
-	 //  附加信息 ID
-	 Original_info[Original_info_Wr++]=0xFF; //自定义模拟量上传
-	 //  附加信息长度
-	 Original_info[Original_info_Wr++]=6; 
-	 //  类型
-	 Original_info[Original_info_Wr++]= BD_EXT.FJ_IO_1; 
-	 Original_info[Original_info_Wr++]= BD_EXT.FJ_IO_2;  
-	 Original_info[Original_info_Wr++]=(BD_EXT.AD_0>>8);  // 模拟量 1
-	 Original_info[Original_info_Wr++]=BD_EXT.AD_0;
-	 Original_info[Original_info_Wr++]=(BD_EXT.AD_1>>8);  // 模拟量 2
-	 Original_info[Original_info_Wr++]=BD_EXT.AD_1;
-	
  //  3. Send 
  Protocol_End(Packet_Normal ,0);
 
@@ -2442,32 +2393,6 @@ u8  Stuff_Current_Data_0201H(void)   //   位置信息查询回应
 
     }
 
-    
-	   //  附加信息 5  -----------------------------	  
-	 //  附加信息 ID
-	 Original_info[Original_info_Wr++]=0xFE; //信号强度
-	 //  附加信息长度
-	 Original_info[Original_info_Wr++]=2; 
-	 //  类型
-	 Original_info[Original_info_Wr++]= BD_EXT.FJ_SignalValue; 
-	 Original_info[Original_info_Wr++]=0x00;  //  保留 
-
-        //if(DispContent)
-         //     printf("\r\n---- Satelitenum: %d , CSQ:%d\r\n",Satelite_num,ModuleSQ);  
-
-        //  附加信息 6  -----------------------------	  
-	 //  附加信息 ID
-	 Original_info[Original_info_Wr++]=0xFF; //自定义模拟量上传
-	 //  附加信息长度
-	 Original_info[Original_info_Wr++]=6; 
-	 //  类型
-	 Original_info[Original_info_Wr++]= BD_EXT.FJ_IO_1; 
-	 Original_info[Original_info_Wr++]= BD_EXT.FJ_IO_2;  
-	 Original_info[Original_info_Wr++]=(BD_EXT.AD_0>>8);  // 模拟量 1
-	 Original_info[Original_info_Wr++]=BD_EXT.AD_0;
-	 Original_info[Original_info_Wr++]=(BD_EXT.AD_1>>8);  // 模拟量 2
-	 Original_info[Original_info_Wr++]=BD_EXT.AD_1;
-	
  //  3. Send 
 Protocol_End(Packet_Normal ,0);
  if(DispContent)
@@ -3700,7 +3625,7 @@ u8  Stuff_SettingPram_0104H(void)
 		Original_info[Original_info_Wr++]=0x00;   // 参数值
 		Original_info[Original_info_Wr++]=0x00; 
 		Original_info[Original_info_Wr++]=(7008>>8); 
-		Original_info[Original_info_Wr++]=7008; 
+		Original_info[Original_info_Wr++]=(u8)7008; 
 													    
             //  A.17  备用服务TCP端口
              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
@@ -3711,7 +3636,7 @@ u8  Stuff_SettingPram_0104H(void)
 		Original_info[Original_info_Wr++]=0x00;   // 参数值
 		Original_info[Original_info_Wr++]=0x00; 
 		Original_info[Original_info_Wr++]=(7008>>8); 
-		Original_info[Original_info_Wr++]=7008; 
+		Original_info[Original_info_Wr++]=(u8)(7008); 
 
              //  A.18  IC卡认证 主服务器地址
              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
@@ -3799,7 +3724,7 @@ u8  Stuff_SettingPram_0104H(void)
 		Original_info[Original_info_Wr++]=(300>>24);   // 参数值  
 		Original_info[Original_info_Wr++]=(300>>16);
 		Original_info[Original_info_Wr++]=(300>>8);
-		Original_info[Original_info_Wr++]=(300);     	
+		Original_info[Original_info_Wr++]=(u8)(300);     	
 		 
                                         //  A.26 紧急报警时 
              Original_info[Original_info_Wr++]=0x00;   // 参数ID 4Bytes
@@ -3891,7 +3816,7 @@ u8  Stuff_SettingPram_0104H(void)
 		Original_info[Original_info_Wr++]=2  ; // 参数长度
 	  // 参数值 
 		Original_info[Original_info_Wr++]=(500>>8);
-		Original_info[Original_info_Wr++]=(500);     
+		Original_info[Original_info_Wr++]=(u8)(500);     
 
 
              //   A.34    设置求助号码
@@ -3924,8 +3849,8 @@ u8  Stuff_SettingPram_0104H(void)
 		Original_info[Original_info_Wr++]=0x43;
 		Original_info[Original_info_Wr++]=5  ; // 参数长度
 
-		memcpy(( char * ) Original_info+ Original_info_Wr,JT808Conf_struct.SMS_RXNum,strlen(JT808Conf_struct.SMS_RXNum)); 
-		Original_info_Wr+=strlen(JT808Conf_struct.SMS_RXNum); 
+		memcpy(( char * ) Original_info+ Original_info_Wr,JT808Conf_struct.SMS_RXNum,strlen((const char*)JT808Conf_struct.SMS_RXNum)); 
+		Original_info_Wr+=strlen((const char*)JT808Conf_struct.SMS_RXNum); 
 
 
                 
@@ -5474,19 +5399,18 @@ u8  Stuff_MultiMedia_Data_0801H(void)
 				   //			content_startoffset 	picpage_offset				 contentpage_offset
                   if(TF_Card_Status()==0) 
                   {
-                   if(Camera_Number==1)
-				      Api_DFdirectory_Read(camera_1, Original_info + Original_info_Wr, 512,1,MediaObj.Media_currentPacketNum); 
-                   else
-				   if(Camera_Number==2)
-				      Api_DFdirectory_Read(camera_2, Original_info + Original_info_Wr, 512,1,MediaObj.Media_currentPacketNum); 
-                   else
-				   if(Camera_Number==3)
-				      Api_DFdirectory_Read(camera_3, Original_info + Original_info_Wr, 512,1,MediaObj.Media_currentPacketNum); 
-                   else
-		     if(Camera_Number==4)
-				      Api_DFdirectory_Read(camera_4, Original_info + Original_info_Wr, 512,1,MediaObj.Media_currentPacketNum);  
- 
-				   	
+	                   if(Camera_Number==1)
+					      Api_DFdirectory_Read(camera_1, Original_info + Original_info_Wr, 512,1,MediaObj.Media_currentPacketNum); 
+	                   else
+					   if(Camera_Number==2)
+					      Api_DFdirectory_Read(camera_2, Original_info + Original_info_Wr, 512,1,MediaObj.Media_currentPacketNum); 
+	                   else
+					   if(Camera_Number==3)
+					      Api_DFdirectory_Read(camera_3, Original_info + Original_info_Wr, 512,1,MediaObj.Media_currentPacketNum); 
+	                   else
+			         if(Camera_Number==4)
+					      Api_DFdirectory_Read(camera_4, Original_info + Original_info_Wr, 512,1,MediaObj.Media_currentPacketNum);  
+ 	   	
                        DF_delay_ms(10); 
 				      inadd=(Photo_sdState.SD_packetNum-1)<<9; //乘以512
 				   	  if(PicFileSize>inadd)
@@ -5505,25 +5429,7 @@ u8  Stuff_MultiMedia_Data_0801H(void)
 				  else
 				   if(TF_Card_Status()==1)  
 				   	{  ;
-				   	 /* inadd=(Photo_sdState.SD_packetNum-1)<<9; //乘以512
-				   	  if(PicFileSize>inadd)
-				   	  	{
-                            if((PicFileSize-inadd)>512)
-                                 readsize=512;
-							else
-							 {	 
-							    readsize=PicFileSize-inadd; // 最后一包  
-							    rt_kprintf("\r\n   最后一包 readsize =%d \r\n",readsize);
-							 }
-				   	  	}
-					  else
-					  	 return false;
-                      i=read_file(PictureName,inadd,readsize,Original_info + Original_info_Wr); 
-					  if(i==false)
-					  	{
-                          rt_kprintf("\r\n 图片文件: %s   读取失败\r\n",PictureName); 
-                          return false;
-					  	} */
+
 				   	} 
 			 Original_info_Wr+=readsize;		 //         
 		          break;
@@ -9126,14 +9032,16 @@ void TCP_RX_Process( u8  LinkNum)  //  ---- 808  标准协议
                                   //  write area   
                                   WatchDog_Feed();
                                   SST25V_BufferWrite(BD_ISP.ContentData,ISP_StartArea+(BD_ISP.CurrentPacket_Num-1)*BD_ISP.PacketSizeGet,infolen);
-								  delay_ms(160);
+								  //delay_ms(160);
+								  rt_thread_delay(12);  
 								  WatchDog_Feed();
                             
 
 								  // read 
 								  memset(ISP_buffer,0,sizeof(ISP_buffer));
 								  SST25V_BufferRead(ISP_buffer,ISP_StartArea+(BD_ISP.CurrentPacket_Num-1)*BD_ISP.PacketSizeGet,infolen); 
-								  delay_ms(120);
+								  //delay_ms(120);
+								  rt_thread_delay(8); 
 
 								  for(i=0;i<infolen;i++)
 								  {
@@ -11437,5 +11345,37 @@ void ata_enable(u8 value)
   Api_Config_write(config,ID_CONF_SYS,(u8*)&SysConf_struct,sizeof(SysConf_struct));
 }
 //FINSH_FUNCTION_EXPORT(ata_enable, ata_enable[1|0]);    
+
+
+void  type_vech(u8 type)   
+{
+  Vechicle_Info.Vech_Type_Mark=type;   
+
+  if(type==1)
+  	{
+  	  rt_kprintf("\r\n  车辆类型设置为:  两客一危\r\n");
+	  memset(Vechicle_Info.Vech_Type,0,sizeof(Vechicle_Info.Vech_Type));
+	  memcpy(Vechicle_Info.Vech_Type,"客车",4);	
+
+  	}
+  else
+  if(type==2)
+     {
+         rt_kprintf("\r\n  车辆类型设置为:  货运\r\n");
+         memset(Vechicle_Info.Vech_Type,0,sizeof(Vechicle_Info.Vech_Type));
+	     memcpy(Vechicle_Info.Vech_Type,"货车",4);	 
+  	}	 
+  	  
+	
+  DF_WriteFlashSector(DF_Vehicle_Struct_offset,0,(u8*)&Vechicle_Info,sizeof(Vechicle_Info));
+  WatchDog_Feed();
+  DF_WriteFlashSector(DF_VehicleBAK_Struct_offset,0,(u8*)&Vechicle_Info,sizeof(Vechicle_Info)); 
+  
+  WatchDog_Feed();
+  DF_WriteFlashSector(DF_VehicleBAK2_Struct_offset,0,(u8*)&Vechicle_Info,sizeof(Vechicle_Info)); 
+
+}
+FINSH_FUNCTION_EXPORT(type_vech, type_vech[1|0]);      
+
 
 // C.  Module

@@ -263,6 +263,12 @@ if(DEV_Login.Operate_enable==2)
 else
 	lcd_bitmap(72,2,&BMP_link_off, LCD_MODE_SET);
 
+//----- 车辆模式  客  货   ------- add    by   nathan
+if(Vechicle_Info.Vech_Type_Mark==1)  
+	  lcd_text12(80,0,"K",1,LCD_MODE_SET);
+else
+if(Vechicle_Info.Vech_Type_Mark==2)	
+	  lcd_text12(80,0,"H",1,LCD_MODE_SET);   
 
 //车辆载重标志
 if(JT808Conf_struct.LOAD_STATE==1)

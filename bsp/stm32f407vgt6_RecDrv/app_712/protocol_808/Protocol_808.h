@@ -250,9 +250,10 @@ typedef struct _DriveInfo
 
 typedef struct _VechInfo
 {
-// u8	   loginpassword_flag;	//	界面输入标志位	  0 :default	1:	longin ok
- u8	   Link_Frist_Mode; 		//	 首次连接模式		 0	: dnsr first	 1: mainlink  first  
- u8     Dev_Color;           // 车牌颜色           // JT415    1  蓝 2 黄 3 黑 4 白 9其他 
+ u8     Dev_Color;           // 车牌颜色           // JT415    1  蓝 2 黄 3 黑 4 白 9其他
+ u8     loginpassword_flag;  //  界面输入标志位    0 :default    1:  longin ok
+ u8     Link_Frist_Mode;		 //   首次连接模式		  0  : dnsr first	  1: mainlink  first 
+ u8     Vech_Type_Mark;//    1:两客一危    2:货运
  u16    Dev_ProvinceID;      // 车辆所在省ID
  u16    Dev_CityID;          // 车辆所在市ID    
  u8     Vech_VIN[18];        // 车辆VIN号17

@@ -66,7 +66,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -76,7 +76,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -156,7 +156,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -166,7 +166,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -248,7 +248,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -258,7 +258,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -338,7 +338,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -348,7 +348,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -428,7 +428,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -438,7 +438,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -521,7 +521,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -531,7 +531,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -1749,7 +1749,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -1759,7 +1759,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -2149,7 +2149,7 @@ I (.\drivers\usb\Usbh_conf.h)(0x50D18016)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
 I (.\app_712\protocol_808\Sys_config.h)(0x52958E0F)
@@ -2158,7 +2158,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -2239,7 +2239,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -2249,7 +2249,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -2330,7 +2330,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -2340,7 +2340,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -2354,7 +2354,7 @@ I (.\app_712\ICcard\IC_card.h)(0x51D37680)
 I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
 F (.\app_712\gsm\Device_gsm.h)(0x5295973B)()
-F (.\app_712\gsm\SMS.c)(0x52959723)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\sms.o" --omf_browse ".\build\sms.crf" --depend ".\build\sms.d")
+F (.\app_712\gsm\SMS.c)(0x5297E913)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\sms.o" --omf_browse ".\build\sms.crf" --depend ".\build\sms.d")
 I (..\..\include\rtthread.h)(0x50A9E1FE)
 I (..\..\include\rtdef.h)(0x5084A420)
 I (.\rtconfig.h)(0x5240E8D8)
@@ -2421,7 +2421,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -2431,7 +2431,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -2552,7 +2552,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -2562,7 +2562,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -2576,7 +2576,7 @@ I (.\app_712\ICcard\IC_card.h)(0x51D37680)
 I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
 F (.\app_712\U4_485\Device_485.h)(0x520C8CF6)()
-F (.\app_712\U4_485\App_485.c)(0x521443A8)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\app_485.o" --omf_browse ".\build\app_485.crf" --depend ".\build\app_485.d")
+F (.\app_712\U4_485\App_485.c)(0x5297E936)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\app_485.o" --omf_browse ".\build\app_485.crf" --depend ".\build\app_485.d")
 I (..\..\include\rtthread.h)(0x50A9E1FE)
 I (..\..\include\rtdef.h)(0x5084A420)
 I (.\rtconfig.h)(0x5240E8D8)
@@ -2643,7 +2643,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -2653,7 +2653,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -2734,7 +2734,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -2744,7 +2744,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -2758,7 +2758,7 @@ I (.\app_712\ICcard\IC_card.h)(0x51D37680)
 I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
 F (.\app_712\protocol_808\app_808.h)(0x520EFDC0)()
-F (.\app_712\protocol_808\Device_808.c)(0x5295A71A)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\device_808.o" --omf_browse ".\build\device_808.crf" --depend ".\build\device_808.d")
+F (.\app_712\protocol_808\Device_808.c)(0x532909FA)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\device_808.o" --omf_browse ".\build\device_808.crf" --depend ".\build\device_808.d")
 I (..\..\include\rtthread.h)(0x50A9E1FE)
 I (..\..\include\rtdef.h)(0x5084A420)
 I (.\rtconfig.h)(0x5240E8D8)
@@ -2825,7 +2825,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -2835,7 +2835,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -2849,7 +2849,7 @@ I (.\app_712\ICcard\IC_card.h)(0x51D37680)
 I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
 F (.\app_712\protocol_808\Device_808.h)(0x5295926F)()
-F (.\app_712\protocol_808\protocol_808.c)(0x52959CF1)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\protocol_808.o" --omf_browse ".\build\protocol_808.crf" --depend ".\build\protocol_808.d")
+F (.\app_712\protocol_808\protocol_808.c)(0x5297EA71)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\protocol_808.o" --omf_browse ".\build\protocol_808.crf" --depend ".\build\protocol_808.d")
 I (..\..\include\rtthread.h)(0x50A9E1FE)
 I (..\..\include\rtdef.h)(0x5084A420)
 I (.\rtconfig.h)(0x5240E8D8)
@@ -2917,7 +2917,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -2927,7 +2927,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -2940,8 +2940,8 @@ I (.\app_712\ICcard\SLE4442.h)(0x51639EFE)
 I (.\app_712\ICcard\IC_card.h)(0x51D37680)
 I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
-F (.\app_712\protocol_808\protocol_808.h)(0x52958F8F)()
-F (.\app_712\protocol_808\Sys_config.c)(0x52958E67)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\sys_config.o" --omf_browse ".\build\sys_config.crf" --depend ".\build\sys_config.d")
+F (.\app_712\protocol_808\protocol_808.h)(0x5297E9ED)()
+F (.\app_712\protocol_808\Sys_config.c)(0x5297E9D3)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\sys_config.o" --omf_browse ".\build\sys_config.crf" --depend ".\build\sys_config.d")
 I (..\..\include\rtthread.h)(0x50A9E1FE)
 I (..\..\include\rtdef.h)(0x5084A420)
 I (.\rtconfig.h)(0x5240E8D8)
@@ -3008,7 +3008,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -3018,7 +3018,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -3103,7 +3103,7 @@ I (.\drivers\usb\Usbh_conf.h)(0x50D18016)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -3111,7 +3111,7 @@ I (.\app_712\protocol_808\Sys_config.h)(0x52958E0F)
 I (.\app_712\rtc/Rtc.h)(0x521413B6)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -3191,7 +3191,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -3201,7 +3201,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -3282,7 +3282,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -3292,7 +3292,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -3351,7 +3351,7 @@ I (Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x50C9967A)
 I (app_712\rtc\rtc.h)(0x521413B6)
 I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 F (.\app_712\rtc\rtc.h)(0x521413B6)()
-F (.\app_712\dataflash\SST25\SST25VF.c)(0x5295985B)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\sst25vf.o" --omf_browse ".\build\sst25vf.crf" --depend ".\build\sst25vf.d")
+F (.\app_712\dataflash\SST25\SST25VF.c)(0x5328FE38)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\sst25vf.o" --omf_browse ".\build\sst25vf.crf" --depend ".\build\sst25vf.d")
 I (.\app_712\App_moduleConfig.h)(0x523135DE)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdlib.h)(0x50F96150)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdio.h)(0x50F96150)
@@ -3418,7 +3418,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -3428,7 +3428,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -3510,7 +3510,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -3520,7 +3520,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -3601,7 +3601,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -3611,7 +3611,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -3692,7 +3692,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -3702,7 +3702,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -4587,7 +4587,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -4597,7 +4597,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -4690,7 +4690,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -4700,7 +4700,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -4782,7 +4782,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -4792,7 +4792,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -4875,7 +4875,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -4885,7 +4885,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -4939,7 +4939,7 @@ I (Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_wwdg.h)(0x50C9967A)
 I (Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x50C9967A)
 I (app_712\lcd\Lcd.h)(0x50D15152)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdio.h)(0x50F96150)
-I (app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\./App_moduleConfig.h)(0x523135DE)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdlib.h)(0x50F96150)
 I (e:\Keil\ARM\ARMCC\bin\..\include\string.h)(0x50F96150)
@@ -4972,7 +4972,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -4982,7 +4982,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (drivers\vuart.h)(0x50DBC162)
 I (.\app_712\printer\Device_printer.h)(0x520B4000)
 I (.\app_712\shakesensor\mma8451.h)(0x50E79CE6)
@@ -4992,9 +4992,9 @@ I (.\app_712\ICcard\SLE4442.h)(0x51639EFE)
 I (.\app_712\ICcard\IC_card.h)(0x51D37680)
 I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
-F (.\app_712\lcd\Menu_0_0_password.c)(0x523FEB42)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_0_0_password.o" --omf_browse ".\build\menu_0_0_password.crf" --depend ".\build\menu_0_0_password.d")
+F (.\app_712\lcd\Menu_0_0_password.c)(0x5328FA3E)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_0_0_password.o" --omf_browse ".\build\menu_0_0_password.crf" --depend ".\build\menu_0_0_password.d")
 I (e:\Keil\ARM\ARMCC\bin\..\include\string.h)(0x50F96150)
-I (app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdio.h)(0x50F96150)
 I (.\app_712\./App_moduleConfig.h)(0x523135DE)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdlib.h)(0x50F96150)
@@ -5061,7 +5061,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -5071,7 +5071,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -5084,9 +5084,9 @@ I (.\app_712\ICcard\SLE4442.h)(0x51639EFE)
 I (.\app_712\ICcard\IC_card.h)(0x51D37680)
 I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
-F (.\app_712\lcd\Menu_0_1_License.c)(0x525642D6)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_0_1_license.o" --omf_browse ".\build\menu_0_1_license.crf" --depend ".\build\menu_0_1_license.d")
+F (.\app_712\lcd\Menu_0_1_License.c)(0x5328F977)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_0_1_license.o" --omf_browse ".\build\menu_0_1_license.crf" --depend ".\build\menu_0_1_license.d")
 I (e:\Keil\ARM\ARMCC\bin\..\include\string.h)(0x50F96150)
-I (app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdio.h)(0x50F96150)
 I (.\app_712\./App_moduleConfig.h)(0x523135DE)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdlib.h)(0x50F96150)
@@ -5153,7 +5153,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -5163,7 +5163,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -5176,9 +5176,9 @@ I (.\app_712\ICcard\SLE4442.h)(0x51639EFE)
 I (.\app_712\ICcard\IC_card.h)(0x51D37680)
 I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
-F (.\app_712\lcd\Menu_0_2_CarType.c)(0x5242927A)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_0_2_cartype.o" --omf_browse ".\build\menu_0_2_cartype.crf" --depend ".\build\menu_0_2_cartype.d")
+F (.\app_712\lcd\Menu_0_2_CarType.c)(0x5328F969)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_0_2_cartype.o" --omf_browse ".\build\menu_0_2_cartype.crf" --depend ".\build\menu_0_2_cartype.d")
 I (e:\Keil\ARM\ARMCC\bin\..\include\string.h)(0x50F96150)
-I (app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdio.h)(0x50F96150)
 I (.\app_712\./App_moduleConfig.h)(0x523135DE)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdlib.h)(0x50F96150)
@@ -5245,7 +5245,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -5255,7 +5255,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -5268,8 +5268,8 @@ I (.\app_712\ICcard\SLE4442.h)(0x51639EFE)
 I (.\app_712\ICcard\IC_card.h)(0x51D37680)
 I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
-F (.\app_712\lcd\Menu_0_loggingin.c)(0x522EB8DC)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_0_loggingin.o" --omf_browse ".\build\menu_0_loggingin.crf" --depend ".\build\menu_0_loggingin.d")
-I (app_712\lcd\Menu_Include.h)(0x52380BA2)
+F (.\app_712\lcd\Menu_0_loggingin.c)(0x5328F5FA)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_0_loggingin.o" --omf_browse ".\build\menu_0_loggingin.crf" --depend ".\build\menu_0_loggingin.d")
+I (app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdio.h)(0x50F96150)
 I (.\app_712\./App_moduleConfig.h)(0x523135DE)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdlib.h)(0x50F96150)
@@ -5337,7 +5337,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -5347,7 +5347,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -5360,7 +5360,7 @@ I (.\app_712\ICcard\SLE4442.h)(0x51639EFE)
 I (.\app_712\ICcard\IC_card.h)(0x51D37680)
 I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
-F (.\app_712\lcd\Menu_1_Idle.c)(0x5297E341)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_1_idle.o" --omf_browse ".\build\menu_1_idle.crf" --depend ".\build\menu_1_idle.d")
+F (.\app_712\lcd\Menu_1_Idle.c)(0x5328FDD7)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_1_idle.o" --omf_browse ".\build\menu_1_idle.crf" --depend ".\build\menu_1_idle.d")
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdlib.h)(0x50F96150)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdio.h)(0x50F96150)
 I (e:\Keil\ARM\ARMCC\bin\..\include\string.h)(0x50F96150)
@@ -5428,7 +5428,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -5438,7 +5438,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -5452,7 +5452,7 @@ I (.\app_712\ICcard\IC_card.h)(0x51D37680)
 I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
 F (.\app_712\lcd\Menu_2_1_Status8.c)(0x522FCD94)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_2_1_status8.o" --omf_browse ".\build\menu_2_1_status8.crf" --depend ".\build\menu_2_1_status8.d")
-I (app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdio.h)(0x50F96150)
 I (.\app_712\./App_moduleConfig.h)(0x523135DE)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdlib.h)(0x50F96150)
@@ -5520,7 +5520,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -5530,7 +5530,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -5544,7 +5544,7 @@ I (.\app_712\ICcard\IC_card.h)(0x51D37680)
 I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
 F (.\app_712\lcd\Menu_2_2_Speed15.c)(0x529595AD)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_2_2_speed15.o" --omf_browse ".\build\menu_2_2_speed15.crf" --depend ".\build\menu_2_2_speed15.d")
-I (app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdio.h)(0x50F96150)
 I (.\app_712\./App_moduleConfig.h)(0x523135DE)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdlib.h)(0x50F96150)
@@ -5612,7 +5612,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -5622,7 +5622,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -5636,7 +5636,7 @@ I (.\app_712\ICcard\IC_card.h)(0x51D37680)
 I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
 F (.\app_712\lcd\Menu_2_3_CentreTextStor.c)(0x52114460)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_2_3_centretextstor.o" --omf_browse ".\build\menu_2_3_centretextstor.crf" --depend ".\build\menu_2_3_centretextstor.d")
-I (app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdio.h)(0x50F96150)
 I (.\app_712\./App_moduleConfig.h)(0x523135DE)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdlib.h)(0x50F96150)
@@ -5704,7 +5704,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -5714,7 +5714,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -5729,7 +5729,7 @@ I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
 F (.\app_712\lcd\Menu_2_4_CarInfor.c)(0x522FC8F0)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_2_4_carinfor.o" --omf_browse ".\build\menu_2_4_carinfor.crf" --depend ".\build\menu_2_4_carinfor.d")
 I (e:\Keil\ARM\ARMCC\bin\..\include\string.h)(0x50F96150)
-I (app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdio.h)(0x50F96150)
 I (.\app_712\./App_moduleConfig.h)(0x523135DE)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdlib.h)(0x50F96150)
@@ -5796,7 +5796,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -5806,7 +5806,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -5821,7 +5821,7 @@ I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
 F (.\app_712\lcd\Menu_2_5_DriverInfor.c)(0x5211448A)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_2_5_driverinfor.o" --omf_browse ".\build\menu_2_5_driverinfor.crf" --depend ".\build\menu_2_5_driverinfor.d")
 I (e:\Keil\ARM\ARMCC\bin\..\include\string.h)(0x50F96150)
-I (app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdio.h)(0x50F96150)
 I (.\app_712\./App_moduleConfig.h)(0x523135DE)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdlib.h)(0x50F96150)
@@ -5888,7 +5888,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -5898,7 +5898,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -5912,7 +5912,7 @@ I (.\app_712\ICcard\IC_card.h)(0x51D37680)
 I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
 F (.\app_712\lcd\Menu_2_6_Mileage.c)(0x50ECF808)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_2_6_mileage.o" --omf_browse ".\build\menu_2_6_mileage.crf" --depend ".\build\menu_2_6_mileage.d")
-I (app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdio.h)(0x50F96150)
 I (.\app_712\./App_moduleConfig.h)(0x523135DE)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdlib.h)(0x50F96150)
@@ -5980,7 +5980,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -5990,7 +5990,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -6004,7 +6004,7 @@ I (.\app_712\ICcard\IC_card.h)(0x51D37680)
 I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
 F (.\app_712\lcd\Menu_2_7_RequestProgram.c)(0x5211C1CC)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_2_7_requestprogram.o" --omf_browse ".\build\menu_2_7_requestprogram.crf" --depend ".\build\menu_2_7_requestprogram.d")
-I (app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdio.h)(0x50F96150)
 I (.\app_712\./App_moduleConfig.h)(0x523135DE)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdlib.h)(0x50F96150)
@@ -6072,7 +6072,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -6082,7 +6082,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -6095,9 +6095,9 @@ I (.\app_712\ICcard\SLE4442.h)(0x51639EFE)
 I (.\app_712\ICcard\IC_card.h)(0x51D37680)
 I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
-F (.\app_712\lcd\Menu_2_8_DnsIpDisplay.c)(0x522D74BA)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_2_8_dnsipdisplay.o" --omf_browse ".\build\menu_2_8_dnsipdisplay.crf" --depend ".\build\menu_2_8_dnsipdisplay.d")
+F (.\app_712\lcd\Menu_2_8_DnsIpDisplay.c)(0x5328F50F)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_2_8_dnsipdisplay.o" --omf_browse ".\build\menu_2_8_dnsipdisplay.crf" --depend ".\build\menu_2_8_dnsipdisplay.d")
 I (e:\Keil\ARM\ARMCC\bin\..\include\string.h)(0x50F96150)
-I (app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdio.h)(0x50F96150)
 I (.\app_712\./App_moduleConfig.h)(0x523135DE)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdlib.h)(0x50F96150)
@@ -6164,7 +6164,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -6174,7 +6174,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -6188,7 +6188,7 @@ I (.\app_712\ICcard\IC_card.h)(0x51D37680)
 I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
 F (.\app_712\lcd\Menu_2_InforCheck.c)(0x50DBDA18)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_2_inforcheck.o" --omf_browse ".\build\menu_2_inforcheck.crf" --depend ".\build\menu_2_inforcheck.d")
-I (app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdio.h)(0x50F96150)
 I (.\app_712\./App_moduleConfig.h)(0x523135DE)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdlib.h)(0x50F96150)
@@ -6256,7 +6256,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -6266,7 +6266,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -6280,7 +6280,7 @@ I (.\app_712\ICcard\IC_card.h)(0x51D37680)
 I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
 F (.\app_712\lcd\Menu_3_1_CentreQuesSend.c)(0x52144D1A)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_3_1_centrequessend.o" --omf_browse ".\build\menu_3_1_centrequessend.crf" --depend ".\build\menu_3_1_centrequessend.d")
-I (app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdio.h)(0x50F96150)
 I (.\app_712\./App_moduleConfig.h)(0x523135DE)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdlib.h)(0x50F96150)
@@ -6348,7 +6348,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -6358,7 +6358,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -6372,7 +6372,7 @@ I (.\app_712\ICcard\IC_card.h)(0x51D37680)
 I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
 F (.\app_712\lcd\Menu_3_2_FullorEmpty.c)(0x520F0DA2)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_3_2_fullorempty.o" --omf_browse ".\build\menu_3_2_fullorempty.crf" --depend ".\build\menu_3_2_fullorempty.d")
-I (app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdio.h)(0x50F96150)
 I (.\app_712\./App_moduleConfig.h)(0x523135DE)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdlib.h)(0x50F96150)
@@ -6440,7 +6440,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -6450,7 +6450,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -6464,7 +6464,7 @@ I (.\app_712\ICcard\IC_card.h)(0x51D37680)
 I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
 F (.\app_712\lcd\Menu_3_3_ElectronicInfor.c)(0x50ECDE58)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_3_3_electronicinfor.o" --omf_browse ".\build\menu_3_3_electronicinfor.crf" --depend ".\build\menu_3_3_electronicinfor.d")
-I (app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdio.h)(0x50F96150)
 I (.\app_712\./App_moduleConfig.h)(0x523135DE)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdlib.h)(0x50F96150)
@@ -6532,7 +6532,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -6542,7 +6542,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -6556,7 +6556,7 @@ I (.\app_712\ICcard\IC_card.h)(0x51D37680)
 I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
 F (.\app_712\lcd\Menu_3_7_Affair.c)(0x50F6870C)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_3_7_affair.o" --omf_browse ".\build\menu_3_7_affair.crf" --depend ".\build\menu_3_7_affair.d")
-I (app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdio.h)(0x50F96150)
 I (.\app_712\./App_moduleConfig.h)(0x523135DE)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdlib.h)(0x50F96150)
@@ -6624,7 +6624,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -6634,7 +6634,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -6648,7 +6648,7 @@ I (.\app_712\ICcard\IC_card.h)(0x51D37680)
 I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
 F (.\app_712\lcd\Menu_3_8_LogOut.c)(0x50FF46EA)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_3_8_logout.o" --omf_browse ".\build\menu_3_8_logout.crf" --depend ".\build\menu_3_8_logout.d")
-I (app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdio.h)(0x50F96150)
 I (.\app_712\./App_moduleConfig.h)(0x523135DE)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdlib.h)(0x50F96150)
@@ -6716,7 +6716,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -6726,7 +6726,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -6740,7 +6740,7 @@ I (.\app_712\ICcard\IC_card.h)(0x51D37680)
 I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
 F (.\app_712\lcd\Menu_3_InforInteract.c)(0x52114412)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_3_inforinteract.o" --omf_browse ".\build\menu_3_inforinteract.crf" --depend ".\build\menu_3_inforinteract.d")
-I (app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdio.h)(0x50F96150)
 I (.\app_712\./App_moduleConfig.h)(0x523135DE)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdlib.h)(0x50F96150)
@@ -6808,7 +6808,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -6818,7 +6818,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -6833,7 +6833,7 @@ I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
 F (.\app_712\lcd\Menu_4_1_pilao.c)(0x52131A32)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_4_1_pilao.o" --omf_browse ".\build\menu_4_1_pilao.crf" --depend ".\build\menu_4_1_pilao.d")
 I (e:\Keil\ARM\ARMCC\bin\..\include\string.h)(0x50F96150)
-I (app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdio.h)(0x50F96150)
 I (.\app_712\./App_moduleConfig.h)(0x523135DE)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdlib.h)(0x50F96150)
@@ -6900,7 +6900,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -6910,7 +6910,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -6925,7 +6925,7 @@ I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
 F (.\app_712\lcd\Menu_4_2_chaosu.c)(0x52131A44)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_4_2_chaosu.o" --omf_browse ".\build\menu_4_2_chaosu.crf" --depend ".\build\menu_4_2_chaosu.d")
 I (e:\Keil\ARM\ARMCC\bin\..\include\string.h)(0x50F96150)
-I (app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdio.h)(0x50F96150)
 I (.\app_712\./App_moduleConfig.h)(0x523135DE)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdlib.h)(0x50F96150)
@@ -6992,7 +6992,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -7002,7 +7002,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -7016,7 +7016,7 @@ I (.\app_712\ICcard\IC_card.h)(0x51D37680)
 I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
 F (.\app_712\lcd\Menu_4_InforTirExspd.c)(0x51DFA15C)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_4_infortirexspd.o" --omf_browse ".\build\menu_4_infortirexspd.crf" --depend ".\build\menu_4_infortirexspd.d")
-I (app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdio.h)(0x50F96150)
 I (.\app_712\./App_moduleConfig.h)(0x523135DE)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdlib.h)(0x50F96150)
@@ -7084,7 +7084,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -7094,7 +7094,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -7108,7 +7108,7 @@ I (.\app_712\ICcard\IC_card.h)(0x51D37680)
 I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
 F (.\app_712\lcd\Menu_5_1_TelDis.c)(0x50F7C3A0)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_5_1_teldis.o" --omf_browse ".\build\menu_5_1_teldis.crf" --depend ".\build\menu_5_1_teldis.d")
-I (app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdio.h)(0x50F96150)
 I (.\app_712\./App_moduleConfig.h)(0x523135DE)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdlib.h)(0x50F96150)
@@ -7176,7 +7176,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -7186,7 +7186,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -7200,7 +7200,7 @@ I (.\app_712\ICcard\IC_card.h)(0x51D37680)
 I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
 F (.\app_712\lcd\Menu_5_2_TelAtd.c)(0x521143F0)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_5_2_telatd.o" --omf_browse ".\build\menu_5_2_telatd.crf" --depend ".\build\menu_5_2_telatd.d")
-I (app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdio.h)(0x50F96150)
 I (.\app_712\./App_moduleConfig.h)(0x523135DE)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdlib.h)(0x50F96150)
@@ -7268,7 +7268,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -7278,7 +7278,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -7292,7 +7292,7 @@ I (.\app_712\ICcard\IC_card.h)(0x51D37680)
 I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
 F (.\app_712\lcd\menu_5_3_bdupgrad.c)(0x522FCDAA)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_5_3_bdupgrad.o" --omf_browse ".\build\menu_5_3_bdupgrad.crf" --depend ".\build\menu_5_3_bdupgrad.d")
-I (app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdio.h)(0x50F96150)
 I (.\app_712\./App_moduleConfig.h)(0x523135DE)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdlib.h)(0x50F96150)
@@ -7360,7 +7360,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -7370,7 +7370,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -7384,7 +7384,7 @@ I (.\app_712\ICcard\IC_card.h)(0x51D37680)
 I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
 F (.\app_712\lcd\Menu_5_4_BDColdBoot.c)(0x521143E8)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_5_4_bdcoldboot.o" --omf_browse ".\build\menu_5_4_bdcoldboot.crf" --depend ".\build\menu_5_4_bdcoldboot.d")
-I (app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdio.h)(0x50F96150)
 I (.\app_712\./App_moduleConfig.h)(0x523135DE)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdlib.h)(0x50F96150)
@@ -7452,7 +7452,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -7462,7 +7462,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -7476,7 +7476,7 @@ I (.\app_712\ICcard\IC_card.h)(0x51D37680)
 I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
 F (.\app_712\lcd\Menu_5_6_Concuss.c)(0x521143CA)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_5_6_concuss.o" --omf_browse ".\build\menu_5_6_concuss.crf" --depend ".\build\menu_5_6_concuss.d")
-I (app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdio.h)(0x50F96150)
 I (.\app_712\./App_moduleConfig.h)(0x523135DE)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdlib.h)(0x50F96150)
@@ -7544,7 +7544,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -7554,7 +7554,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -7568,7 +7568,7 @@ I (.\app_712\ICcard\IC_card.h)(0x51D37680)
 I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
 F (.\app_712\lcd\Menu_5_7_Version.c)(0x521143BE)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_5_7_version.o" --omf_browse ".\build\menu_5_7_version.crf" --depend ".\build\menu_5_7_version.d")
-I (app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdio.h)(0x50F96150)
 I (.\app_712\./App_moduleConfig.h)(0x523135DE)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdlib.h)(0x50F96150)
@@ -7636,7 +7636,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -7646,7 +7646,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -7660,7 +7660,7 @@ I (.\app_712\ICcard\IC_card.h)(0x51D37680)
 I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
 F (.\app_712\lcd\Menu_5_8_usb.c)(0x521143D4)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_5_8_usb.o" --omf_browse ".\build\menu_5_8_usb.crf" --depend ".\build\menu_5_8_usb.d")
-I (app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdio.h)(0x50F96150)
 I (.\app_712\./App_moduleConfig.h)(0x523135DE)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdlib.h)(0x50F96150)
@@ -7728,7 +7728,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -7738,7 +7738,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -7753,7 +7753,7 @@ I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
 I (.\app_712\printer\rtdevice.h)(0x50C930E4)
 F (.\app_712\lcd\Menu_5_other.c)(0x522EA88A)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_5_other.o" --omf_browse ".\build\menu_5_other.crf" --depend ".\build\menu_5_other.d")
-I (app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdio.h)(0x50F96150)
 I (.\app_712\./App_moduleConfig.h)(0x523135DE)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdlib.h)(0x50F96150)
@@ -7821,7 +7821,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -7831,7 +7831,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -7845,7 +7845,7 @@ I (.\app_712\ICcard\IC_card.h)(0x51D37680)
 I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
 F (.\app_712\lcd\Menu_7_CentreTextDisplay.c)(0x51E647C8)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_7_centretextdisplay.o" --omf_browse ".\build\menu_7_centretextdisplay.crf" --depend ".\build\menu_7_centretextdisplay.d")
-I (app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdio.h)(0x50F96150)
 I (.\app_712\./App_moduleConfig.h)(0x523135DE)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdlib.h)(0x50F96150)
@@ -7913,7 +7913,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -7923,7 +7923,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -7936,9 +7936,9 @@ I (.\app_712\ICcard\SLE4442.h)(0x51639EFE)
 I (.\app_712\ICcard\IC_card.h)(0x51D37680)
 I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
-F (.\app_712\lcd\Menu_Include.c)(0x523FEBEA)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_include.o" --omf_browse ".\build\menu_include.crf" --depend ".\build\menu_include.d")
+F (.\app_712\lcd\Menu_Include.c)(0x5297EB04)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_include.o" --omf_browse ".\build\menu_include.crf" --depend ".\build\menu_include.d")
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdio.h)(0x50F96150)
-I (app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\./App_moduleConfig.h)(0x523135DE)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdlib.h)(0x50F96150)
 I (e:\Keil\ARM\ARMCC\bin\..\include\string.h)(0x50F96150)
@@ -8005,7 +8005,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -8015,7 +8015,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -8097,7 +8097,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -8107,7 +8107,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (drivers\vuart.h)(0x50DBC162)
 I (.\app_712\printer\Device_printer.h)(0x520B4000)
@@ -8120,7 +8120,7 @@ I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
 F (.\app_712\lcd\Menu_0_4_VIN.c)(0x524293C2)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_0_4_vin.o" --omf_browse ".\build\menu_0_4_vin.crf" --depend ".\build\menu_0_4_vin.d")
 I (e:\Keil\ARM\ARMCC\bin\..\include\string.h)(0x50F96150)
-I (app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdio.h)(0x50F96150)
 I (.\app_712\./App_moduleConfig.h)(0x523135DE)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdlib.h)(0x50F96150)
@@ -8187,7 +8187,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -8197,7 +8197,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -8210,9 +8210,9 @@ I (.\app_712\ICcard\SLE4442.h)(0x51639EFE)
 I (.\app_712\ICcard\IC_card.h)(0x51D37680)
 I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
-F (.\app_712\lcd\Menu_0_5_Colour.c)(0x5243C176)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_0_5_colour.o" --omf_browse ".\build\menu_0_5_colour.crf" --depend ".\build\menu_0_5_colour.d")
+F (.\app_712\lcd\Menu_0_5_Colour.c)(0x5328F9AD)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_0_5_colour.o" --omf_browse ".\build\menu_0_5_colour.crf" --depend ".\build\menu_0_5_colour.d")
 I (e:\Keil\ARM\ARMCC\bin\..\include\string.h)(0x50F96150)
-I (app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdio.h)(0x50F96150)
 I (.\app_712\./App_moduleConfig.h)(0x523135DE)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdlib.h)(0x50F96150)
@@ -8279,7 +8279,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -8289,7 +8289,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -8304,7 +8304,7 @@ I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
 F (.\app_712\lcd\Menu_0_3_Sim.c)(0x522EA450)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_0_3_sim.o" --omf_browse ".\build\menu_0_3_sim.crf" --depend ".\build\menu_0_3_sim.d")
 I (e:\Keil\ARM\ARMCC\bin\..\include\string.h)(0x50F96150)
-I (app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdio.h)(0x50F96150)
 I (.\app_712\./App_moduleConfig.h)(0x523135DE)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdlib.h)(0x50F96150)
@@ -8371,7 +8371,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -8381,7 +8381,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -8395,7 +8395,7 @@ I (.\app_712\ICcard\IC_card.h)(0x51D37680)
 I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
 F (.\app_712\lcd\Menu_6_SetInfor.c)(0x522EA898)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_6_setinfor.o" --omf_browse ".\build\menu_6_setinfor.crf" --depend ".\build\menu_6_setinfor.d")
-I (app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdio.h)(0x50F96150)
 I (.\app_712\./App_moduleConfig.h)(0x523135DE)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdlib.h)(0x50F96150)
@@ -8463,7 +8463,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -8473,7 +8473,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -8487,7 +8487,7 @@ I (.\app_712\ICcard\IC_card.h)(0x51D37680)
 I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
 I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
 F (.\app_712\lcd\Menu_5_9_voice.c)(0x522FC33A)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_5_9_voice.o" --omf_browse ".\build\menu_5_9_voice.crf" --depend ".\build\menu_5_9_voice.d")
-I (app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdio.h)(0x50F96150)
 I (.\app_712\./App_moduleConfig.h)(0x523135DE)
 I (e:\Keil\ARM\ARMCC\bin\..\include\stdlib.h)(0x50F96150)
@@ -8555,7 +8555,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -8565,7 +8565,99 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
+I (.\app_712\lcd\lcd.h)(0x50D15152)
+I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
+I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
+I (drivers\vuart.h)(0x50DBC162)
+I (.\app_712\printer\Device_printer.h)(0x520B4000)
+I (.\app_712\shakesensor\mma8451.h)(0x50E79CE6)
+I (.\app_712\gsm\SMS.h)(0x51BEDF98)
+I (.\app_712\gsm\SMS_PDU.h)(0x51BEC2B0)
+I (.\app_712\ICcard\SLE4442.h)(0x51639EFE)
+I (.\app_712\ICcard\IC_card.h)(0x51D37680)
+I (.\app_712\protocol_808\CRC.h)(0x5205FD20)
+I (.\app_712\protocol_808\Vdr.h)(0x51E662F2)
+F (.\app_712\lcd\Menu_0_0_type.c)(0x52478896)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I. -I..\..\components\finsh -I..\..\include -I..\..\libcpu\arm\common -I..\..\libcpu\arm\cortex-m4 -ILibraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -ILibraries\CMSIS\Include -ILibraries\CMSIS\ST\STM32F4xx\Include -ILibraries\STM32F4xx_StdPeriph_Driver\inc -Iapplications -Idrivers -I.\build -I.\drivers\serial -I.\drivers\include -I.\drivers\include\drivers -I.\app_712 -I.\app_712\gps -I.\app_712\gsm -I..\..\src -I.\app_712\lcd -I.\app_712\U4_485 -I.\app_712\protocol_808 -I.\app_712\HMI -I.\app_712\rtc -I.\drivers\include -I.\app_712\dataflash -I.\app_712\dataflash\SST25 -I.\app_712\printer -I.\drivers\usb -I..\..\components\dfs -I..\..\components\dfs\include -I..\..\components\dfs\src -I..\..\components\dfs\filesystems\elmfat -I..\..\components\dfs\filesystems\elmfat\option -I..\..\components\dfs\filesystems\romfs -I.\Libraries\STM32_USB_OTG_Driver\inc -I.\Libraries\STM32_USB_OTG_Driver\src -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\inc -I.\Libraries\STM32_USB_HOST_Library\Class\MSC\src -I.\Libraries\STM32_USB_HOST_Library\Core\inc -I.\Libraries\STM32_USB_HOST_Library\Core\src -I.\drivers\usb -I.\drivers\spi_TF -I.\app_712\CAN -I.\app_712\shakesensor -I.\app_712\ICcard -I e:\Keil\ARM\RV31\INC -I e:\Keil\ARM\CMSIS\Include -I e:\Keil\ARM\Inc\ST\STM32F4xx -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -DHSE_VALUE="8000000" -DUSE_USB_OTG_FS -o ".\build\menu_0_0_type.o" --omf_browse ".\build\menu_0_0_type.crf" --depend ".\build\menu_0_0_type.d")
+I (e:\Keil\ARM\ARMCC\bin\..\include\string.h)(0x50F96150)
+I (app_712\lcd\Menu_Include.h)(0x5297EAF3)
+I (e:\Keil\ARM\ARMCC\bin\..\include\stdio.h)(0x50F96150)
+I (.\app_712\./App_moduleConfig.h)(0x523135DE)
+I (e:\Keil\ARM\ARMCC\bin\..\include\stdlib.h)(0x50F96150)
+I (e:\Keil\ARM\ARMCC\bin\..\include\ctype.h)(0x50F96150)
+I (e:\Keil\ARM\ARMCC\bin\..\include\stdarg.h)(0x50F9614E)
+I (.\app_712\gsm\Device_gsm.h)(0x5295973B)
+I (..\..\include\rthw.h)(0x5046E908)
+I (..\..\include\rtthread.h)(0x50A9E1FE)
+I (..\..\include\rtdef.h)(0x5084A420)
+I (.\rtconfig.h)(0x5240E8D8)
+I (..\..\include\rtdebug.h)(0x5046F684)
+I (..\..\include\rtservice.h)(0x50DAF138)
+I (..\..\include\rtm.h)(0x5046E7E6)
+I (Libraries\CMSIS\ST\STM32F4xx\Include\stm32f4xx.h)(0x51FB0302)
+I (Libraries\CMSIS\Include\core_cm4.h)(0x50C9967A)
+I (e:\Keil\ARM\ARMCC\bin\..\include\stdint.h)(0x50F96150)
+I (Libraries\CMSIS\Include\core_cmInstr.h)(0x50C9967A)
+I (Libraries\CMSIS\Include\core_cmFunc.h)(0x50C9967A)
+I (Libraries\CMSIS\Include\core_cm4_simd.h)(0x50C9967A)
+I (Libraries\CMSIS\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x50C9967A)
+I (drivers\stm32f4xx_conf.h)(0x50C18460)
+I (Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_adc.h)(0x50C9967A)
+I (Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_can.h)(0x50C9967A)
+I (Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_crc.h)(0x50C9967A)
+I (Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_cryp.h)(0x50C9967A)
+I (Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dac.h)(0x50C9967A)
+I (Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dbgmcu.h)(0x50C9967A)
+I (Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dcmi.h)(0x50C9967A)
+I (Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dma.h)(0x50C9967A)
+I (Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_exti.h)(0x50C9967A)
+I (Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_flash.h)(0x50C9967A)
+I (Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_fsmc.h)(0x50C9967A)
+I (Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_hash.h)(0x50C9967A)
+I (Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_gpio.h)(0x50C9967A)
+I (Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_i2c.h)(0x50C9967A)
+I (Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_iwdg.h)(0x50C9967A)
+I (Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_pwr.h)(0x50C9967A)
+I (Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_rcc.h)(0x50C9967A)
+I (Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_rng.h)(0x50C9967A)
+I (Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_rtc.h)(0x50C9967A)
+I (Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_sdio.h)(0x50C9967A)
+I (Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_spi.h)(0x50C9967A)
+I (Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_syscfg.h)(0x50C9967A)
+I (Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_tim.h)(0x50C9967A)
+I (Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_usart.h)(0x50C9967A)
+I (Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_wwdg.h)(0x50C9967A)
+I (Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x50C9967A)
+I (drivers\usart.h)(0x50DB9C52)
+I (drivers\board.h)(0x50E66580)
+I (.\drivers\include\drivers\serial.h)(0x50767692)
+I (.\app_712\CAN\Device_CAN.h)(0x517BB85C)
+I (.\app_712\CAN\Device_CAN2.h)(0x5240EA02)
+I (.\app_712\App_moduleConfig.h)(0x523135DE)
+I (..\..\components\finsh\finsh.h)(0x4FC60490)
+I (.\app_712\U4_485\Device_485.h)(0x520C8CF6)
+I (.\app_712\protocol_808\App_808.h)(0x520EFDC0)
+I (.\drivers\spi_TF\spi_sd.h)(0x50C9967A)
+I (.\drivers\usb\Usbh_conf.h)(0x50D18016)
+I (..\..\components\dfs\include\dfs_posix.h)(0x507B86B6)
+I (..\..\components\dfs\include\dfs_file.h)(0x4EF3E1DE)
+I (..\..\components\dfs\include\dfs_def.h)(0x507B7DC2)
+I (..\..\components\dfs\include\dfs.h)(0x4EF3E1BC)
+I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
+I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
+I (.\app_712\U4_485\App_485.h)(0x520CA080)
+I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
+I (.\app_712\gps\gps.h)(0x52171338)
+I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
+I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
+I (.\app_712\protocol_808\Sys_config.h)(0x52958E0F)
+I (.\app_712\./rtc/Rtc.h)(0x521413B6)
+I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
+I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
+I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
+I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -8645,7 +8737,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -8655,7 +8747,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)
@@ -8735,7 +8827,7 @@ I (..\..\components\dfs\include\dfs_fs.h)(0x4F02B95A)
 I (.\app_712\HMI\App_hmi.h)(0x50FCECA2)
 I (.\app_712\U4_485\App_485.h)(0x520CA080)
 I (.\app_712\gsm\App_gsm.h)(0x52301CEE)
-I (.\app_712\protocol_808\Protocol_808.h)(0x52958F8F)
+I (.\app_712\protocol_808\Protocol_808.h)(0x5297E9ED)
 I (.\app_712\gps\gps.h)(0x52171338)
 I (.\app_712\dataflash\DF_Oper.h)(0x52959841)
 I (.\app_712\protocol_808\Device_808.h)(0x5295926F)
@@ -8745,7 +8837,7 @@ I (e:\Keil\ARM\ARMCC\bin\..\include\time.h)(0x50F96150)
 I (.\app_712\dataflash\SST25\SST25VF.h)(0x52959864)
 I (.\app_712\dataflash\DF_Function.h)(0x4F2F7938)
 I (.\app_712\dataflash\Flash_Oper.h)(0x5237AE48)
-I (.\app_712\lcd\Menu_Include.h)(0x52380BA2)
+I (.\app_712\lcd\Menu_Include.h)(0x5297EAF3)
 I (.\app_712\lcd\lcd.h)(0x50D15152)
 I (.\app_712\lcd\sed1520.h)(0x5212B2F2)
 I (.\app_712\lcd\bmp.h)(0x50BDAFA8)

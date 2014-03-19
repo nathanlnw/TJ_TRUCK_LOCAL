@@ -95,13 +95,13 @@ unsigned char print_rec_flag=0;  // 打印记录标志
 u8  print_workingFlag=0;  // 打印进行中。。
 
 
-u8 CarSet_0_counter=1;//记录设置车辆信息的设置内容1:车牌号2:类型3:颜色
+u8 CarSet_0_counter=0;//记录设置车辆信息的设置内容1:车牌号2:类型3:颜色
 
 //------------ 使用前锁定相关 ------------------
 unsigned char Menu_Car_license[10];//存放车牌号码
 u8 Menu_VechileType[10];  //  车辆类型
 u8 Menu_VecLogoColor[10]; // 车牌颜色
-u8 Menu_color_num=0;   // JT415    1  蓝 2 黄 3 黑 4 白 9其他
+u8 Menu_color_num=0;   // JT415    1  蓝 2 黄 3 黑 4 白 9其他 
 u8 Menu_Vin_Code[17];
 u8 Menu_sim_Code[12];//扬州要求设置11位手机号码
 u8 License_Not_SetEnable=1;//   1:车牌号未设置

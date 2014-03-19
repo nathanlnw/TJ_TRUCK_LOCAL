@@ -193,7 +193,7 @@ void   SMS_protocol (u8 *instr,u16 len, u8  ACKstate)   //  ACKstate
 	char	sms_content[60];		///短信命令区"()"之间的内容
 	char	sms_ack_data[60];		///短信每个命令包括'#'符的完整内容
 	u8	u8TempBuf[6];
-	u16	i=0,j=0;
+	u16	i=0,j=0,res=0;
 	u16  cmdLen,u16Temp;
 	char *p_Instr;
 	char *pstrTemp,*pstrTempStart,*pstrTempEnd;
@@ -204,7 +204,11 @@ void   SMS_protocol (u8 *instr,u16 len, u8  ACKstate)   //  ACKstate
 	strcpy(SMS_Service.SMS_sd_Content,Vechicle_Info.Vech_Num);
 	strcat(SMS_Service.SMS_sd_Content,"#");// Debug
 	strcat(SMS_Service.SMS_sd_Content,SimID_12D);// Debug
-	strcat(SMS_Service.SMS_sd_Content,"#TRK");// 版本信息   
+	if(Vechicle_Info.Vech_Type_Mark==1)  
+	      strcat(SMS_Service.SMS_sd_Content,"#TRKK");// 版本信息  
+	else
+	if(Vechicle_Info.Vech_Type_Mark==2)  
+	      strcat(SMS_Service.SMS_sd_Content,"#TRKH");// 版本信息   
 	/*************************处理信息****************************/
 	p_Instr=(char *)instr;
 	for(i=0;i<len;i++)
@@ -240,6 +244,9 @@ void   SMS_protocol (u8 *instr,u16 len, u8  ACKstate)   //  ACKstate
 					if(pstrTemp[4]=='1')		///主域名
 						{
 						rt_kprintf("\r\n设置主域名 !");
+
+
+						
 						memset(DomainNameStr,0,sizeof(DomainNameStr));					  
 						memset(SysConf_struct.DNSR,0,sizeof(DomainNameStr));  
 						memcpy(DomainNameStr,(char*)pstrTempStart,cmdLen);
@@ -247,8 +254,13 @@ void   SMS_protocol (u8 *instr,u16 len, u8  ACKstate)   //  ACKstate
 						Api_Config_write(config,ID_CONF_SYS,(u8*)&SysConf_struct,sizeof(SysConf_struct));
 						//----- 传给 GSM 模块------
 						DataLink_DNSR_Set(SysConf_struct.DNSR,1); 
+
+						// ------ 判断域名内容-------
+						res=memcmp((u8*)DomainNameStr,"jt1.gghypt.net",14);
+						if(res)
+							type_vech(2); // 货运     
 						
-						///
+						//
 						Add_SMS_Ack_Content(sms_ack_data,ACKstate);
 
 						//------- add on 2013-6-6
@@ -418,6 +430,9 @@ void   SMS_protocol (u8 *instr,u16 len, u8  ACKstate)   //  ACKstate
 						rt_kprintf("\r\n短信设置主服务器 IP: %d.%d.%d.%d : %d ",RemoteIP_main[0],RemoteIP_main[1],RemoteIP_main[2],RemoteIP_main[3],RemotePort_main);
 						//-----------  Below add by Nathan  ----------------------------
 						DataLink_MainSocket_set(RemoteIP_main,RemotePort_main,1);
+
+						if((RemoteIP_main[0]==60)&&(RemoteIP_main[1]==28)&&(RemoteIP_main[2]==50)&&(RemoteIP_main[3]==210)) 
+							type_vech(1); 
 						///
 						Add_SMS_Ack_Content(sms_ack_data,ACKstate);
 
@@ -732,6 +747,19 @@ void   SMS_protocol (u8 *instr,u16 len, u8  ACKstate)   //  ACKstate
 				}
 				 
 			}
+			else if(strncmp(pstrTemp,"TYPEVECH",8)==0)			///14.车辆状态查询
+			{
+			     if(sms_content[0]=='1')
+				 {
+				   type_vech(1);
+				   Add_SMS_Ack_Content(sms_ack_data,ACKstate);
+				 }
+				 if(sms_content[0]=='2')
+				 {
+				   type_vech(2);
+				   Add_SMS_Ack_Content(sms_ack_data,ACKstate);
+				 }
+			}	 	   
 			else												
 			if(strncmp(pstrTemp,"SPDTYPE",6)==0)
 				{

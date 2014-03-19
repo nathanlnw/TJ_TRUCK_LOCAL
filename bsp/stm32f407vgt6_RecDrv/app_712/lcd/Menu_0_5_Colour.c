@@ -85,7 +85,7 @@ static void keypress(unsigned int key)
 				else
 					{
 					col_screen=2;
-					CarSet_0_counter=1;//
+					CarSet_0_counter=0;//
 					menu_color_flag=1;//车牌颜色设置完成
 					lcd_fill(0);
 					lcd_text12(20,3,(char *)car_col,13,LCD_MODE_SET);
@@ -103,7 +103,7 @@ static void keypress(unsigned int key)
 				if(License_Not_SetEnable==1)
 					lcd_text12(0,0,"无牌照",6,LCD_MODE_SET);
 				else
-				lcd_text12(0,0,(char *)Menu_Car_license,8,LCD_MODE_SET);
+					lcd_text12(0,0,(char *)Menu_Car_license,8,LCD_MODE_SET);
 				lcd_text12(54,0,(char *)Menu_VechileType,6,LCD_MODE_SET);
 				      //====  车牌号未设置=====
                 if(License_Not_SetEnable==1)
@@ -166,6 +166,26 @@ static void keypress(unsigned int key)
 				Login_Menu_Flag=1;     //  输入界面为0 
 		        DF_WriteFlashSector(DF_LOGIIN_Flag_offset,0,&Login_Menu_Flag,1); 
 				//  存储
+				//-------------------------------------------------------------------------------------
+                //  select mode
+
+				 if(Vechicle_Info.Vech_Type_Mark==1)   //两客一危
+				 	{
+				 	    Vechicle_Info.Link_Frist_Mode=1;
+                        Socket_main_Set("60.28.50.210:9131"); 
+					    //--------    清除鉴权码 --------------------
+					     idip("clear");		
+
+				 	}
+				 else
+				 if(Vechicle_Info.Vech_Type_Mark==2)  //  公共货运平台
+				 	{
+                         Vechicle_Info.Link_Frist_Mode=0;
+						 port_main("7008");
+						 //--------    清除鉴权码 -------------------
+					     idip("clear");		
+				 	}
+				 //------------------------------------------------------------------------------------				
 				//rt_kprintf("\r\n(保存4   )Vechicle_Info.Vech_Num=%s",Vechicle_Info.Vech_Num);
 				DF_WriteFlashSector(DF_Vehicle_Struct_offset,0,(u8*)&Vechicle_Info,sizeof(Vechicle_Info));  
 				WatchDog_Feed();

@@ -20,7 +20,7 @@ void password_Set(u8 par)
 	lcd_text12(84,3,(char *)password_Code,password_SetFlag-1,LCD_MODE_SET);//-1+14
 	lcd_bitmap(par*pass_width1, 14, &BMP_password_icon, LCD_MODE_SET);
 	lcd_text12(0,19,"0123456789",10,LCD_MODE_SET);
-	lcd_text12(63,20,"TRUK.LOCAL",10,LCD_MODE_SET);  // 天津公共货运平台              
+	lcd_text12(63,20,"TRUK.TJall",10,LCD_MODE_SET);  // 天津公共货运平台              
 	lcd_update_all();
 }
 
@@ -51,7 +51,7 @@ static void keypress(unsigned int key)
 				if(set_car_codetype==1)
 					{
 					set_car_codetype=0;
-					CarSet_0_counter=1;//设置第1项
+					CarSet_0_counter=0;//设置第1项
 					pMenuItem=&Menu_0_loggingin;
 					}
 				else

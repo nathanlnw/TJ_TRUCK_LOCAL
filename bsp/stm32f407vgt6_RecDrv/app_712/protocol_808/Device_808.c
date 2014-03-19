@@ -71,9 +71,9 @@ void TRK_Work_Status_check_1s_once(void)
    else
    {
       TRK_Related.abnormal_counter++;  
-	  if(TRK_Related.abnormal_counter>300)	//
+	  if(TRK_Related.abnormal_counter>120)	//  120s
 	  {
-             TRK_Related.Work_state_enable=0;// 工作异常    
+             TRK_Related.Work_state_enable=0;// 工作异常     
 			 
 	  }
 

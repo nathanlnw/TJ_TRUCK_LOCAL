@@ -1426,6 +1426,11 @@
               <FileType>1</FileType>
               <FilePath>.\app_712\lcd\Menu_5_9_voice.c</FilePath>
             </File>
+            <File>
+              <FileName>Menu_0_0_type.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\app_712\lcd\Menu_0_0_type.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
