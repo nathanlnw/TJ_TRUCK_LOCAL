@@ -63,7 +63,7 @@ void  TRK_Light_Ctrl(void)
 
 void TRK_Work_Status_check_1s_once(void)
 {
-   if(DataLink_Status()&&(UDP_dataPacket_flag==2))
+   if(DataLink_Status()&&(UDP_dataPacket_flag==2)&&(DEV_Login.Operate_enable==2)) 
    {
       TRK_Related.abnormal_counter=0;
 	  TRK_Related.Work_state_enable=1;  //工作正常
