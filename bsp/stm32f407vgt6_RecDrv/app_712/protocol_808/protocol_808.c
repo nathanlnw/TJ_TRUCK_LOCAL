@@ -9771,7 +9771,7 @@ void  Sleep_Mode_ConfigEnter(void)
 			      SleepCounter=0; 
 			   	   SleepState=1;		
 				   if(JT808Conf_struct.RT_LOCK.Lock_state!=1)
-				   Current_SD_Duration=JT808Conf_struct.DURATION.Sleep_Dur; // 5分钟 
+				   Current_SD_Duration= JT808Conf_struct.DURATION.Default_Dur; //JT808Conf_struct.DURATION.Sleep_Dur; // 5分钟 
 
 				   //JT808Conf_struct.DURATION.Heart_SDCnter=25; 
 				   //JT808Conf_struct.DURATION.Heart_Dur=320; 
@@ -11003,12 +11003,13 @@ FINSH_FUNCTION_EXPORT(normalspd, normalspd);
 */
 void  dur(u8 *content)
 {
-  sscanf(content, "%d", (u32*)&Current_SD_Duration);
-  rt_kprintf("\r\n 手动设置上报时间间隔 %d s \r\n",Current_SD_Duration); 
-  
-       JT808Conf_struct.DURATION.Default_Dur=Current_SD_Duration;
-        Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
-
+	  sscanf(content, "%d", (u32*)&Current_SD_Duration);
+	  rt_kprintf("\r\n 手动设置上报时间间隔 %d s \r\n",Current_SD_Duration); 
+	  
+		   JT808Conf_struct.DURATION.Default_Dur=Current_SD_Duration;
+		   JT808Conf_struct.DURATION.Sleep_Dur=Current_SD_Duration;  //  设置成一样 
+			Api_Config_Recwrite_Large(jt808,0,(u8*)&JT808Conf_struct,sizeof(JT808Conf_struct));
+	
 }
 FINSH_FUNCTION_EXPORT(dur, dur);  
 
