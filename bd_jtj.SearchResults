@@ -1,32 +1,4 @@
----- DataLink_Status Matches (31 in 10 files) ----
-App_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):	        if(DataLink_Status())
-App_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):        if(DataLink_Status()&&(CallState==CallState_Idle)&&(print_workingFlag==0))   
-App_gsm.c (bsp\stm32f407vgt6_recdrv\app_712\gsm):u8   DataLink_Status(void)
-App_gsm.c (bsp\stm32f407vgt6_recdrv\app_712\gsm):	                           if(DataLink_Status())
-App_gsm.h (bsp\stm32f407vgt6_recdrv\app_712\gsm):extern u8      DataLink_Status(void);
-Device_485.c (bsp\stm32f407vgt6_recdrv\app_712\u4_485):	  if((DoorOpen.currentState!=DoorOpen.BakState)&&(DataLink_Status())) 
-Device_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):   if(DataLink_Status()&&(UDP_dataPacket_flag==2))
-Device_gsm.c (bsp\stm32f407vgt6_recdrv\app_712\gsm):    if((BD_ISP.ISP_running==1)&&DataLink_Status())     
-Device_gsm.c (bsp\stm32f407vgt6_recdrv\app_712\gsm):		     if(DataLink_Status())
-Device_gsm.c (bsp\stm32f407vgt6_recdrv\app_712\gsm):                  if(DataLink_Status())       
-Device_gsm.c (bsp\stm32f407vgt6_recdrv\app_712\gsm):	   if(DataLink_Status())        //   Online  state  Error    , End Link and Redial    
-Menu_5_2_TelAtd.c (bsp\stm32f407vgt6_recdrv\app_712\lcd):				  if(DataLink_Status()&&(CallState==CallState_Idle))    //电话空闲且在线情况下
-Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):            if((1==JT808Conf_struct.DURATION.Heart_SDFlag)&&(DataLink_Status())&&(SleepState==0)&&(DEV_Login.Operate_enable==2)) //  心跳
-Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):            if((1==SleepConfigFlag)&&(DataLink_Status())&&(SleepState==1)) //  休眠时心跳
-Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):				   //  if((PositionSD_Status())&&(DataLink_Status())&&(DEV_Login.Operate_enable==2))	                                                                                                                     // DF  锁定发送当前位置信息  
-Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):             if((RdCycle_RdytoSD==ReadCycle_status)&&(0==BD_ISP.ISP_running)&&(DataLink_Status())&&(DEV_Login.Operate_enable==2)&&(CameraState.camera_running==0))    // 读取发送--------- 正常GPS 
-Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):   if(DataLink_Status()&&(DEV_Login.Operate_enable==2))
-Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):					                        if(DataLink_Status())   
-Protocol_808.c (bsp\stm32f407vgt6_recdrv\app_712\protocol_808):				   if(DataLink_Status())
-Rt_stm32f4_drv.htm (bsp\stm32f407vgt6_recdrv):<P><STRONG><a name="[23f]"></a>DataLink_Status</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, app_gsm.o(i.DataLink_Status))
-Rt_stm32f4_drv.htm (bsp\stm32f407vgt6_recdrv):<LI><a href="#[23f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DataLink_Status
-Rt_stm32f4_drv.htm (bsp\stm32f407vgt6_recdrv):<LI><a href="#[23f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DataLink_Status
-Rt_stm32f4_drv.htm (bsp\stm32f407vgt6_recdrv):<BR>[Calls]<UL><LI><a href="#[23f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DataLink_Status
-Rt_stm32f4_drv.htm (bsp\stm32f407vgt6_recdrv):<LI><a href="#[23f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DataLink_Status
-Rt_stm32f4_drv.htm (bsp\stm32f407vgt6_recdrv):<LI><a href="#[23f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DataLink_Status
-Rt_stm32f4_drv.htm (bsp\stm32f407vgt6_recdrv):<LI><a href="#[23f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DataLink_Status
-Rt_stm32f4_drv.htm (bsp\stm32f407vgt6_recdrv):<LI><a href="#[23f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DataLink_Status
-Rt_stm32f4_drv.htm (bsp\stm32f407vgt6_recdrv):<LI><a href="#[23f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DataLink_Status
-Rt_stm32f4_drv.htm (bsp\stm32f407vgt6_recdrv):<LI><a href="#[23f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DataLink_Status
-Rt_stm32f4_drv.htm (bsp\stm32f407vgt6_recdrv):<LI><a href="#[23f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DataLink_Status
-SMS.c (bsp\stm32f407vgt6_recdrv\app_712\gsm):							       sprintf(SMS_Service.SMS_sd_Content+strlen(SMS_Service.SMS_sd_Content),"%d)",DataLink_Status());
+---- Debug_stop Matches (3 in 1 files) ----
+Device_gsm.c (bsp\stm32f407vgt6_recdrv\app_712\gsm): u8   Debug_stop=0;
+Device_gsm.c (bsp\stm32f407vgt6_recdrv\app_712\gsm):	Debug_stop=value;
+Device_gsm.c (bsp\stm32f407vgt6_recdrv\app_712\gsm):		     if(Debug_stop==0)

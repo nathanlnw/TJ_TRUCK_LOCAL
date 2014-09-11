@@ -97,7 +97,7 @@ void rtthread_startup(void)
  
 	 
     #endif 	 
-   rt_kprintf("\n\r   天津广通公司 北斗车载终端 <渣土车专用>  Hardware: 110  SW:Version 1.1 ---CombineALL Bit 16   \r\n ");     //直连TJ   
+   rt_kprintf("\n\r   天津广通公司 北斗车载终端 <渣土车专用>  Hardware: 110  SW:Version 1.4 ---CombineALL Bit 16   \r\n ");     //直连TJ   
 	/* show version */
 	rt_show_version();  
 
